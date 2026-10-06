@@ -1,4 +1,4 @@
-"""Teléfonos en formato E.164 guardado como solo dígitos (ej. 59168779945)."""
+"""Teléfonos en formato E.164 guardado como solo dígitos (ej. 59170000111)."""
 
 import re
 
@@ -8,7 +8,7 @@ CODIGO_BOLIVIA = "591"
 def normalizar_e164(valor: str | None, codigo_pais: str = CODIGO_BOLIVIA) -> str | None:
     """Devuelve solo dígitos con código de país, o None si no parece un teléfono.
 
-    Acepta '+591 687-79945', '0059168779945', '68779945' (asume Bolivia), 'whatsapp:+591...'.
+    Acepta '+591 700-00111', '0059170000111', '70000111' (asume Bolivia), 'whatsapp:+591...'.
     """
     if not valor:
         return None
@@ -23,7 +23,7 @@ def normalizar_e164(valor: str | None, codigo_pais: str = CODIGO_BOLIVIA) -> str
 
 
 def formato_legible(e164: str | None) -> str | None:
-    """'59168779945' -> '+591 68779945'."""
+    """'59170000111' -> '+591 70000111'."""
     if not e164:
         return None
     if e164.startswith(CODIGO_BOLIVIA):

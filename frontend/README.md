@@ -1,6 +1,6 @@
-# El Mexicano Web
+# TransDemo Web
 
-Portal público y panel de operación de la réplica de **Transportes El Mexicano S.R.L.** Consume la API de [`../backend`](../backend).
+Portal público y panel de operación de la demo de **TransDemo S.R.L.** Consume la API de [`../backend`](../backend).
 
 **Stack:** Vue 3.5 · TypeScript · Vite · Tailwind CSS 4 · Vue Router · Pinia · TanStack Query · openapi-fetch (tipos generados del OpenAPI) · reka-ui · ECharts · Zod · Vitest · Playwright.
 
@@ -31,7 +31,7 @@ cp .env.example .env.local      # opcional: cambia VITE_API_PROXY si la API no e
 pnpm dev                        # http://localhost:5173
 ```
 
-En desarrollo Vite reenvía `/api` al backend, así que no hace falta CORS. Personal de prueba: ver `backend/README.md` (contraseña `ElMexicano2026!`).
+En desarrollo Vite reenvía `/api` al backend, así que no hace falta CORS. Personal de prueba: ver `backend/README.md` (contraseña `TransDemo2026!`).
 
 ## Scripts
 

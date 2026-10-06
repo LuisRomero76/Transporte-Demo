@@ -241,6 +241,6 @@ router.beforeEach(async (to) => {
 })
 
 router.afterEach((to) => {
-  const base = to.path.startsWith('/admin') ? 'Panel El Mexicano' : 'El Mexicano'
+  const base = to.path.startsWith('/admin') ? 'Panel TransDemo' : 'TransDemo'
   document.title = to.meta.title ? `${to.meta.title} · ${base}` : `${base} · Pasajes de bus, carga y encomiendas`
 })

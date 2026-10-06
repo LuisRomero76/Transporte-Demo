@@ -1,6 +1,6 @@
-# install.sh reemplaza __USUARIO__ y __APP_DIR__ y lo copia a /etc/systemd/system/elmexicano-api.service.
+# install.sh reemplaza __USUARIO__ y __APP_DIR__ y lo copia a /etc/systemd/system/transdemo-api.service.
 [Unit]
-Description=El Mexicano API (FastAPI)
+Description=TransDemo API (FastAPI)
 After=network-online.target postgresql.service
 Wants=network-online.target
 

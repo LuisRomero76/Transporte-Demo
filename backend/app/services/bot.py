@@ -385,7 +385,7 @@ async def consultar_salidas(
         f"{'; '.join(_descripcion_salida(s) for s in mostradas)}."
     )
     if any(s["vendible"] for s in mostradas):
-        mensaje += " Puedes comprar en elmexicanosrl.com o en nuestras boleterías."
+        mensaje += " Puedes comprar en transdemo.com o en nuestras boleterías."
     return {
         "encontrado": True,
         "fecha": dia_viaje.isoformat(),
@@ -464,7 +464,7 @@ async def consultar_reserva(session: AsyncSession, codigo: str, caller_id: str |
         if estado == EstadoVenta.pendiente_pago and venta.expira_at:
             frases.append(
                 f"Falta pagar {dinero(venta.total_bs)} antes de las {hora(venta.expira_at)}; "
-                "puedes hacerlo en elmexicanosrl.com, en Mi reserva."
+                "puedes hacerlo en transdemo.com, en Mi reserva."
             )
         if estado == EstadoVenta.pagada and salida.oficina_salida:
             frases.append(
@@ -482,7 +482,7 @@ async def consultar_reserva(session: AsyncSession, codigo: str, caller_id: str |
     if not coincide:
         frases.append(
             "Para darte los detalles del viaje, llama desde el número con el que se hizo la compra "
-            "o revisa Mi reserva en elmexicanosrl.com con tu documento."
+            "o revisa Mi reserva en transdemo.com con tu documento."
         )
 
     respuesta: dict[str, Any] = {

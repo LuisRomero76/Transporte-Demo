@@ -6,7 +6,7 @@ import logging
 from app.core.db import SessionLocal
 from app.services import reservas
 
-log = logging.getLogger("elmexicano.jobs")
+log = logging.getLogger("transdemo.jobs")
 
 
 async def expirar_reservas_periodicamente(intervalo_segundos: int) -> None:

@@ -101,7 +101,7 @@ export function duracion(minutos: number): string {
   return m ? `${h} h ${m} min` : `${h} h`
 }
 
-/** "59171420823" → "+591 71420823" */
+/** "59170000101" → "+591 70000101" */
 export function telefono(e164: string | null | undefined): string {
   if (!e164) return '—'
   return e164.startsWith('591') ? `+591 ${e164.slice(3)}` : `+${e164}`

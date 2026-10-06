@@ -218,7 +218,7 @@ function imprimir(): void {
         </div>
         <p class="text-sm text-muted">
           La empresa retiene el {{ 100 - porcentaje }} %, incluidos los costos de la factura. El asiento se libera en cuanto confirmes.
-          Dudas: {{ telefono('59167640155') }}.
+          Dudas: {{ telefono('59170000100') }}.
         </p>
         <TextArea v-model="motivo" label="Motivo (opcional)" :rows="3" maxlength="250" />
       </div>

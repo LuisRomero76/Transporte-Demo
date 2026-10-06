@@ -23,7 +23,7 @@ from app.services import bot
 from app.services.api_keys import SCOPE_ESCRITURA, SCOPE_LECTURA, KeyValida
 from app.utils.fechas import ahora
 
-log = logging.getLogger("elmexicano.bot")
+log = logging.getLogger("transdemo.bot")
 router = APIRouter(prefix="/api/bot", tags=["Agente de voz (ElevenLabs)"])
 
 Lectura = Annotated[KeyValida, Depends(requiere_bot(SCOPE_LECTURA))]

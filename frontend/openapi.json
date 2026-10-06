@@ -1,8 +1,8 @@
 {
  "openapi": "3.1.0",
  "info": {
-  "title": "El Mexicano API",
-  "description": "Backend réplica (demo) de **Transportes El Mexicano S.R.L.**: venta de pasajes de bus, rutas e itinerarios, carga y encomiendas, puerta a puerta y centro de ayuda.\n\nFechas en hora de Bolivia (America/La_Paz) y montos en bolivianos (Bs).",
+  "title": "TransDemo API",
+  "description": "Backend réplica (demo) de **TransDemo S.R.L.**: venta de pasajes de bus, rutas e itinerarios, carga y encomiendas, puerta a puerta y centro de ayuda.\n\nFechas en hora de Bolivia (America/La_Paz) y montos en bolivianos (Bs).",
   "version": "0.1.0"
  },
  "paths": {

@@ -17,7 +17,7 @@ async def test_login_con_cookie_y_csrf(client):
 
     async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as navegador:
         r = await navegador.post(
-            "/api/v1/auth/login", data={"username": "supervisor@elmexicanosrl.com", "password": PASSWORD_DEMO}
+            "/api/v1/auth/login", data={"username": "supervisor@transdemo.com", "password": PASSWORD_DEMO}
         )
         assert r.status_code == 200
         cookie = r.headers["set-cookie"].lower()
@@ -125,7 +125,7 @@ async def test_politica_de_contrasenas(client, admin, password):
     r = await client.post(
         "/api/v1/admin/usuarios",
         json={
-            "email": "nuevo@elmexicanosrl.com",
+            "email": "nuevo@transdemo.com",
             "password": password,
             "nombres": "A",
             "apellidos": "B",

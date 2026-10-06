@@ -271,7 +271,7 @@ const textoBoton = computed(() => {
               </BaseButton>
               <p class="text-[13px] text-muted">
                 Al pagar aceptas los términos y la política de reembolsos (85 % hasta 2 h antes de la salida).
-                Contacto: {{ telefono('59167640155') }}.
+                Contacto: {{ telefono('59170000100') }}.
               </p>
               <button type="button" class="self-start text-sm font-semibold text-carmin-600 hover:underline" @click="confirmarCancelacion = true">
                 Cancelar la reserva

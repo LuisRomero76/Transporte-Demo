@@ -1,4 +1,4 @@
-name: elmexicano-api
+name: transdemo-api
 channels:
   - conda-forge
 dependencies:

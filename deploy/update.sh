@@ -4,7 +4,7 @@
 set -euo pipefail
 
 APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-WEB_ROOT="/var/www/elmexicano"
+WEB_ROOT="/var/www/transdemo"
 
 echo "==> Descargando cambios"
 git -C "$APP_DIR" pull --ff-only
@@ -13,7 +13,7 @@ echo "==> Backend"
 cd "$APP_DIR/backend"
 .venv/bin/pip install --quiet -r requirements.txt
 .venv/bin/alembic upgrade head
-sudo systemctl restart elmexicano-api
+sudo systemctl restart transdemo-api
 
 echo "==> Frontend"
 cd "$APP_DIR/frontend"

@@ -1,6 +1,6 @@
-# El Mexicano API
+# TransDemo API
 
-Backend réplica (demo) de **Transportes El Mexicano S.R.L.** (https://www.elmexicanosrl.com): venta de pasajes, salidas y asientos, carga y encomiendas con rastreo, puerta a puerta, centro de ayuda y operación interna (boletería, bodega, reembolsos, reportes).
+Backend de demostración de **TransDemo S.R.L.** (https://www.transdemo.com): venta de pasajes, salidas y asientos, carga y encomiendas con rastreo, puerta a puerta, centro de ayuda y operación interna (boletería, bodega, reembolsos, reportes).
 
 El frontend (portal público y panel de operación) está en [`../frontend`](../frontend).
 
@@ -13,14 +13,14 @@ El frontend (portal público y panel de operación) está en [`../frontend`](../
 ```powershell
 cd backend
 conda env create -f environment.yml
-conda activate elmexicano-api
+conda activate transdemo-api
 ```
 
 Si `conda` no está en el PATH, usa la ruta completa: `& "$env:USERPROFILE\anaconda3\Scripts\conda.exe" env create -f environment.yml`, o abre el *Anaconda Prompt*.
 
 ## 2. Configurar Neon
 
-1. En el panel de Neon crea un proyecto y una base `elmexicano` (PostgreSQL 16 o superior).
+1. En el panel de Neon crea un proyecto y una base `transdemo` (PostgreSQL 16 o superior).
 2. Copia `.env.example` a `.env` (ya hay uno con marcadores) y pega las dos cadenas **tal como las copias de Neon**:
    - `DATABASE_URL`: la **pooled** (el host contiene `-pooler`). La usa la app.
    - `DATABASE_URL_DIRECT`: la **directa** (sin `-pooler`). La usa Alembic.
@@ -54,19 +54,19 @@ Para probar el agente de voz contra tu computadora: `ngrok http 8000` (ElevenLab
 
 ## 5. Datos de prueba
 
-**Personal** (todos con la contraseña `ElMexicano2026!`):
+**Personal** (todos con la contraseña `TransDemo2026!`):
 
 | Email | Rol |
 |---|---|
-| admin@elmexicanosrl.com | admin |
-| supervisor@elmexicanosrl.com | supervisor |
+| admin@transdemo.com | admin |
+| supervisor@transdemo.com | supervisor |
 | boleteria.sucre@ · boleteria.santacruz@ · boleteria.lapaz@ · boleteria.tarija@ | boletero |
 | bodega.sucre@ · bodega.santacruz@ · bodega.lapaz@ | encargado de bodega |
 | reparto.sucre@ · reparto.santacruz@ | repartidor |
 | soporte@ | soporte |
 | conductor01@ … conductor24@ | conductor |
 
-(todos en `@elmexicanosrl.com`). En `/docs` usa el botón **Authorize** con email y contraseña.
+(todos en `@transdemo.com`). En `/docs` usa el botón **Authorize** con email y contraseña.
 
 **Guías fijas** (destinatario = `DEMO_TELEFONO_E164`, salvo la 105):
 
@@ -183,15 +183,15 @@ Ejemplo de respuesta (`rastrear_encomienda` con el número del destinatario):
   "encontrado": true, "datos_completos": true, "numero_guia": "26000101", "estado": "lista_para_retiro",
   "lista_para_retiro": true, "pago_pendiente": false, "oficina_retiro": "Bodega Santa Cruz 2",
   "remitente": "…", "destinatario": "…", "monto_pendiente_bs": null, "ultimos_eventos": ["…"],
-  "mensaje": "Tu encomienda con guía 26000101, de Sucre a Santa Cruz, está lista para recoger. Se recoge en Bodega Santa Cruz 2, Av. Intermodal s/n entre Daniel Salamanca y Hernando Siles; atiende de lunes a sábado de 08:00 a 18:00. Hay que presentar el documento y el código de retiro que tiene el remitente."
+  "mensaje": "Tu encomienda con guía 26000101, de Sucre a Santa Cruz, está lista para recoger. Se recoge en Bodega Santa Cruz 2, Calle Las Palmeras 58, entre calles 3 y 4; atiende de lunes a sábado de 08:00 a 18:00. Hay que presentar el documento y el código de retiro que tiene el remitente."
 }
 ```
 
 ### Configuración en ElevenLabs
 
-1. **Secreto:** en el workspace de ElevenLabs crea un *secret* llamado `mexicano_bot_key` con el valor de la API key.
+1. **Secreto:** en el workspace de ElevenLabs crea un *secret* llamado `transdemo_bot_key` con el valor de la API key.
 2. **Tools:** en el agente, *Tools → Add tool → Webhook*, una por fila de la tabla. En todas:
-   - **Header:** `X-Bot-Key`, con el valor tomado del secreto `mexicano_bot_key`.
+   - **Header:** `X-Bot-Key`, con el valor tomado del secreto `transdemo_bot_key`.
    - **`caller_id`** (cuando aparece): tipo de valor **Dynamic variable** = `system__caller_id`. No lo decide el modelo.
    - Los demás parámetros son de tipo **LLM prompt**: la última columna es la descripción que el modelo usa para completarlos.
 
@@ -221,7 +221,7 @@ Cada llamada queda en `bot_consultas_log` (tool, parámetros, `caller_id`, si en
 Los tests **vacían y recargan** la base que les indiques: usa una base de pruebas, nunca la de trabajo. Con Neon lo más simple es crear un *branch* de pruebas.
 
 ```powershell
-$env:TEST_DATABASE_URL = "postgresql://postgres@localhost:5432/elmexicano_test"
+$env:TEST_DATABASE_URL = "postgresql://postgres@localhost:5432/transdemo_test"
 pytest
 ruff check . ; ruff format --check .
 ```
@@ -241,7 +241,7 @@ backend/
 │   ├── schemas/        Pydantic (entrada y salida)
 │   ├── services/       reglas de negocio
 │   └── utils/          fechas (America/La_Paz), teléfonos E.164, códigos
-├── seeds/              datos reales (data/reales.py) y demo (data/demo.py)
+├── seeds/              datos base de la empresa ficticia (data/empresa.py) y demo (data/demo.py)
 └── tests/
 ```
 

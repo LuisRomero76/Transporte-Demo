@@ -17,7 +17,7 @@ class Settings(BaseSettings):
 
     app_env: str = "development"
     app_tz: str = "America/La_Paz"
-    app_name: str = "El Mexicano API"
+    app_name: str = "TransDemo API"
 
     jwt_secret: str = "cambiar"
     jwt_expire_minutes: int = 480

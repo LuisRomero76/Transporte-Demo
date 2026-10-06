@@ -1,7 +1,7 @@
 [project]
-name = "elmexicano-api"
+name = "transdemo-api"
 version = "0.1.0"
-description = "Backend réplica de Transportes El Mexicano S.R.L."
+description = "Backend réplica de TransDemo S.R.L."
 requires-python = ">=3.12"
 
 [tool.ruff]

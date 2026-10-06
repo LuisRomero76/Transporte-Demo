@@ -1,4 +1,4 @@
-"""Catálogos, datos reales, FAQ, autenticación, permisos y operación."""
+"""Catálogos, datos de la empresa, FAQ, autenticación, permisos y operación."""
 
 from tests.conftest import PASSWORD_DEMO
 
@@ -8,16 +8,16 @@ async def test_health(client):
     assert r.status_code == 200 and r.json()["base_de_datos"]["ok"]
 
 
-async def test_datos_reales_de_la_empresa(client):
+async def test_datos_de_la_empresa(client):
     e = (await client.get("/api/v1/empresa")).json()
-    assert e["whatsapp_central_e164"] == "59171420823" and e["whatsapp_url"] == "https://wa.me/59171420823"
-    assert e["url_compra_pasajes"] == "https://elmexicano.pagoseguro.cloud/#/sale-tickets"
+    assert e["whatsapp_central_e164"] == "59170000101" and e["whatsapp_url"] == "https://wa.me/59170000101"
+    assert e["url_compra_pasajes"] == "https://www.transdemo.com/pasajes"
 
 
-async def test_oficinas_reales_con_horario(client):
+async def test_oficinas_con_horario(client):
     oficinas = (await client.get("/api/v1/oficinas", params={"ciudad": "potosi"})).json()
     assert [o["codigo"] for o in oficinas] == ["PTS-BOD"]
-    assert oficinas[0]["direccion"] == "Av. Las Banderas s/n" and oficinas[0]["horario_texto"] == "Lun–Sáb 08:00–18:00"
+    assert oficinas[0]["direccion"] == "Av. Las Minas 75" and oficinas[0]["horario_texto"] == "Lun–Sáb 08:00–18:00"
     todas = (await client.get("/api/v1/oficinas")).json()
     assert len(todas) == 14
 
@@ -29,7 +29,7 @@ async def test_rutas_y_paradas(client):
     assert [p["ciudad"] for p in rutas["SRE-TJA"]["paradas"]] == ["Potosí", "Camargo"]
 
 
-async def test_tipos_de_asiento_con_comodidades_reales(client):
+async def test_tipos_de_asiento_con_comodidades(client):
     tipos = {t["codigo"]: t for t in (await client.get("/api/v1/tipos-asiento")).json()}
     assert tipos["SUITE_CAMA"]["inclinacion_grados"] == 180 and tipos["LEITO_CAMA"]["planta"] == "baja"
     assert "tv_individual" in {c["codigo"] for c in tipos["SUITE_CAMA"]["comodidades"]}
@@ -43,7 +43,7 @@ async def test_politicas(client):
     assert menor["descuento_porcentaje"] == 50 and menor["solo_boleteria"]
 
 
-async def test_faqs_reales_y_busqueda(client):
+async def test_faqs_y_busqueda(client):
     categorias = (await client.get("/api/v1/faqs")).json()
     assert sum(len(c["preguntas"]) for c in categorias) == 13
     r = (await client.get("/api/v1/faqs/buscar", params={"q": "¿puedo llevar a mi perro?"})).json()
@@ -53,9 +53,9 @@ async def test_faqs_reales_y_busqueda(client):
 
 
 async def test_login_y_permisos(client, boletero):
-    r = await client.post("/api/v1/auth/login", data={"username": "admin@elmexicanosrl.com", "password": "mala"})
+    r = await client.post("/api/v1/auth/login", data={"username": "admin@transdemo.com", "password": "mala"})
     assert r.status_code == 401 and r.json()["error"] == "credenciales_invalidas"
-    r = await client.post("/api/v1/auth/login", data={"username": "ADMIN@elmexicanosrl.com", "password": PASSWORD_DEMO})
+    r = await client.post("/api/v1/auth/login", data={"username": "ADMIN@transdemo.com", "password": PASSWORD_DEMO})
     assert r.status_code == 200
     assert (await client.get("/api/v1/admin/reportes/ocupacion")).status_code == 401
     assert (await client.get("/api/v1/admin/reportes/ocupacion", headers=boletero)).status_code == 403
@@ -90,13 +90,13 @@ async def test_cambio_de_bus_con_conflicto(client, supervisor):
     futura = next(s for s in salidas["items"] if s["estado"] == "programada")
     otra = next(s for s in salidas["items"] if s["estado"] == "programada" and s["codigo"] != futura["codigo"])
     buses = {b["numero_interno"]: b["id"] for b in (await client.get("/api/v1/admin/buses", headers=supervisor)).json()}
-    # El bus de reserva (M-14) está libre: el cambio mueve a los pasajeros por número de asiento.
+    # El bus de reserva (TD-14) está libre: el cambio mueve a los pasajeros por número de asiento.
     r = await client.put(
-        f"/api/v1/admin/salidas/{futura['id']}/bus", json={"bus_id": buses["M-14"]}, headers=supervisor
+        f"/api/v1/admin/salidas/{futura['id']}/bus", json={"bus_id": buses["TD-14"]}, headers=supervisor
     )
-    assert r.status_code == 200 and r.json()["bus"] == "M-14"
+    assert r.status_code == 200 and r.json()["bus"] == "TD-14"
     # En mantenimiento no se puede asignar.
-    r = await client.put(f"/api/v1/admin/salidas/{otra['id']}/bus", json={"bus_id": buses["M-13"]}, headers=supervisor)
+    r = await client.put(f"/api/v1/admin/salidas/{otra['id']}/bus", json={"bus_id": buses["TD-13"]}, headers=supervisor)
     assert r.status_code == 422
 
 

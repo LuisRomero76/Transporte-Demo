@@ -350,7 +350,7 @@ async def a_respuesta(session: AsyncSession, venta: VentaPasaje) -> dict[str, An
 
 
 def _codigo_qr(boleto: Boleto) -> str:
-    return f"MX|{boleto.numero_boleto}|{secrets.token_hex(4).upper()}"
+    return f"TD|{boleto.numero_boleto}|{secrets.token_hex(4).upper()}"
 
 
 async def pagar(session: AsyncSession, codigo: str, datos: PagoIn, *, usuario: Usuario | None = None) -> VentaPasaje:
@@ -380,7 +380,7 @@ async def pagar(session: AsyncSession, codigo: str, datos: PagoIn, *, usuario: U
         transaccion_externa_id=f"SIM-{secrets.token_hex(6).upper()}",
         ultimos4_tarjeta=ultimos4,
         qr_payload=(
-            f"000201|BOB|{venta.total_bs:.2f}|ELMEXICANO|{venta.codigo_reserva}"
+            f"000201|BOB|{venta.total_bs:.2f}|TRANSDEMO|{venta.codigo_reserva}"
             if datos.metodo == MetodoPago.qr
             else None
         ),
@@ -468,7 +468,7 @@ async def expirar_vencidas(session: AsyncSession) -> int:
 
 async def boleto_por_codigo(session: AsyncSession, codigo: str) -> Boleto:
     codigo = codigo.strip().upper()
-    es_qr = codigo.startswith("MX|")
+    es_qr = codigo.startswith("TD|")
     q = select(Boleto).options(
         selectinload(Boleto.pasajero),
         selectinload(Boleto.salida).selectinload(Salida.ruta),

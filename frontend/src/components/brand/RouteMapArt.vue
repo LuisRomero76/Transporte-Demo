@@ -1,5 +1,5 @@
 <script setup lang="ts">
-/** Mapa estilizado de las rutas reales: todas salen de Sucre. Las paradas de carga van punteadas. */
+/** Mapa estilizado de las rutas: todas salen de Sucre. Las paradas de carga van punteadas. */
 </script>
 
 <template>

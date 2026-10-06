@@ -1,7 +1,7 @@
 """Fixtures de tests.
 
 Los tests corren contra una base PostgreSQL de pruebas (NUNCA la de Neon de producción):
-    TEST_DATABASE_URL=postgresql://postgres@localhost:5432/elmexicano_test
+    TEST_DATABASE_URL=postgresql://postgres@localhost:5432/transdemo_test
 La base se migra con Alembic y se carga con los seeds una vez por sesión.
 """
 
@@ -70,22 +70,22 @@ async def _token(client: httpx.AsyncClient, email: str) -> dict[str, str]:
 
 @pytest.fixture(scope="session")
 async def admin(client):
-    return await _token(client, "admin@elmexicanosrl.com")
+    return await _token(client, "admin@transdemo.com")
 
 
 @pytest.fixture(scope="session")
 async def supervisor(client):
-    return await _token(client, "supervisor@elmexicanosrl.com")
+    return await _token(client, "supervisor@transdemo.com")
 
 
 @pytest.fixture(scope="session")
 async def boletero(client):
-    return await _token(client, "boleteria.sucre@elmexicanosrl.com")
+    return await _token(client, "boleteria.sucre@transdemo.com")
 
 
 @pytest.fixture(scope="session")
 async def bodega(client):
-    return await _token(client, "bodega.sucre@elmexicanosrl.com")
+    return await _token(client, "bodega.sucre@transdemo.com")
 
 
 def proximo_dia_habil(desde: date, *, saltar: int = 0) -> date:

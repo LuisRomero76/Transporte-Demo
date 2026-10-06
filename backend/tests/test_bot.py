@@ -260,7 +260,7 @@ async def test_faq_devuelve_respuesta_corta(client, claves):
 
 async def test_empresa(client, claves):
     c = _pequena(await client.get("/api/bot/empresa", headers=claves["ro"]))
-    assert c["encontrado"] and "El Mexicano" in c["mensaje"]
+    assert c["encontrado"] and "TransDemo" in c["mensaje"]
 
 
 # --- Puerta a puerta -------------------------------------------------------------------------

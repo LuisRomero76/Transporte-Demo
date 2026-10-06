@@ -283,7 +283,7 @@ async def _crear_venta(
                 precio_bs=precio.precio_bs,
                 descuento_bs=precio.descuento_bs,
                 estado=estado_boleto,
-                codigo_qr=f"MX|{numero}|{secrets.token_hex(4).upper()}" if pagada else None,
+                codigo_qr=f"TD|{numero}|{secrets.token_hex(4).upper()}" if pagada else None,
                 permiso_viaje_numero=f"DNA-{rnd.randint(10000, 99999)}" if tipo == TipoPasajero.menor else None,
                 abordado_at=salida.fecha_hora_salida - timedelta(minutes=rnd.randint(5, 40))
                 if estado_boleto == EstadoBoleto.abordado
@@ -444,7 +444,7 @@ async def _reembolsos_cliente(session: AsyncSession, ctx: Ctx) -> None:
             .limit(3)
         )
     ).all()
-    supervisor = ctx.usuarios["supervisor@elmexicanosrl.com"]
+    supervisor = ctx.usuarios["supervisor@transdemo.com"]
     for b, estado in zip(
         boletos, [EstadoReembolso.solicitado, EstadoReembolso.aprobado, EstadoReembolso.pagado], strict=False
     ):
@@ -838,8 +838,8 @@ async def _dias_habiles(session: AsyncSession, ciudad: Ciudad, desde: date, cant
 async def _puerta_a_puerta(session: AsyncSession, ctx: Ctx, enc_104: Encomienda) -> None:
     sucre, scz = ctx.ciudades["SRE"], ctx.ciudades["SCZ"]
     repartidores = {
-        "SRE": ctx.usuarios["reparto.sucre@elmexicanosrl.com"],
-        "SCZ": ctx.usuarios["reparto.santacruz@elmexicanosrl.com"],
+        "SRE": ctx.usuarios["reparto.sucre@transdemo.com"],
+        "SCZ": ctx.usuarios["reparto.santacruz@transdemo.com"],
     }
     furgonetas = {v.ciudad_base_id: v for v in ctx.vehiculos if v.tipo == "furgoneta_reparto"}
     hoy_habil = (await _dias_habiles(session, sucre, hoy(), 1, 1))[0]
@@ -922,7 +922,7 @@ async def seed_transaccional(session: AsyncSession, telefono_demo: str) -> None:
     await session.commit()
 
     # Primero la cancelación (reembolsos del 100 %), después los reembolsos pedidos por clientes.
-    admin = ctx.usuarios["admin@elmexicanosrl.com"]
+    admin = ctx.usuarios["admin@transdemo.com"]
     await salidas_srv.cambiar_estado(
         session,
         cancelada.id,

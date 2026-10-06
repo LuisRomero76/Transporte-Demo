@@ -282,7 +282,7 @@ function imprimir(): void {
 
       <section class="overflow-hidden rounded-2xl border border-line bg-surface print-plain">
         <div class="print-only px-5 pt-5">
-          <p class="font-display text-lg font-bold">Transportes El Mexicano S.R.L. · Manifiesto de pasajeros</p>
+          <p class="font-display text-lg font-bold">TransDemo S.R.L. · Manifiesto de pasajeros</p>
           <p class="text-sm">
             {{ s?.codigo }} · {{ s?.origen }} → {{ s?.destino }} · {{ fechaHora(s?.fecha_hora_salida) }} · Bus {{ s?.bus }} ·
             Tripulación: {{ manifiesto.data.value?.tripulacion.map((t) => t.nombre).join(', ') }}

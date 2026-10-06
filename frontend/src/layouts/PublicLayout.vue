@@ -33,7 +33,7 @@ const activo = (nombres: string[]) => nombres.includes(String(route.name))
   <div class="flex min-h-dvh flex-col bg-canvas">
     <header class="no-print sticky top-0 z-40 bg-noche-900/95 backdrop-blur supports-[backdrop-filter]:bg-noche-900/90">
       <div class="contenedor flex h-16 items-center justify-between gap-4 md:h-[72px]">
-        <RouterLink :to="{ name: 'inicio' }" aria-label="El Mexicano, ir al inicio"><LogoMark :size="34" /></RouterLink>
+        <RouterLink :to="{ name: 'inicio' }" aria-label="TransDemo, ir al inicio"><LogoMark :size="34" /></RouterLink>
         <nav aria-label="Principal" class="hidden items-center gap-1 lg:flex">
           <RouterLink
             v-for="e in enlaces"
@@ -149,7 +149,7 @@ const activo = (nombres: string[]) => nombres.includes(String(route.name))
       </div>
       <div class="border-t border-noche-800">
         <div class="contenedor flex flex-col gap-2 py-5 text-xs text-noche-300 sm:flex-row sm:justify-between">
-          <span>© {{ new Date().getFullYear() }} Transportes El Mexicano S.R.L.</span>
+          <span>© {{ new Date().getFullYear() }} TransDemo S.R.L.</span>
           <RouterLink :to="{ name: 'admin-login' }" class="hover:text-white">Acceso del personal</RouterLink>
         </div>
       </div>

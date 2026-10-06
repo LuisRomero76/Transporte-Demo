@@ -1,4 +1,4 @@
-"""Aplicación FastAPI: réplica del backend de Transportes El Mexicano S.R.L."""
+"""Aplicación FastAPI: réplica del backend de TransDemo S.R.L."""
 
 import asyncio
 import contextlib
@@ -22,7 +22,7 @@ from app.utils.fechas import ahora
 
 settings = get_settings()
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
-log = logging.getLogger("elmexicano")
+log = logging.getLogger("transdemo")
 
 if secreto_debil(settings.jwt_secret):
     if settings.is_production:
@@ -55,7 +55,7 @@ app = FastAPI(
     title=settings.app_name,
     version="0.1.0",
     description=(
-        "Backend réplica (demo) de **Transportes El Mexicano S.R.L.**: venta de pasajes de bus, "
+        "Backend réplica (demo) de **TransDemo S.R.L.**: venta de pasajes de bus, "
         "rutas e itinerarios, carga y encomiendas, puerta a puerta y centro de ayuda.\n\n"
         "Fechas en hora de Bolivia (America/La_Paz) y montos en bolivianos (Bs)."
     ),

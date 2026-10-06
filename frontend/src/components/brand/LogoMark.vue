@@ -19,7 +19,7 @@ withDefaults(defineProps<{ size?: number; wordmark?: boolean; tone?: 'light' | '
         class="font-display text-[17px] font-bold tracking-[0.06em]"
         :class="tone === 'light' ? 'text-white' : 'text-noche-900 dark:text-white'"
       >
-        EL MEXICANO
+        TRANSDEMO
       </span>
       <span v-if="subtitle" class="text-xs" :class="tone === 'light' ? 'text-noche-200' : 'text-muted'">{{ subtitle }}</span>
     </span>

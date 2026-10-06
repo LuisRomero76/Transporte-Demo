@@ -1,4 +1,4 @@
-"""Reglas reales de puerta a puerta: Sucre y Santa Cruz, lunes a viernes, franja según el tipo."""
+"""Reglas de puerta a puerta: Sucre y Santa Cruz, lunes a viernes, franja según el tipo."""
 
 from app.utils.fechas import hoy
 from tests.conftest import proximo_dia_habil, proximo_sabado

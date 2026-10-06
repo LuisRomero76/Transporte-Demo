@@ -2,24 +2,24 @@
 
 from datetime import date
 
-PASSWORD_DEMO = "ElMexicano2026!"
+PASSWORD_DEMO = "TransDemo2026!"
 
 # (numero_interno, placa, marca, modelo, año, estado)
 BUSES = [
-    ("M-01", "4521KDB", "Marcopolo", "Paradiso G7 1800 DD", 2022, "operativo"),
-    ("M-02", "4522KDB", "Marcopolo", "Paradiso G7 1800 DD", 2022, "operativo"),
-    ("M-03", "3987JHT", "Marcopolo", "Paradiso G7 1800 DD", 2021, "operativo"),
-    ("M-04", "3988JHT", "Marcopolo", "Paradiso G7 1800 DD", 2021, "operativo"),
-    ("M-05", "5102LPA", "Busscar", "Vissta Buss DD", 2023, "operativo"),
-    ("M-06", "5103LPA", "Busscar", "Vissta Buss DD", 2023, "operativo"),
-    ("M-07", "4870KZX", "Irizar", "i8 DD", 2022, "operativo"),
-    ("M-08", "4871KZX", "Irizar", "i8 DD", 2022, "operativo"),
-    ("M-09", "3456JAB", "Marcopolo", "Paradiso G7 1800 DD", 2020, "operativo"),
-    ("M-10", "3457JAB", "Marcopolo", "Paradiso G7 1800 DD", 2020, "operativo"),
-    ("M-11", "5340LRC", "Busscar", "Vissta Buss DD", 2024, "operativo"),
-    ("M-12", "5341LRC", "Busscar", "Vissta Buss DD", 2024, "operativo"),
-    ("M-13", "2981HTP", "Marcopolo", "Paradiso G7 1800 DD", 2018, "mantenimiento"),
-    ("M-14", "5390LSD", "Irizar", "i8 DD", 2024, "operativo"),
+    ("TD-01", "4521KDB", "Marcopolo", "Paradiso G7 1800 DD", 2022, "operativo"),
+    ("TD-02", "4522KDB", "Marcopolo", "Paradiso G7 1800 DD", 2022, "operativo"),
+    ("TD-03", "3987JHT", "Marcopolo", "Paradiso G7 1800 DD", 2021, "operativo"),
+    ("TD-04", "3988JHT", "Marcopolo", "Paradiso G7 1800 DD", 2021, "operativo"),
+    ("TD-05", "5102LPA", "Busscar", "Vissta Buss DD", 2023, "operativo"),
+    ("TD-06", "5103LPA", "Busscar", "Vissta Buss DD", 2023, "operativo"),
+    ("TD-07", "4870KZX", "Irizar", "i8 DD", 2022, "operativo"),
+    ("TD-08", "4871KZX", "Irizar", "i8 DD", 2022, "operativo"),
+    ("TD-09", "3456JAB", "Marcopolo", "Paradiso G7 1800 DD", 2020, "operativo"),
+    ("TD-10", "3457JAB", "Marcopolo", "Paradiso G7 1800 DD", 2020, "operativo"),
+    ("TD-11", "5340LRC", "Busscar", "Vissta Buss DD", 2024, "operativo"),
+    ("TD-12", "5341LRC", "Busscar", "Vissta Buss DD", 2024, "operativo"),
+    ("TD-13", "2981HTP", "Marcopolo", "Paradiso G7 1800 DD", 2018, "mantenimiento"),
+    ("TD-14", "5390LSD", "Irizar", "i8 DD", 2024, "operativo"),
 ]
 
 # Rotación: corredor -> (índice del primer bus). Cada horario de un corredor usa 2 buses.
@@ -119,25 +119,25 @@ FERIADOS = [
 
 # (email, nombres, apellidos, rol, oficina, teléfono)
 PERSONAL = [
-    ("admin@elmexicanosrl.com", "Carlos", "Mendoza Arce", "admin", "SRE-BOL", "59170100001"),
-    ("supervisor@elmexicanosrl.com", "Patricia", "Rojas Salinas", "supervisor", "SRE-BOL", "59170100002"),
-    ("boleteria.sucre@elmexicanosrl.com", "Juan", "Pérez Calvimontes", "boletero", "SRE-BOL", "59170100003"),
-    ("boleteria.santacruz@elmexicanosrl.com", "María", "Gutiérrez Añez", "boletero", "SCZ-BOL", "59170100004"),
-    ("boleteria.lapaz@elmexicanosrl.com", "Luis", "Quispe Mamani", "boletero", "LPZ-BOL", "59170100005"),
-    ("boleteria.tarija@elmexicanosrl.com", "Ana", "Vargas Castellanos", "boletero", "TJA-BOL", "59170100006"),
-    ("bodega.sucre@elmexicanosrl.com", "Roberto", "Flores Torrico", "encargado_bodega", "SRE-BOD", "59170100007"),
+    ("admin@transdemo.com", "Carlos", "Mendoza Arce", "admin", "SRE-BOL", "59170100001"),
+    ("supervisor@transdemo.com", "Patricia", "Rojas Salinas", "supervisor", "SRE-BOL", "59170100002"),
+    ("boleteria.sucre@transdemo.com", "Juan", "Pérez Calvimontes", "boletero", "SRE-BOL", "59170100003"),
+    ("boleteria.santacruz@transdemo.com", "María", "Gutiérrez Añez", "boletero", "SCZ-BOL", "59170100004"),
+    ("boleteria.lapaz@transdemo.com", "Luis", "Quispe Mamani", "boletero", "LPZ-BOL", "59170100005"),
+    ("boleteria.tarija@transdemo.com", "Ana", "Vargas Castellanos", "boletero", "TJA-BOL", "59170100006"),
+    ("bodega.sucre@transdemo.com", "Roberto", "Flores Torrico", "encargado_bodega", "SRE-BOD", "59170100007"),
     (
-        "bodega.santacruz@elmexicanosrl.com",
+        "bodega.santacruz@transdemo.com",
         "Carmen",
         "Choque Justiniano",
         "encargado_bodega",
         "SCZ-BOD2",
         "59170100008",
     ),
-    ("bodega.lapaz@elmexicanosrl.com", "Jorge", "Mamani Condori", "encargado_bodega", "LPZ-BOD", "59170100009"),
-    ("reparto.sucre@elmexicanosrl.com", "Diego", "Arancibia Padilla", "repartidor", "SRE-BOD", "59170100010"),
-    ("reparto.santacruz@elmexicanosrl.com", "Fernando", "Soliz Suárez", "repartidor", "SCZ-BOD2", "59170100011"),
-    ("soporte@elmexicanosrl.com", "Lucía", "Zárate Villarroel", "soporte", "SRE-BOL", "59170100012"),
+    ("bodega.lapaz@transdemo.com", "Jorge", "Mamani Condori", "encargado_bodega", "LPZ-BOD", "59170100009"),
+    ("reparto.sucre@transdemo.com", "Diego", "Arancibia Padilla", "repartidor", "SRE-BOD", "59170100010"),
+    ("reparto.santacruz@transdemo.com", "Fernando", "Soliz Suárez", "repartidor", "SCZ-BOD2", "59170100011"),
+    ("soporte@transdemo.com", "Lucía", "Zárate Villarroel", "soporte", "SRE-BOL", "59170100012"),
 ]
 
 NOMBRES = [

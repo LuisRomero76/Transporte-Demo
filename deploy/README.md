@@ -5,7 +5,7 @@ Todo en una sola VPS gratuita: **portal + API + PostgreSQL**, con HTTPS automát
 > ¿Sin VPS todavía? Alternativa gratuita temporal con Vercel + Render + Neon: [`VERCEL_RENDER.md`](VERCEL_RENDER.md).
 
 ```
-Navegador ──HTTPS──> Caddy :443 ─┬─ /        → frontend compilado (/var/www/elmexicano)
+Navegador ──HTTPS──> Caddy :443 ─┬─ /        → frontend compilado (/var/www/transdemo)
                                  └─ /api/*   → FastAPI 127.0.0.1:8000 (systemd)
                                                   └─> PostgreSQL (solo localhost)
 ```
@@ -16,7 +16,7 @@ Navegador ──HTTPS──> Caddy :443 ─┬─ /        → frontend compilad
 | `update.sh` | Publicar una versión nueva después de `git push` |
 | `backup.sh` | Respaldo diario de la base (cron, conserva 7) |
 | `Caddyfile.template` | Servidor web y certificado HTTPS |
-| `elmexicano-api.service.template` | Servicio de la API |
+| `transdemo-api.service.template` | Servicio de la API |
 
 ## Costo
 
@@ -56,7 +56,7 @@ Instancia → *Subnet* → *Security Lists* → la lista por defecto → *Add In
 
 ## Paso 4 · Subdominio gratis
 
-En https://www.duckdns.org (entra con GitHub o Google) crea un subdominio, por ejemplo `elmexicano-demo`, pon la IP pública de la VPS en *current ip* y guarda.
+En https://www.duckdns.org (entra con GitHub o Google) crea un subdominio, por ejemplo `transdemo`, pon la IP pública de la VPS en *current ip* y guarda.
 
 ## Paso 5 · Entrar a la VPS
 
@@ -80,13 +80,13 @@ En GitHub: repositorio → *Settings → Deploy keys → Add deploy key*, pega l
 
 ```bash
 ssh -o StrictHostKeyChecking=accept-new -T git@github.com   # responde "successfully authenticated"
-git clone git@github.com:LuisRomero76/Mexicano-SRL-Demo.git ~/app
+git clone git@github.com:LuisRomero76/Transporte-Demo.git ~/app
 ```
 
 ## Paso 7 · Instalar
 
 ```bash
-DOMINIO=elmexicano-demo.duckdns.org DEMO_TELEFONO=591XXXXXXXX bash ~/app/deploy/install.sh
+DOMINIO=transdemo.duckdns.org DEMO_TELEFONO=591XXXXXXXX bash ~/app/deploy/install.sh
 ```
 
 Tarda entre 5 y 10 minutos. Instala PostgreSQL, Node, Caddy, crea la base con una contraseña aleatoria, genera el `.env` de producción con un `JWT_SECRET` aleatorio, carga los datos, compila el frontend, deja la API como servicio, configura HTTPS y programa las salidas diarias y el respaldo.
@@ -101,8 +101,8 @@ La configuración de las herramientas en ElevenLabs está en `backend/README.md`
 
 ## Paso 8 · Comprobar y asegurar
 
-1. Abre `https://elmexicano-demo.duckdns.org` y `…/admin`.
-2. **Cambia las contraseñas de demostración.** `ElMexicano2026!` está en el repositorio: entra como `admin@elmexicanosrl.com` y, en *Personal*, cambia la de cada cuenta que vayas a usar y desactiva las demás.
+1. Abre `https://transdemo.duckdns.org` y `…/admin`.
+2. **Cambia las contraseñas de demostración.** `TransDemo2026!` está en el repositorio: entra como `admin@transdemo.com` y, en *Personal*, cambia la de cada cuenta que vayas a usar y desactiva las demás.
 3. En las herramientas del navegador, la cookie `em_session` debe verse como *Secure* y *HttpOnly*.
 
 ## Publicar cambios
@@ -118,12 +118,12 @@ bash ~/app/deploy/update.sh
 
 | Qué | Comando |
 |---|---|
-| Estado de la API | `sudo systemctl status elmexicano-api` |
-| Registros de la API | `journalctl -u elmexicano-api -f` |
+| Estado de la API | `sudo systemctl status transdemo-api` |
+| Registros de la API | `journalctl -u transdemo-api -f` |
 | Registros de Caddy | `journalctl -u caddy -f` |
-| Reiniciar la API | `sudo systemctl restart elmexicano-api` |
+| Reiniciar la API | `sudo systemctl restart transdemo-api` |
 | Respaldos | `ls ~/backups` |
-| Restaurar un respaldo | `gunzip -c ~/backups/elmexicano-1.sql.gz \| psql "$(grep ^DATABASE_URL= ~/app/backend/.env \| cut -d= -f2-)"` |
+| Restaurar un respaldo | `gunzip -c ~/backups/transdemo-1.sql.gz \| psql "$(grep ^DATABASE_URL= ~/app/backend/.env \| cut -d= -f2-)"` |
 | Recargar datos de demostración desde cero | `cd ~/app/backend && .venv/bin/python -m seeds.run_seeds --reset` |
 
 ## Usar Neon en lugar de PostgreSQL local

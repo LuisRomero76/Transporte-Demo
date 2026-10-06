@@ -1,8 +1,8 @@
-# El Mexicano — Bus Tickets & Cargo Platform (Demo)
+# TransDemo — Bus Tickets & Cargo Platform (Demo)
 
-A full-stack replica of the booking and operations platform of **Transportes El Mexicano S.R.L.**, a Bolivian intercity bus and cargo company. It includes a public customer portal and an internal operations panel, backed by a REST API.
+A full-stack demo of a booking and operations platform for **TransDemo S.R.L.**, a fictional Bolivian intercity bus and cargo company. It includes a public customer portal and an internal operations panel, backed by a REST API.
 
-> Demo project. Prices, schedules and some operational data are sample data; the company's public information comes from its website.
+> Demo project. All company data (name, prices, schedules, offices and operational data) is sample data for demonstration purposes.
 
 | | |
 |---|---|
@@ -22,7 +22,7 @@ A full-stack replica of the booking and operations platform of **Transportes El 
 1. **Backend** (see [`backend/README.md`](backend/README.md)):
    ```bash
    cd backend
-   conda env create -f environment.yml && conda activate elmexicano-api
+   conda env create -f environment.yml && conda activate transdemo-api
    cp .env.example .env          # set DATABASE_URL, JWT_SECRET, etc.
    alembic upgrade head
    python -m seeds.run_seeds --reset
@@ -34,7 +34,7 @@ A full-stack replica of the booking and operations platform of **Transportes El 
    pnpm install
    pnpm dev                      # http://localhost:5173
    ```
-3. Sign in to the panel at `/admin` with a demo account, e.g. `supervisor@elmexicanosrl.com` / `ElMexicano2026!`.
+3. Sign in to the panel at `/admin` with a demo account, e.g. `supervisor@transdemo.com` / `TransDemo2026!`.
 
 ## Tests
 

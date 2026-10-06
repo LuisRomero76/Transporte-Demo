@@ -1,6 +1,6 @@
 """Reembolsos de pasajes.
 
-Reglas reales (FAQ del sitio):
+Reglas de la demo (FAQ de reembolsos):
 - Solicitud del cliente: 85 % del valor pagado, hasta 2 horas antes de la salida. Después, no hay devolución.
 - Cancelación atribuible a la empresa: 100 %, inmediata.
 - El reembolso puede demorar hasta 7 días hábiles.

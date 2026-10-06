@@ -35,7 +35,7 @@ from app.models import (
     tipo_asiento_comodidades,
 )
 from app.services import flota
-from seeds.data import demo, reales
+from seeds.data import demo, empresa
 
 
 async def upsert(
@@ -70,8 +70,8 @@ def _hora(texto: str) -> time:
 
 
 async def seed_catalogos(session: AsyncSession) -> None:
-    await upsert(session, Empresa, [reales.EMPRESA], ["id"])
-    await upsert(session, Ciudad, reales.CIUDADES, ["codigo"])
+    await upsert(session, Empresa, [empresa.EMPRESA], ["id"])
+    await upsert(session, Ciudad, empresa.CIUDADES, ["codigo"])
     ciudades = await ids_por(session, Ciudad.codigo)
 
     await upsert(
@@ -93,7 +93,7 @@ async def seed_catalogos(session: AsyncSession) -> None:
                 "longitud": lon,
                 "es_dato_demo": False,
             }
-            for c, cod, nom, tipo, dir_, ref, tel, wa, mapa, principal, lat, lon in reales.OFICINAS
+            for c, cod, nom, tipo, dir_, ref, tel, wa, mapa, principal, lat, lon in empresa.OFICINAS
         ],
         ["codigo"],
     )
@@ -102,7 +102,7 @@ async def seed_catalogos(session: AsyncSession) -> None:
     horarios = []
     for codigo, oficina_id in oficinas.items():
         es_boleteria = tipos_oficina[codigo] == "boleteria"
-        apertura, cierre, dias = reales.HORARIO_BOLETERIA if es_boleteria else reales.HORARIO_BODEGA
+        apertura, cierre, dias = empresa.HORARIO_BOLETERIA if es_boleteria else empresa.HORARIO_BODEGA
         for dia in dias:
             horarios.append(
                 {
@@ -133,11 +133,11 @@ async def seed_catalogos(session: AsyncSession) -> None:
     )
 
     # Flota
-    await upsert(session, TipoAsiento, reales.TIPOS_ASIENTO, ["codigo"])
+    await upsert(session, TipoAsiento, empresa.TIPOS_ASIENTO, ["codigo"])
     await upsert(
         session,
         Comodidad,
-        [{"codigo": c, "nombre": n, "icono": i} for c, n, i in reales.COMODIDADES],
+        [{"codigo": c, "nombre": n, "icono": i} for c, n, i in empresa.COMODIDADES],
         ["codigo"],
     )
     tipos = await ids_por(session, TipoAsiento.codigo)
@@ -147,7 +147,7 @@ async def seed_catalogos(session: AsyncSession) -> None:
         .values(
             [
                 {"tipo_asiento_id": tipos[t], "comodidad_id": comodidades[c]}
-                for t, cs in reales.COMODIDADES_POR_TIPO.items()
+                for t, cs in empresa.COMODIDADES_POR_TIPO.items()
                 for c in cs
             ]
         )
@@ -213,7 +213,7 @@ async def seed_catalogos(session: AsyncSession) -> None:
                 "cargo_exceso_equipaje_kg_bs": demo.CARGO_EXCESO_EQUIPAJE[_corredor(cod)],
                 "descripcion": f"Servicio Suite Cama - Leito Cama, {km} km, {mins // 60} h",
             }
-            for cod, o, d, km, mins in reales.RUTAS
+            for cod, o, d, km, mins in empresa.RUTAS
         ],
         ["codigo"],
     )
@@ -236,7 +236,7 @@ async def seed_catalogos(session: AsyncSession) -> None:
         ],
         ["ruta_id", "orden"],
     )
-    boleteria_origen = {cod: oficinas[f"{o}-BOL"] for cod, o, *_ in reales.RUTAS}
+    boleteria_origen = {cod: oficinas[f"{o}-BOL"] for cod, o, *_ in empresa.RUTAS}
     await upsert(
         session,
         PlantillaHorario,
@@ -250,7 +250,7 @@ async def seed_catalogos(session: AsyncSession) -> None:
                 "vigente_hasta": None,
                 "es_dato_demo": True,
             }
-            for cod, *_ in reales.RUTAS
+            for cod, *_ in empresa.RUTAS
             for h in demo.HORAS_SALIDA
         ],
         ["ruta_id", "hora_salida", "vigente_desde"],
@@ -267,7 +267,7 @@ async def seed_catalogos(session: AsyncSession) -> None:
                 "vigente_desde": demo.TARIFAS_VIGENTES_DESDE,
                 "es_dato_demo": True,
             }
-            for cod, *_ in reales.RUTAS
+            for cod, *_ in empresa.RUTAS
             for clase, (precio, maximo) in demo.TARIFAS_PASAJE[_corredor(cod)].items()
         ],
         ["ruta_id", "tipo_asiento_id", "vigente_desde"],
@@ -286,7 +286,7 @@ async def seed_catalogos(session: AsyncSession) -> None:
                 "requisito": req,
                 "es_dato_demo": es_demo,
             }
-            for t, n, p, sb, emin, emax, req, es_demo in reales.POLITICAS
+            for t, n, p, sb, emin, emax, req, es_demo in empresa.POLITICAS
         ],
         ["tipo_pasajero"],
     )
@@ -321,7 +321,7 @@ async def seed_catalogos(session: AsyncSession) -> None:
     await upsert(
         session,
         FaqCategoria,
-        [{"codigo": c, "nombre": n, "orden": o} for c, n, o in reales.FAQ_CATEGORIAS],
+        [{"codigo": c, "nombre": n, "orden": o} for c, n, o in empresa.FAQ_CATEGORIAS],
         ["codigo"],
     )
     categorias = await ids_por(session, FaqCategoria.codigo)
@@ -340,7 +340,7 @@ async def seed_catalogos(session: AsyncSession) -> None:
                 "es_dato_demo": False,
                 "activo": True,
             }
-            for i, (cat, slug, preg, resp, corta, claves) in enumerate(reales.FAQS, start=1)
+            for i, (cat, slug, preg, resp, corta, claves) in enumerate(empresa.FAQS, start=1)
         ],
         ["slug"],
     )
@@ -349,7 +349,7 @@ async def seed_catalogos(session: AsyncSession) -> None:
         PaginaContenido,
         [
             {"slug": s, "titulo": t, "meta_descripcion": m, "contenido_md": c, "url_original": u}
-            for s, t, m, c, u in reales.PAGINAS
+            for s, t, m, c, u in empresa.PAGINAS
         ],
         ["slug"],
     )
@@ -374,7 +374,7 @@ async def seed_catalogos(session: AsyncSession) -> None:
         a = f"{demo.APELLIDOS[(i * 5) % len(demo.APELLIDOS)]} {demo.APELLIDOS[(i * 11 + 3) % len(demo.APELLIDOS)]}"
         personal.append(
             {
-                "email": f"conductor{i + 1:02d}@elmexicanosrl.com",
+                "email": f"conductor{i + 1:02d}@transdemo.com",
                 "password_hash": password_hash,
                 "nombres": n,
                 "apellidos": a,

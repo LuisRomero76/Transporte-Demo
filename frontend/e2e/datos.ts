@@ -1,10 +1,10 @@
 /** Datos de demostración sembrados por el backend (ver backend/README). */
-export const PASSWORD = process.env.E2E_PASSWORD ?? 'ElMexicano2026!'
+export const PASSWORD = process.env.E2E_PASSWORD ?? 'TransDemo2026!'
 export const USUARIOS = {
-  admin: 'admin@elmexicanosrl.com',
-  supervisor: 'supervisor@elmexicanosrl.com',
-  boletero: 'boleteria.sucre@elmexicanosrl.com',
-  bodega: 'bodega.sucre@elmexicanosrl.com',
+  admin: 'admin@transdemo.com',
+  supervisor: 'supervisor@transdemo.com',
+  boletero: 'boleteria.sucre@transdemo.com',
+  bodega: 'bodega.sucre@transdemo.com',
 }
 export const GUIA = '26000101'
 export const RESERVA = { codigo: 'MX7K2P', documento: '6123456' }

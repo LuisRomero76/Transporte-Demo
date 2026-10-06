@@ -1,29 +1,36 @@
-"""Datos REALES tomados del sitio público https://www.elmexicanosrl.com."""
+"""Datos base de la empresa ficticia TransDemo S.R.L.: empresa, ciudades, oficinas, servicios, FAQs y páginas.
 
-URL_COMPRA = "https://elmexicano.pagoseguro.cloud/#/sale-tickets"
-URL_RASTREO = "https://elmexicano.pagoseguro.cloud/#/tracking"
+Todo es inventado para la demostración: teléfonos (rango 591 70000xxx), direcciones, NIT y textos.
+"""
+
+URL_COMPRA = "https://www.transdemo.com/pasajes"
+URL_RASTREO = "https://www.transdemo.com/rastreo"
+
+TELEFONO_CENTRAL = "59170000100"
+WHATSAPP_CENTRAL = "59170000101"
+WHATSAPP_PUERTA_SUCRE = "59170000111"
+WHATSAPP_PUERTA_SANTA_CRUZ = "59170000112"
 
 EMPRESA = {
     "id": 1,
-    "razon_social": "Transportes El Mexicano S.R.L.",
-    "nombre_comercial": "El Mexicano",
-    "nit": "1028374025",  # demo
+    "razon_social": "TransDemo S.R.L.",
+    "nombre_comercial": "TransDemo",
+    "nit": "1000000019",  # demo
     "ente_regulador": "Autoridad de Telecomunicaciones y Transportes (ATT)",
-    "sitio_web": "https://www.elmexicanosrl.com",
+    "sitio_web": "https://www.transdemo.com",
     "url_compra_pasajes": URL_COMPRA,
     "url_rastreo_carga": URL_RASTREO,
-    "facebook_url": "https://www.facebook.com/transporteselmexicano",
-    "email_contacto": "contacto@elmexicanosrl.com",  # demo
-    "telefono_central_e164": "59167640155",
-    "telefono_atencion_cliente_e164": "59167640155",
-    "whatsapp_central_e164": "59171420823",
-    "color_marca": "#a90202",
-    "eslogan": "Compra online 100% segura de pasajes de bus y rastreo de carga y encomienda.",
+    "facebook_url": None,
+    "email_contacto": "contacto@transdemo.com",
+    "telefono_central_e164": TELEFONO_CENTRAL,
+    "telefono_atencion_cliente_e164": TELEFONO_CENTRAL,
+    "whatsapp_central_e164": WHATSAPP_CENTRAL,
+    "color_marca": "#B3122E",
+    "eslogan": "Viaja y envía por Bolivia: pasajes en línea y encomiendas con seguimiento.",
     "descripcion": (
-        "Empresa boliviana de transporte interdepartamental de pasajeros en buses de dos pisos "
-        "(Suite Cama en planta alta y Leito Cama en planta baja) y de carga y encomiendas con rastreo "
-        "en tiempo real. Empresa regulada y fiscalizada por la Autoridad de Telecomunicaciones y "
-        "Transportes del Estado Plurinacional de Bolivia - ATT."
+        "Empresa ficticia de demostración. Simula una operadora boliviana de transporte interdepartamental "
+        "de pasajeros en buses de dos pisos (Suite Cama arriba y Leito Cama abajo) y de envío de carga y "
+        "encomiendas con seguimiento en línea."
     ),
     "terminos_condiciones": (
         "Texto de demostración. El pasaje es personal e intransferible y debe coincidir con el documento "
@@ -42,7 +49,7 @@ CIUDADES = [
         "es_destino_pasajeros": True,
         "es_destino_carga": True,
         "tiene_puerta_a_puerta": True,
-        "whatsapp_puerta_a_puerta_e164": "59168779945",
+        "whatsapp_puerta_a_puerta_e164": WHATSAPP_PUERTA_SUCRE,
         "alias_busqueda": ["sucre", "sre", "chuquisaca", "ciudad blanca", "capital"],
     },
     {
@@ -62,7 +69,7 @@ CIUDADES = [
         "es_destino_pasajeros": True,
         "es_destino_carga": True,
         "tiene_puerta_a_puerta": True,
-        "whatsapp_puerta_a_puerta_e164": "59167601683",
+        "whatsapp_puerta_a_puerta_e164": WHATSAPP_PUERTA_SANTA_CRUZ,
         "alias_busqueda": ["santa cruz de la sierra", "scz", "santa", "santacruz"],
     },
     {
@@ -107,20 +114,19 @@ CIUDADES = [
     },
 ]
 
-_MAPA_CAMARGO = "https://www.google.com/maps/place/Terminal+Interdepartamental+de+buses/@-20.6434267,-65.2086126,17z"
-
 # (ciudad, codigo, nombre, tipo, direccion, referencia, telefono, whatsapp, url_mapa, principal, lat, lon)
+# Direcciones y teléfonos ficticios; sin enlace de mapa ni coordenadas.
 OFICINAS = [
     (
         "SRE",
         "SRE-BOL",
         "Boletería Sucre",
         "boleteria",
-        "Av. Ostria Gutiérrez s/n",
-        "Terminal de Buses",
-        "59167640155",
+        "Av. Los Álamos 100",
+        "Terminal de buses, módulo A-12",
+        "59170000120",
         None,
-        "https://maps.app.goo.gl/624bjBuHGhuoPqqY9",
+        None,
         True,
         None,
         None,
@@ -130,11 +136,11 @@ OFICINAS = [
         "SRE-BOD",
         "Bodega Sucre",
         "bodega_carga",
-        "Av. Ostria Gutiérrez s/n",
-        "Terminal de Buses",
-        "59168779945",
-        "59168779945",
-        "https://maps.app.goo.gl/624bjBuHGhuoPqqY9",
+        "Av. Los Álamos 120",
+        "A media cuadra de la boletería",
+        WHATSAPP_PUERTA_SUCRE,
+        WHATSAPP_PUERTA_SUCRE,
+        None,
         False,
         None,
         None,
@@ -144,39 +150,39 @@ OFICINAS = [
         "CMG-BOL",
         "Boletería Camargo",
         "boleteria",
-        "Calle Marcelo Quiroga Santa Cruz",
-        "Terminal Interdepartamental de Buses de Camargo",
-        "59174414412",
+        "Calle Central 45",
+        "Terminal de buses de Camargo",
+        "59170000130",
         None,
-        _MAPA_CAMARGO,
+        None,
         True,
-        -20.6434267,
-        -65.2086126,
+        None,
+        None,
     ),
     (
         "CMG",
         "CMG-BOD",
         "Bodega Camargo",
         "bodega_carga",
-        "Calle Marcelo Quiroga Santa Cruz",
-        "Terminal Interdepartamental de Buses de Camargo",
-        "59174414412",
+        "Calle Central 45",
+        "Terminal de buses de Camargo",
+        "59170000130",
         None,
-        _MAPA_CAMARGO,
+        None,
         False,
-        -20.6434267,
-        -65.2086126,
+        None,
+        None,
     ),
     (
         "SCZ",
         "SCZ-BOL",
         "Boletería Santa Cruz",
         "boleteria",
-        "Av. Intermodal s/n",
+        "Av. Los Tajibos 300",
+        "Terminal de buses, módulo B-07",
+        "59170000140",
         None,
-        "59167601669",
         None,
-        "https://maps.app.goo.gl/cYCvchyuVkmSx92P6",
         True,
         None,
         None,
@@ -186,11 +192,11 @@ OFICINAS = [
         "SCZ-BOD1",
         "Bodega Santa Cruz 1",
         "bodega_carga",
-        "Av. Intermodal s/n",
+        "Av. Los Tajibos 320",
         None,
-        "59171160649",
+        "59170000141",
         None,
-        "https://maps.app.goo.gl/cYCvchyuVkmSx92P6",
+        None,
         False,
         None,
         None,
@@ -200,11 +206,11 @@ OFICINAS = [
         "SCZ-BOD2",
         "Bodega Santa Cruz 2",
         "bodega_carga",
-        "Av. Intermodal s/n entre Daniel Salamanca y Hernando Siles",
+        "Calle Las Palmeras 58, entre calles 3 y 4",
         None,
-        "59167601683",
-        "59167601683",
-        "https://maps.app.goo.gl/qJmmHKGSdUXsG4N48",
+        WHATSAPP_PUERTA_SANTA_CRUZ,
+        WHATSAPP_PUERTA_SANTA_CRUZ,
+        None,
         False,
         None,
         None,
@@ -214,11 +220,11 @@ OFICINAS = [
         "TJA-BOL",
         "Boletería Tarija",
         "boleteria",
-        "Carretera al Chaco, zona Torrecillas",
+        "Av. Los Sauces 210",
+        "Terminal de buses, módulo C-03",
+        "59170000150",
         None,
-        "59167602934",
         None,
-        "https://maps.app.goo.gl/FmWPuHFmmKxtGsTo7",
         True,
         None,
         None,
@@ -228,11 +234,11 @@ OFICINAS = [
         "TJA-BOD",
         "Bodega Tarija",
         "bodega_carga",
-        "Carretera al Chaco, zona Torrecillas",
+        "Av. Los Sauces 230",
         None,
-        "59167602934",
+        "59170000150",
         None,
-        "https://maps.app.goo.gl/FmWPuHFmmKxtGsTo7",
+        None,
         False,
         None,
         None,
@@ -242,11 +248,11 @@ OFICINAS = [
         "PTS-BOD",
         "Bodega Potosí",
         "bodega_carga",
-        "Av. Las Banderas s/n",
+        "Av. Las Minas 75",
         None,
-        "59168633698",
+        "59170000160",
         None,
-        "https://maps.app.goo.gl/TnMrZNdQu2AX7A2F9",
+        None,
         True,
         None,
         None,
@@ -256,11 +262,11 @@ OFICINAS = [
         "LPZ-BOL",
         "Boletería La Paz",
         "boleteria",
-        "Av. Perú",
+        "Av. Los Andes 980",
+        "Terminal de buses, módulo D-21",
+        "59170000170",
         None,
-        "59171327449",
         None,
-        "https://maps.app.goo.gl/7zXfGcxEoqLHnA8D6",
         True,
         None,
         None,
@@ -270,11 +276,11 @@ OFICINAS = [
         "LPZ-BOD",
         "Bodega La Paz",
         "bodega_carga",
-        "Av. Perú",
+        "Av. Los Andes 1010",
         None,
-        "59171164678",
+        "59170000171",
         None,
-        "https://maps.app.goo.gl/7zXfGcxEoqLHnA8D6",
+        None,
         False,
         None,
         None,
@@ -284,11 +290,11 @@ OFICINAS = [
         "EAT-BOL",
         "Boletería El Alto",
         "boleteria",
-        "Carretera a Viacha, Ladislao Cabrera",
+        "Av. Las Flores 400",
         None,
-        "59171327449",
+        "59170000180",
         None,
-        "https://maps.app.goo.gl/QFVTf8v2btndtNGg8",
+        None,
         True,
         None,
         None,
@@ -298,18 +304,17 @@ OFICINAS = [
         "EAT-BOD",
         "Bodega El Alto",
         "bodega_carga",
-        "Carretera a Viacha, Ladislao Cabrera",
+        "Av. Las Flores 420",
         None,
-        "59171164678",
+        "59170000181",
         None,
-        "https://maps.app.goo.gl/QFVTf8v2btndtNGg8",
+        None,
         False,
         None,
         None,
     ),
 ]
 
-# Horas reales; los días no se publican (demo).
 HORARIO_BOLETERIA = ("07:00", "20:00", range(1, 8))  # lunes a domingo
 HORARIO_BODEGA = ("08:00", "18:00", range(1, 7))  # lunes a sábado
 
@@ -397,25 +402,25 @@ FAQ_CATEGORIAS = [
     ("carga", "Carga y encomiendas", 5),
 ]
 
-# (categoria, slug, pregunta, respuesta REAL, respuesta corta para voz, palabras clave)
+# (categoria, slug, pregunta, respuesta, respuesta corta para voz, palabras clave)
 FAQS = [
     (
         "pasajeros",
         "viaje-de-menores",
         "Viaje de menores",
-        "Padres y tutores de menores que viajan deben recabar anticipadamente el Permiso de Viaje en la "
-        "Defensoría de la Niñez y Adolescencia. Los menores sin Permiso de Viaje no podrán abordar el bus.\n\n"
-        "Menores de 3 a 11 años y 11 meses gozan de un descuento de 50% sobre la tarifa máxima referencial. "
-        "Este boleto únicamente podrá ser adquirido en boleterías previa presentación del Permiso de Viaje.",
-        "Los menores necesitan el Permiso de Viaje de la Defensoría de la Niñez. De 3 a 11 años tienen 50% de "
-        "descuento, y ese boleto se compra solo en boletería.",
+        "Todo menor de edad necesita el Permiso de Viaje emitido por la Defensoría de la Niñez y Adolescencia; "
+        "sin él no puede subir al bus, así que conviene tramitarlo con tiempo.\n\n"
+        "Los niños de 3 a 11 años pagan la mitad de la tarifa máxima referencial. Ese pasaje se compra solo en "
+        "boletería, mostrando el Permiso de Viaje.",
+        "Los menores necesitan el Permiso de Viaje de la Defensoría de la Niñez. De 3 a 11 años pagan la mitad, "
+        "y ese pasaje se compra solo en boletería.",
         ["menor", "menores", "niño", "niña", "hijo", "permiso de viaje", "defensoria", "descuento"],
     ),
     (
         "pasajeros",
         "embarazadas",
         "Embarazadas",
-        "Las embarazadas pueden viajar hasta el sexto mes de gestación (30 semanas).",
+        "Por seguridad, aceptamos pasajeras embarazadas hasta las 30 semanas de gestación.",
         "Las embarazadas pueden viajar hasta las 30 semanas de gestación.",
         ["embarazada", "embarazo", "gestacion", "semanas"],
     ),
@@ -423,8 +428,8 @@ FAQS = [
         "pasajeros",
         "adultos-mayores",
         "Adultos mayores",
-        "Los adultos mayores (60 años o más) gozan de un descuento de ley del 20% sobre la tarifa máxima "
-        "referencial. Los boletos con estas tarifas especiales pueden ser adquiridos solo en boleterías.",
+        "Las personas de 60 años o más tienen el descuento de ley del 20% sobre la tarifa máxima referencial. "
+        "Este pasaje con descuento se compra en boletería, presentando la cédula de identidad.",
         "Las personas de 60 años o más tienen 20% de descuento de ley, comprando en boletería.",
         ["adulto mayor", "tercera edad", "jubilado", "descuento", "60 años"],
     ),
@@ -432,8 +437,8 @@ FAQS = [
         "pasajeros",
         "mascotas",
         "Mascotas",
-        "No está permitido el transporte de mascotas en cabina o bodega, salvo sean perros lazarillos y deben "
-        "permanecer al lado de sus dueños.",
+        "No transportamos mascotas, ni en cabina ni en bodega. Solo los perros guía (lazarillos) pueden viajar, "
+        "siempre junto a su dueño.",
         "No se permiten mascotas, ni en cabina ni en bodega. La única excepción son los perros lazarillos.",
         ["mascota", "perro", "gato", "animal", "lazarillo"],
     ),
@@ -441,8 +446,8 @@ FAQS = [
         "pasajes_y_pagos",
         "facturas-y-boletos",
         "Facturas y boletos",
-        "Su pasaje (e-ticket) constituye factura deducible de impuestos.\n\nSu e-ticket será enviado en PDF a "
-        "su email y también podrá descargarlo o imprimirlo después de realizar su compra.",
+        "El pasaje electrónico vale también como factura.\n\nAl terminar la compra lo recibes en PDF en tu "
+        "correo, y puedes descargarlo o imprimirlo cuando quieras.",
         "Tu pasaje electrónico es también tu factura. Te llega en PDF a tu correo.",
         ["factura", "nit", "boleto", "e-ticket", "pdf", "correo"],
     ),
@@ -450,16 +455,16 @@ FAQS = [
         "pasajes_y_pagos",
         "comprar-boletos-en-linea",
         "¿Puedo comprar boletos en línea?",
-        f"Sí, ingresa a este link: {URL_COMPRA}",
-        "Sí, puedes comprar en línea en elmexicano punto pagoseguro punto cloud.",
+        f"Sí. Elige tu viaje, tus asientos y paga en línea desde {URL_COMPRA}.",
+        "Sí, puedes comprar en línea en transdemo punto com.",
         ["comprar", "online", "en linea", "internet", "web", "pagina"],
     ),
     (
         "pasajes_y_pagos",
         "medios-de-pago",
         "¿Con qué medios de pago puedo comprar boletos?",
-        "Puedes comprar con:\n\n- Código QR (solo bancos bolivianos).\n- Tarjetas de débito/crédito Visa o "
-        "Mastercard emitidas por bancos nacionales o internacionales.\n- Tigo Money (Bolivia).",
+        "Aceptamos:\n\n- Pago con código QR de bancos bolivianos.\n- Tarjetas de débito o crédito Visa y "
+        "Mastercard, nacionales o del exterior.\n- Tigo Money.",
         "Puedes pagar con QR de bancos bolivianos, tarjeta Visa o Mastercard, o Tigo Money.",
         ["pago", "pagar", "qr", "tarjeta", "visa", "mastercard", "tigo money", "debito", "credito"],
     ),
@@ -467,9 +472,8 @@ FAQS = [
         "pasajes_y_pagos",
         "pasajes-electronicos",
         "Sobre pasajes electrónicos",
-        "Puede imprimir el pasaje electrónico para mostrarlo a tiempo de abordar el bus o puede tenerlo "
-        "digitalmente (en imagen) en su dispositivo móvil.\n\nEl pasaje debe coincidir con el documento de "
-        "identificación del pasajero.",
+        "Al abordar puedes mostrar el pasaje impreso o en la pantalla de tu celular.\n\nLos datos del pasaje "
+        "deben coincidir con el documento de identidad del pasajero.",
         "Puedes mostrar el pasaje impreso o en tu celular. Debe coincidir con tu documento de identidad.",
         ["pasaje electronico", "imprimir", "celular", "abordar", "documento"],
     ),
@@ -477,7 +481,7 @@ FAQS = [
         "pasajes_y_pagos",
         "reajuste-de-precios",
         "Reajuste de precios",
-        "Una vez adquirido el boleto no aplican cambios de tarifa.",
+        "El precio queda fijo desde el momento de la compra, aunque la tarifa cambie después.",
         "Una vez que compras el boleto, el precio ya no cambia.",
         ["precio", "tarifa", "reajuste", "aumento", "cambio"],
     ),
@@ -485,19 +489,12 @@ FAQS = [
         "pasajes_y_pagos",
         "reembolsos",
         "Reembolsos",
-        "Conforme a regulaciones, los pasajes que no fueron usados son reembolsables hasta un 85% del valor "
-        "pagado. La devolución está sujeta a ser solicitada en boletería con 2 horas previas al horario de "
-        "salida.\n\nNo aplica devolución de pasajes a menos de dos horas de la hora de salida del bus "
-        "establecida en el boleto. No aplican devoluciones pasada la hora de salida establecida en el boleto."
-        "\n\nLos pasajes adquiridos mediante tarjeta de crédito u otros medios de pago digitales a través de "
-        "la página web o la aplicación móvil de la empresa son reembolsables en un 85% del valor total. Para "
-        "ello, la solicitud de reembolso debe realizarse al menos 2 horas antes del horario programado de "
-        "salida. La empresa transportista retendrá el 15% del valor total del pasaje, incluyendo los costos "
-        "asociados a la emisión de la factura.\n\nLa solicitud de reembolso deberá hacerse por teléfono a "
-        "nuestra línea de Atención al Cliente +591 67640155.\n\nSi un pasaje fue emitido utilizando servicios "
-        "bancarios, la devolución será del 85% del valor total del pasaje. El reembolso puede demorar hasta "
-        "7 días hábiles.",
-        "Te devolvemos el 85% si lo pides al menos 2 horas antes de la salida, llamando al 6 7 6 4 0 1 5 5. "
+        "Si no vas a usar tu pasaje, te devolvemos el 85% de lo pagado. El 15% restante cubre los costos de "
+        "emisión y facturación.\n\nEl reembolso se pide como mínimo 2 horas antes de la salida indicada en el "
+        "pasaje; después de ese plazo, o una vez salido el bus, ya no hay devolución.\n\nSi compraste en "
+        "boletería, pídelo en cualquier boletería. Si compraste en línea, llama a Atención al Cliente al "
+        "+591 70000100. El dinero llega en un plazo de hasta 7 días hábiles.",
+        "Te devolvemos el 85% si lo pides al menos 2 horas antes de la salida, llamando al 7 0 0 0 0 1 0 0. "
         "Después ya no hay devolución. El reembolso tarda hasta 7 días hábiles.",
         ["reembolso", "devolucion", "devolver", "devuelvan", "dinero", "cancelar", "anular", "85"],
     ),
@@ -505,8 +502,8 @@ FAQS = [
         "equipaje",
         "politica-de-equipajes",
         "Política de equipajes",
-        "Derecho a 20 kg de equipaje en buzón por pasajero.\n\nDerecho a un máximo de 5 kg de equipaje de mano "
-        "por pasajero.\n\nExceso de equipaje sujeto a cobro por kg adicional a la franquicia, de acuerdo a ruta.",
+        "Cada pasajero puede llevar hasta 20 kg en la bodega del bus y hasta 5 kg de equipaje de mano.\n\n"
+        "El peso adicional se cobra por kilo, con una tarifa que depende de la ruta.",
         "Cada pasajero lleva 20 kilos en bodega y 5 de mano. El exceso se cobra por kilo según la ruta.",
         ["equipaje", "maleta", "kilos", "kg", "exceso", "bodega", "mano", "buzon"],
     ),
@@ -514,11 +511,9 @@ FAQS = [
         "viaje",
         "hora-de-salida-demoras-y-cancelaciones",
         "Hora de salida, demoras y cancelaciones",
-        "Las fechas y horas de partida están sujetas a cambios y modificaciones.\n\nSi el viaje se cancela por "
-        "razones atribuibles a la empresa transportista, la devolución del pasaje será inmediata y por el 100% "
-        "de su valor.\n\nLa empresa no se responsabiliza en caso de demora causada por averías causadas por "
-        "externos, condiciones viales, condiciones climatológicas desfavorables u otras condiciones más allá "
-        "del control razonable del transportista.",
+        "Los horarios pueden ajustarse por motivos operativos.\n\nSi cancelamos un viaje por causas propias "
+        "de la empresa, te devolvemos el 100% del pasaje de inmediato.\n\nNo respondemos por retrasos "
+        "causados por factores externos, como el estado de las carreteras, bloqueos o el clima.",
         "Si la empresa cancela el viaje, te devolvemos el 100% de inmediato. Los horarios pueden cambiar por "
         "condiciones del camino o del clima.",
         ["horario", "salida", "demora", "retraso", "cancelacion", "atraso", "bloqueo"],
@@ -527,31 +522,31 @@ FAQS = [
         "carga",
         "rastrear-mi-carga",
         "Quiero rastrear mi carga",
-        f"Para rastrear su carga, toque este link: {URL_RASTREO}",
+        f"Ingresa el número de guía de 8 dígitos en {URL_RASTREO} y verás en qué etapa está tu envío.",
         "Puedes rastrear tu carga con el número de guía de 8 dígitos.",
         ["rastrear", "rastreo", "encomienda", "carga", "guia", "tracking", "paquete"],
     ),
 ]
 
+# (slug, titulo, descripcion, contenido markdown, url de origen)
 PAGINAS = [
     (
         "inicio",
-        "El Mexicano | Pasajes de bus, carga y encomiendas",
-        "Compra online 100% segura de pasajes de bus y rastreo de carga y encomienda.",
-        "# Transportes El Mexicano\n\nCompra online 100% segura de pasajes de bus y rastreo de carga y "
-        "encomienda.\n\n- **Pasajes**: Sucre ↔ Santa Cruz, Tarija y La Paz.\n- **Buses** de dos pisos Suite "
-        "Cama y Leito Cama.\n- **Carga y encomiendas** a 7 ciudades, con puerta a puerta en Sucre y Santa Cruz."
-        "\n\nEmpresa regulada y fiscalizada por la Autoridad de Telecomunicaciones y Transportes del Estado "
-        "Plurinacional de Bolivia - ATT.",
-        "https://www.elmexicanosrl.com",
+        "TransDemo | Pasajes de bus, carga y encomiendas",
+        "Pasajes de bus en línea y encomiendas con seguimiento.",
+        "# TransDemo\n\nViaja y envía por Bolivia: compra tus pasajes en línea y sigue tus encomiendas.\n\n"
+        "- **Pasajes**: Sucre ↔ Santa Cruz, Tarija y La Paz.\n- **Buses** de dos pisos Suite Cama y Leito Cama."
+        "\n- **Carga y encomiendas** a 7 ciudades, con puerta a puerta en Sucre y Santa Cruz.\n\n"
+        "_TransDemo es una empresa ficticia creada para esta demostración._",
+        None,
     ),
     (
         "pasajes",
         "Pasajes de bus",
-        "Compra tus pasajes sin hacer colas.",
-        "# Pasajes de bus\n\nSin hacer colas y 100% seguro. Paga con **QR, tarjeta de débito o crédito y Tigo "
-        f"Money**.\n\n[Comprar pasajes]({URL_COMPRA})",
-        "https://www.elmexicanosrl.com/pasajes-de-bus",
+        "Compra tus pasajes sin hacer fila.",
+        "# Pasajes de bus\n\nElige tu viaje y tus asientos desde el celular, sin hacer fila. Paga con **QR, "
+        f"tarjeta de débito o crédito, o Tigo Money**.\n\n[Comprar pasajes]({URL_COMPRA})",
+        None,
     ),
     (
         "rutas",
@@ -562,46 +557,46 @@ PAGINAS = [
         "| Sucre ↔ Tarija | 469 km | 11 h | Suite Cama - Leito Cama |\n"
         "| Sucre ↔ La Paz | 555 km | 12 h | Suite Cama - Leito Cama |\n\n"
         "**Destinos de carga:** Sucre, Camargo, Santa Cruz, Tarija, La Paz, El Alto y Potosí.",
-        "https://www.elmexicanosrl.com/rutas-e-itinerarios",
+        None,
     ),
     (
         "buses",
         "Nuestros buses",
         "Buses de dos pisos Suite Cama y Leito Cama.",
-        "# Nuestros buses\n\n## Suite Cama — planta alta\nAsientos reclinables a 180°, cargadores USB, "
-        "calefacción, baño unisex, TV individual y aire acondicionado.\n\n## Leito Cama — planta baja\n"
-        "Asientos reclinables a 160°, cargadores USB, calefacción, baño unisex, TV en cabina y aire "
-        "acondicionado.",
-        "https://www.elmexicanosrl.com/nuestros-buses",
+        "# Nuestros buses\n\n## Suite Cama, piso superior\nAsientos que se reclinan hasta 180°, pantalla "
+        "individual, cargador USB, calefacción, aire acondicionado y baño.\n\n## Leito Cama, piso inferior\n"
+        "Asientos que se reclinan hasta 160°, pantalla compartida, cargador USB, calefacción, aire "
+        "acondicionado y baño.",
+        None,
     ),
     (
         "oficinas",
         "Boleterías y bodegas",
         "Direcciones de oficinas y bodegas.",
-        "# Direcciones de oficinas y bodegas\n\nBoleterías de 07:00 a 20:00 y bodegas de 08:00 a 18:00 en "
+        "# Boleterías y bodegas\n\nBoleterías abiertas de 07:00 a 20:00 y bodegas de 08:00 a 18:00 en "
         "Sucre, Camargo, Santa Cruz, Tarija, Potosí, La Paz y El Alto. Consulta el detalle en "
         "`GET /api/v1/oficinas`.",
-        "https://www.elmexicanosrl.com/boleter%C3%ADas-y-bodegas",
+        None,
     ),
     (
         "carga",
         "Carga y encomienda",
-        "Envíos nacionales con rastreo en tiempo real.",
-        "# Carga y encomienda\n\n## Sobres y paquetes (hasta 30 kg)\nServicio nacional. Pago en origen o "
-        "destino. Cuentas corporativas.\n\n## Carga (más de 30 kg)\nServicio nacional con GPS. Mudanzas.\n\n"
-        "## Puerta a puerta (desde 1 kg)\nRecogemos su encomienda o carga de la dirección que nos indique y la "
-        "entregamos a su debido tiempo en la puerta del destinatario. Disponible en Sucre y Santa Cruz.\n\n"
-        "- Entregas: 08:00 a 12:00, lunes a viernes.\n- Recojos: 14:00 a 17:00, lunes a viernes.\n"
-        "- Sucre: 68779945 · Santa Cruz: 67601683 (teléfono, WhatsApp o chat).\n\n"
-        "Rastreo en tiempo real, guía electrónica y ubicación GPS.",
-        "https://www.elmexicanosrl.com/carga-y-encomienda",
+        "Envíos nacionales con seguimiento en línea.",
+        "# Carga y encomienda\n\n## Sobres y paquetes (hasta 30 kg)\nEnvíos a todo el país. Pagas al enviar o "
+        "al recibir. Cuentas para empresas.\n\n## Carga (más de 30 kg)\nEnvíos grandes y mudanzas, con "
+        "seguimiento GPS.\n\n## Puerta a puerta (desde 1 kg)\nPasamos a recoger tu envío a la dirección que "
+        "nos indiques y lo dejamos en la puerta de quien lo recibe. Disponible en Sucre y Santa Cruz.\n\n"
+        "- Entregas: lunes a viernes, de 08:00 a 12:00.\n- Recojos: lunes a viernes, de 14:00 a 17:00.\n"
+        "- WhatsApp Sucre: +591 70000111 · Santa Cruz: +591 70000112.\n\n"
+        "Guía electrónica y seguimiento en tiempo real.",
+        None,
     ),
     (
         "ayuda",
         "Centro de ayuda",
         "Preguntas frecuentes.",
-        "# Preguntas frecuentes\n\nConsulta las respuestas en `GET /api/v1/faqs`. WhatsApp: +591 71420823.",
-        "https://www.elmexicanosrl.com/centro-de-ayuda",
+        "# Preguntas frecuentes\n\nConsulta las respuestas en `GET /api/v1/faqs`. WhatsApp: +591 70000101.",
+        None,
     ),
     (
         "terminos",

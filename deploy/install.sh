@@ -3,20 +3,20 @@
 # PostgreSQL local + API (systemd) + frontend compilado + Caddy con HTTPS + tareas programadas.
 #
 # Uso (en la VPS, como el usuario "ubuntu", desde el repositorio clonado en ~/app):
-#   DOMINIO=elmexicano-demo.duckdns.org ~/app/deploy/install.sh
+#   DOMINIO=transdemo.duckdns.org ~/app/deploy/install.sh
 # Opcional: DEMO_TELEFONO=591XXXXXXXX (número al que se asocian las guías y reservas de prueba).
 #
 # Se puede volver a ejecutar sin romper nada: reutiliza la base, el .env y los datos existentes.
 set -euo pipefail
 
-: "${DOMINIO:?Indica el dominio, por ejemplo: DOMINIO=elmexicano-demo.duckdns.org $0}"
+: "${DOMINIO:?Indica el dominio, por ejemplo: DOMINIO=transdemo.duckdns.org $0}"
 DEMO_TELEFONO="${DEMO_TELEFONO:-59170000000}"
 APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 USUARIO="$(id -un)"
-WEB_ROOT="/var/www/elmexicano"
+WEB_ROOT="/var/www/transdemo"
 ENV_FILE="$APP_DIR/backend/.env"
-DB_NOMBRE="elmexicano"
-DB_USUARIO="elmexicano"
+DB_NOMBRE="transdemo"
+DB_USUARIO="transdemo"
 
 paso() { printf '\n\033[1;34m==> %s\033[0m\n' "$*"; }
 
@@ -128,10 +128,10 @@ fi
 
 paso "Servicio de la API"
 sed -e "s#__USUARIO__#$USUARIO#g" -e "s#__APP_DIR__#$APP_DIR#g" \
-  "$APP_DIR/deploy/elmexicano-api.service.template" | sudo tee /etc/systemd/system/elmexicano-api.service >/dev/null
+  "$APP_DIR/deploy/transdemo-api.service.template" | sudo tee /etc/systemd/system/transdemo-api.service >/dev/null
 sudo systemctl daemon-reload
-sudo systemctl enable elmexicano-api >/dev/null
-sudo systemctl restart elmexicano-api
+sudo systemctl enable transdemo-api >/dev/null
+sudo systemctl restart transdemo-api
 
 paso "Frontend"
 cd "$APP_DIR/frontend"
@@ -148,7 +148,7 @@ sudo systemctl reload caddy || sudo systemctl restart caddy
 
 paso "Tareas programadas"
 chmod +x "$APP_DIR/deploy/"*.sh
-sudo tee /etc/cron.d/elmexicano >/dev/null <<EOF
+sudo tee /etc/cron.d/transdemo >/dev/null <<EOF
 # Salidas de los próximos días y estados según la hora (04:00, hora de Bolivia)
 0 4 * * * $USUARIO cd $APP_DIR/backend && .venv/bin/python -m seeds.run_seeds --solo-salidas >> /home/$USUARIO/seeds.log 2>&1
 # Respaldo diario de la base (se conservan 7)

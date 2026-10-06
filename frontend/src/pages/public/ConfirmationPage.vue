@@ -41,7 +41,7 @@ const nombre = computed(() => reserva.data.value?.comprador.split(' ')[0] ?? '')
 const compartir = computed(() => {
   const r = reserva.data.value
   if (!r) return ''
-  const texto = `Mi viaje con El Mexicano: ${r.salida.origen} → ${r.salida.destino}, ${fechaCorta(r.salida.fecha_hora_salida)} a las ${hora(r.salida.fecha_hora_salida)}. Reserva ${r.codigo_reserva}.`
+  const texto = `Mi viaje con TransDemo: ${r.salida.origen} → ${r.salida.destino}, ${fechaCorta(r.salida.fecha_hora_salida)} a las ${hora(r.salida.fecha_hora_salida)}. Reserva ${r.codigo_reserva}.`
   return `https://wa.me/?text=${encodeURIComponent(texto)}`
 })
 </script>

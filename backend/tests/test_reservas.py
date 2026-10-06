@@ -59,7 +59,7 @@ async def test_reservar_pagar_y_no_doble_venta(client):
     assert pagada["estado"] == "pagada"
     assert pagada["pago"]["ultimos4_tarjeta"] == "1111"
     assert pagada["factura"]["numero_factura"] >= 1000
-    assert pagada["boletos"][0]["estado"] == "emitido" and pagada["boletos"][0]["codigo_qr"].startswith("MX|")
+    assert pagada["boletos"][0]["estado"] == "emitido" and pagada["boletos"][0]["codigo_qr"].startswith("TD|")
 
     # Consultar exige el documento y no revela la reserva con otro documento.
     assert (await client.get(f"/api/v1/reservas/{codigo}", params={"documento": "999999"})).status_code == 404

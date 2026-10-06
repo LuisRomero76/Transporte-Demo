@@ -50,7 +50,7 @@ async function entrar(): Promise<void> {
       <div class="mx-auto w-full max-w-lg opacity-90"><RouteMapArt /></div>
       <div>
         <p class="font-display text-3xl leading-tight font-bold">Salidas, boletería y carga<br />en un solo lugar.</p>
-        <p class="mt-3 text-noche-200">Acceso exclusivo para el personal de Transportes El Mexicano.</p>
+        <p class="mt-3 text-noche-200">Acceso exclusivo para el personal de TransDemo.</p>
       </div>
     </section>
     <section class="flex items-center justify-center px-4 py-12 sm:px-8">

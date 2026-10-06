@@ -15,7 +15,7 @@ defineProps<{ boleto: Schemas['BoletoOut']; salida: Schemas['SalidaDeReserva'] }
   >
     <div class="flex flex-1 flex-col gap-4 p-5 sm:p-6">
       <div class="flex items-center justify-between gap-3">
-        <span class="font-display font-bold tracking-[0.05em] text-noche-900 dark:text-white">EL MEXICANO</span>
+        <span class="font-display font-bold tracking-[0.05em] text-noche-900 dark:text-white">TRANSDEMO</span>
         <span class="codigo text-sm text-muted">{{ boleto.numero_boleto }}</span>
       </div>
       <div class="flex items-center gap-4 sm:gap-6">

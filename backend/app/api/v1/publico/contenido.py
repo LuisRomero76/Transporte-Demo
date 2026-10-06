@@ -21,7 +21,7 @@ async def buscar(session: SessionDep, q: str = Query(min_length=2, examples=["pu
     mensaje = (
         resultados[0].respuesta_corta_voz or resultados[0].respuesta
         if resultados
-        else "No encontré una respuesta. Escríbenos por WhatsApp al +591 71420823."
+        else "No encontré una respuesta. Escríbenos por WhatsApp al +591 70000101."
     )
     return {"consulta": q, "resultados": resultados, "mensaje": mensaje}
 

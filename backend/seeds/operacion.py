@@ -48,7 +48,7 @@ async def seed_salidas(session: AsyncSession) -> None:
         indice = base + (dias % 2 if ida else (dias + 1) % 2)
 
         if s.bus_id is None:
-            s.bus_id = buses[f"M-{indice + 1:02d}"]
+            s.bus_id = buses[f"TD-{indice + 1:02d}"]
             s.anden = str(demo.CORREDORES[corredor] // 4 * 2 + slot + 1)
         tripulacion += [
             {"salida_id": s.id, "usuario_id": conductores[indice * 2].id, "rol": RolTripulacion.conductor},

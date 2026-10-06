@@ -63,7 +63,7 @@ async def main(reset: bool) -> None:
         if reset:
             print("Vaciando tablas…")
             await _reset(session)
-        print("Catálogos (datos reales + demo)…")
+        print("Catálogos (datos base + demo)…")
         await seed_catalogos(session)
         clave_bot = await api_keys.asegurar(
             session, api_keys.KEY_AGENTE, [api_keys.SCOPE_LECTURA, api_keys.SCOPE_ESCRITURA]
@@ -85,7 +85,7 @@ async def main(reset: bool) -> None:
     print(
         "\nPersonal demo (todas con la misma contraseña):\n"
         f"  contraseña: {demo.PASSWORD_DEMO}\n"
-        "  admin@elmexicanosrl.com · supervisor@ · boleteria.sucre@ · bodega.sucre@ · reparto.sucre@ …\n"
+        "  admin@transdemo.com · supervisor@ · boleteria.sucre@ · bodega.sucre@ · reparto.sucre@ …\n"
         f"\nPruebas con tu teléfono {telefono_demo}:\n"
         "  Guías: 26000101 (lista, PIN 4821) · 26000102 (en tránsito) · 26000103 (entregada) · "
         "26000104 (en reparto) · 26000105 (otro número) · 26000106 (pago en destino)\n"
@@ -100,7 +100,7 @@ async def main(reset: bool) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Carga datos semilla de El Mexicano")
+    parser = argparse.ArgumentParser(description="Carga datos semilla de TransDemo")
     parser.add_argument("--reset", action="store_true", help="Vacía todas las tablas antes de cargar")
     parser.add_argument("--solo-salidas", action="store_true", help="Solo genera salidas y actualiza estados")
     args = parser.parse_args()

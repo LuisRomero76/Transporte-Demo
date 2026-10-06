@@ -30,8 +30,8 @@ describe('format', () => {
   it('formatea duración, teléfonos e iniciales', () => {
     expect(duracion(840)).toBe('14 h')
     expect(duracion(90)).toBe('1 h 30 min')
-    expect(telefono('59171420823')).toBe('+591 71420823')
-    expect(whatsappUrl('+59171420823', 'Hola mundo')).toBe('https://wa.me/59171420823?text=Hola%20mundo')
+    expect(telefono('59170000101')).toBe('+591 70000101')
+    expect(whatsappUrl('+59170000101', 'Hola mundo')).toBe('https://wa.me/59170000101?text=Hola%20mundo')
     expect(whatsappUrl(null)).toBeUndefined()
     expect(iniciales('carlos  mendoza rojas')).toBe('CM')
   })

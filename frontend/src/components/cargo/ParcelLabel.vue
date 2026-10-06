@@ -17,7 +17,7 @@ const urlRastreo = computed(() => `${window.location.origin}/rastreo/${e.value.n
       <div class="flex items-center gap-2.5">
         <LogoMark :size="32" :wordmark="false" />
         <div>
-          <p class="font-display text-sm font-bold tracking-wider">EL MEXICANO</p>
+          <p class="font-display text-sm font-bold tracking-wider">TRANSDEMO</p>
           <p class="text-xs text-muted">Comprobante de envío · {{ fechaHora(e.fecha_registro) }}</p>
         </div>
       </div>
@@ -47,7 +47,7 @@ const urlRastreo = computed(() => `${window.location.origin}/rastreo/${e.value.n
         </div>
         <div v-if="e.fecha_estimada_entrega"><dt class="text-muted">Llegada estimada</dt><dd>{{ fechaLarga(e.fecha_estimada_entrega) }}, {{ hora(e.fecha_estimada_entrega) }}</dd></div>
       </dl>
-      <p class="text-xs text-muted">El destinatario retira presentando su documento y el código de retiro. Rastrea el envío en elmexicanosrl.com con el número de guía.</p>
+      <p class="text-xs text-muted">El destinatario retira presentando su documento y el código de retiro. Rastrea el envío en transdemo.com con el número de guía.</p>
     </div>
     <div class="flex flex-col items-center gap-2">
       <QrCode :value="urlRastreo" :size="132" label="QR para rastrear el envío" />
