@@ -4,7 +4,7 @@ import asyncio
 import logging
 
 from app.core.db import SessionLocal
-from app.services import reservas
+from app.services import comprobantes, reservas
 
 log = logging.getLogger("transdemo.jobs")
 
@@ -21,3 +21,10 @@ async def expirar_reservas_periodicamente(intervalo_segundos: int) -> None:
         except Exception:  # noqa: BLE001 - la tarea no debe morir por un error puntual
             log.exception("Error al expirar reservas")
         await asyncio.sleep(intervalo_segundos)
+
+
+async def descargar_comprobantes_periodicamente(intervalo_segundos: int) -> None:
+    """Respaldo del webhook post-llamada: guarda las imágenes de comprobantes que aún no se descargaron."""
+    while True:
+        await asyncio.sleep(intervalo_segundos)
+        await comprobantes.descargar_imagenes_en_segundo_plano()

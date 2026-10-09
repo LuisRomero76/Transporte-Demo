@@ -10,6 +10,7 @@ from pydantic import AfterValidator, BaseModel, EmailStr, Field
 from app.models.enums import (
     CanalVenta,
     EstadoBus,
+    EstadoComprobante,
     EstadoReembolso,
     EstadoSalida,
     EstadoVenta,
@@ -581,3 +582,37 @@ class BotConsultaOut(Esquema):
 
 class AsignarVehiculoIn(BaseModel):
     vehiculo_id: int
+
+
+# --- Comprobantes de pago por QR (compra por WhatsApp) ------------------------------------------
+
+
+class ComprobanteOut(BaseModel):
+    id: uuid.UUID
+    estado: EstadoComprobante
+    codigo_reserva: str
+    estado_reserva: EstadoVenta
+    comprador: str
+    telefono: str | None
+    total_bs: Monto
+    monto_leido_bs: Monto | None
+    monto_coincide: bool
+    fecha_leida: str | None
+    numero_transaccion: str | None
+    transaccion_repetida: bool = Field(description="Otro comprobante tiene el mismo número de transacción")
+    banco: str | None
+    cuenta_destino: str | None
+    tiene_imagen: bool
+    viaje: str | None
+    fecha_hora_salida: FechaHora | None
+    boletos: int
+    salida_proxima: bool = Field(description="La salida es en menos de 6 horas")
+    motivo_rechazo: str | None
+    revisado_at: FechaHora | None
+    notificado_at: FechaHora | None
+    notificacion_error: str | None
+    created_at: FechaHora
+
+
+class RechazarComprobanteIn(BaseModel):
+    motivo: str = Field(min_length=3, max_length=200, description="Se le envía al cliente por WhatsApp")

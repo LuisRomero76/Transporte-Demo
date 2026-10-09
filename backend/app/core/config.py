@@ -37,6 +37,19 @@ class Settings(BaseSettings):
     # Agente de voz: solicitudes por minuto permitidas a cada API key.
     bot_rate_limit_por_minuto: int = 120
 
+    # Compra por WhatsApp. URL pública del frontend (página del QR de pago).
+    web_publica_url: str = "https://transdemo-bo.vercel.app"
+    # ElevenLabs: descarga de comprobantes y mensajes salientes de WhatsApp con plantillas de Meta.
+    elevenlabs_api_key: str | None = None
+    elevenlabs_agent_id: str | None = None
+    elevenlabs_whatsapp_phone_number_id: str | None = None
+    elevenlabs_webhook_secret: str | None = None
+    whatsapp_plantilla_compra_confirmada: str = "compra_confirmada"
+    whatsapp_plantilla_pago_rechazado: str = "pago_rechazado"
+    whatsapp_plantilla_idioma: str = "es"
+    # Respaldo del webhook post-llamada: cada cuántos segundos se buscan imágenes de comprobantes (0 = desactivado).
+    job_comprobantes_segundos: int = 120
+
     @field_validator("cors_origins", mode="before")
     @classmethod
     def _split_origins(cls, v: Any) -> Any:

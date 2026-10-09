@@ -488,8 +488,8 @@ FAQS = [
     (
         "pasajes_y_pagos",
         "reembolsos",
-        "Reembolsos",
-        "Si no vas a usar tu pasaje, te devolvemos el 85% de lo pagado. El 15% restante cubre los costos de "
+        "Reembolsos y devolución del pasaje",
+        "Si no vas a usar tu pasaje, puedes pedir la devolución del pasaje: te devolvemos el 85% de lo pagado. El 15% restante cubre los costos de "
         "emisión y facturación.\n\nEl reembolso se pide como mínimo 2 horas antes de la salida indicada en el "
         "pasaje; después de ese plazo, o una vez salido el bus, ya no hay devolución.\n\nSi compraste en "
         "boletería, pídelo en cualquier boletería. Si compraste en línea, llama a Atención al Cliente al "

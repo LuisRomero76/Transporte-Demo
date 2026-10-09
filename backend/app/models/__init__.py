@@ -12,7 +12,7 @@ from app.models.carga import (
 from app.models.contenido import Faq, FaqCategoria, PaginaContenido
 from app.models.empresa import Ciudad, Empresa, Feriado, HorarioOficina, Oficina, ParametroNegocio
 from app.models.flota import Asiento, Bus, Comodidad, TipoAsiento, VehiculoCarga, tipo_asiento_comodidades
-from app.models.pagos import Factura, Pago, Reembolso
+from app.models.pagos import ComprobantePago, Factura, Pago, Reembolso
 from app.models.rutas import (
     PlantillaHorario,
     PoliticaTipoPasajero,
@@ -37,6 +37,7 @@ __all__ = [
     "Ciudad",
     "Cliente",
     "Comodidad",
+    "ComprobantePago",
     "CuentaCorporativa",
     "Empresa",
     "Encomienda",

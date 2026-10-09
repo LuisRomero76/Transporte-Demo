@@ -17,6 +17,7 @@ from pydantic import BaseModel, ValidationError
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import get_settings
 from app.core.errors import NoEncontrado, ReglaNegocio
 from app.models import Cliente, Encomienda
 from app.models.enums import (
@@ -385,12 +386,13 @@ async def consultar_salidas(
         f"{'; '.join(_descripcion_salida(s) for s in mostradas)}."
     )
     if any(s["vendible"] for s in mostradas):
-        mensaje += " Puedes comprar en transdemo.com o en nuestras boleterías."
+        mensaje += " Puedo reservarte aquí mismo, o puedes comprar en transdemo.com o en nuestras boleterías."
     return {
         "encontrado": True,
         "fecha": dia_viaje.isoformat(),
         "salidas": [
             {
+                "codigo": s["codigo"],
                 "hora": hora(s["fecha_hora_salida"]),
                 "estado": s["estado"],
                 "demora_min": s["minutos_demora"] or 0,
@@ -440,8 +442,11 @@ async def consultar_reserva(session: AsyncSession, codigo: str, caller_id: str |
     coincide = llamante is not None and llamante == venta.comprador.telefono_e164
     salida = venta.boletos[0].salida if venta.boletos else None
     estado = EstadoVenta(venta.estado)
+    en_revision = estado == EstadoVenta.pendiente_pago and venta.expira_at is None
     estado_voz = {
-        EstadoVenta.pendiente_pago: "está pendiente de pago",
+        EstadoVenta.pendiente_pago: "tiene el comprobante de pago en revisión"
+        if en_revision
+        else "está pendiente de pago",
         EstadoVenta.pagada: "está pagada",
         EstadoVenta.expirada: "expiró sin pago y los asientos se liberaron",
         EstadoVenta.cancelada: "fue cancelada",
@@ -462,10 +467,17 @@ async def consultar_reserva(session: AsyncSession, codigo: str, caller_id: str |
                 f"{cuando(salida.fecha_hora_salida)}."
             )
         if estado == EstadoVenta.pendiente_pago and venta.expira_at:
-            frases.append(
-                f"Falta pagar {dinero(venta.total_bs)} antes de las {hora(venta.expira_at)}; "
-                "puedes hacerlo en transdemo.com, en Mi reserva."
+            donde = (
+                f"con el QR de {web(get_settings().web_publica_url)}/pagar/{venta.codigo_reserva} "
+                "y enviarme la foto del comprobante por este chat"
+                if venta.canal == CanalVenta.whatsapp_chat
+                else "en transdemo.com, en Mi reserva"
             )
+            frases.append(
+                f"Falta pagar {dinero(venta.total_bs)} antes de las {hora(venta.expira_at)}; puedes hacerlo {donde}."
+            )
+        if en_revision:
+            frases.append("Te avisaremos por este chat cuando se confirme el pago.")
         if estado == EstadoVenta.pagada and salida.oficina_salida:
             frases.append(
                 f"El bus sale de {salida.oficina_salida.nombre}" + (f", andén {salida.anden}." if salida.anden else ".")

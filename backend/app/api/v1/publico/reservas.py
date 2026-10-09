@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, Query, status
 
 from app.core.deps import SessionDep
 from app.core.ratelimit import limitar
-from app.models.enums import CanalVenta
+from app.models.enums import CanalVenta, EstadoVenta
 from app.schemas.admin import ReembolsoIn, ReembolsoOut
-from app.schemas.ventas import PagoIn, ReservaIn, ReservaOut
+from app.schemas.ventas import PagoIn, PagoQrOut, ReservaIn, ReservaOut
 from app.services import reembolsos, reservas
 
 # 40 solicitudes por minuto e IP: evita adivinar códigos de reserva o documentos.
@@ -32,6 +32,29 @@ async def crear(session: SessionDep, datos: ReservaIn):
 async def consultar(session: SessionDep, codigo: str, documento: str = _DOCUMENTO):
     venta = await reservas.obtener(session, codigo, documento=documento)
     return await reservas.a_respuesta(session, venta)
+
+
+@router.get(
+    "/reservas/{codigo}/pago-qr",
+    response_model=PagoQrOut,
+    summary="QR de pago de una reserva hecha por WhatsApp (sin datos personales)",
+)
+async def pago_qr(session: SessionDep, codigo: str):
+    venta = await reservas.obtener(session, codigo)
+    salida = venta.boletos[0].salida
+    pendiente = venta.estado == EstadoVenta.pendiente_pago
+    return {
+        "codigo_reserva": venta.codigo_reserva,
+        "estado": venta.estado,
+        "en_revision": pendiente and venta.expira_at is None,
+        "total_bs": venta.total_bs,
+        "expira_at": venta.expira_at if pendiente else None,
+        "origen": salida.ruta.origen.nombre,
+        "destino": salida.ruta.destino.nombre,
+        "fecha_hora_salida": salida.fecha_hora_salida,
+        "boletos": len(venta.boletos),
+        "qr_payload": reservas.qr_payload(venta) if pendiente and venta.expira_at else None,
+    }
 
 
 @router.post(

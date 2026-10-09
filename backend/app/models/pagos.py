@@ -4,11 +4,25 @@ import uuid
 from datetime import date, datetime
 from decimal import Decimal
 
-from sqlalchemy import BigInteger, CheckConstraint, DateTime, ForeignKey, Numeric, String, Text, func
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import (
+    BigInteger,
+    CheckConstraint,
+    DateTime,
+    ForeignKey,
+    Index,
+    LargeBinary,
+    Numeric,
+    SmallInteger,
+    String,
+    Text,
+    func,
+    text,
+)
+from sqlalchemy.orm import Mapped, deferred, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDPkMixin, pg_enum
 from app.models.enums import (
+    EstadoComprobante,
     EstadoFactura,
     EstadoPago,
     EstadoReembolso,
@@ -86,3 +100,53 @@ class Reembolso(UUIDPkMixin, TimestampMixin, Base):
     resuelto_por_usuario_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("usuarios.id"))
 
     pago: Mapped[Pago] = relationship()
+
+
+class ComprobantePago(UUIDPkMixin, TimestampMixin, Base):
+    """Comprobante de un pago por QR enviado por WhatsApp; lo aprueba o rechaza una persona en el panel.
+
+    El agente lee la imagen y registra lo que ve (monto, fecha, número de transacción); la imagen se
+    descarga después de la conversación de ElevenLabs para mostrarla en el panel.
+    """
+
+    __tablename__ = "comprobantes_pago"
+    __table_args__ = (
+        # Una reserva tiene como máximo un comprobante en revisión.
+        Index(
+            "uq_comprobantes_pago_venta_en_revision",
+            "venta_id",
+            unique=True,
+            postgresql_where=text("estado = 'en_revision'"),
+        ),
+        # Un mismo comprobante no sirve para dos reservas (salvo que se haya rechazado).
+        Index(
+            "uq_comprobantes_pago_numero_transaccion",
+            "numero_transaccion",
+            unique=True,
+            postgresql_where=text("estado <> 'rechazado' AND numero_transaccion IS NOT NULL"),
+        ),
+        Index("ix_comprobantes_pago_estado_created_at", "estado", "created_at"),
+    )
+
+    venta_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("ventas_pasaje.id"), index=True)
+    caller_id: Mapped[str | None] = mapped_column(String(15))
+    conversation_id: Mapped[str | None] = mapped_column(String(64), index=True)
+    estado: Mapped[EstadoComprobante] = mapped_column(
+        pg_enum(EstadoComprobante), server_default=EstadoComprobante.en_revision.value
+    )
+    monto_leido_bs: Mapped[Decimal | None] = mapped_column(Numeric(10, 2))
+    fecha_leida: Mapped[str | None] = mapped_column(String(40))
+    numero_transaccion: Mapped[str | None] = mapped_column(String(80))
+    banco: Mapped[str | None] = mapped_column(String(60))
+    cuenta_destino: Mapped[str | None] = mapped_column(String(80))
+    imagen: Mapped[bytes | None] = deferred(mapped_column(LargeBinary))
+    imagen_mime: Mapped[str | None] = mapped_column(String(40))
+    imagen_obtenida_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    intentos_imagen: Mapped[int] = mapped_column(SmallInteger, server_default="0")
+    motivo_rechazo: Mapped[str | None] = mapped_column(String(250))
+    revisado_por_usuario_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("usuarios.id"))
+    revisado_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    notificado_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    notificacion_error: Mapped[str | None] = mapped_column(String(300))
+
+    venta: Mapped["VentaPasaje"] = relationship()  # noqa: F821 - se resuelve por nombre en el registro

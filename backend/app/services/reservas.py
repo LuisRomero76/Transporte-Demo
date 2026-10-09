@@ -1,7 +1,7 @@
 """Reservas y venta de pasajes: crear, pagar (simulado), cancelar, expirar, abordar y equipaje."""
 
 import secrets
-from datetime import timedelta
+from datetime import datetime, timedelta
 from decimal import Decimal
 from typing import Any
 
@@ -127,7 +127,9 @@ async def crear_reserva(
     *,
     canal: CanalVenta = CanalVenta.web,
     usuario: Usuario | None = None,
+    expira_at: datetime | None = None,
 ) -> VentaPasaje:
+    """Reserva los asientos. `expira_at` reemplaza el plazo de pago por defecto (`reserva_expira_minutos`)."""
     maximo = await parametros.obtener_int(session, "boletos_max_por_venta")
     if len(datos.pasajeros) > maximo:
         raise ReglaNegocio(f"Se pueden comprar como máximo {maximo} boletos por reserva.")
@@ -166,7 +168,8 @@ async def crear_reserva(
         comprador_cliente_id=comprador.id,
         canal=canal,
         estado=EstadoVenta.pendiente_pago,
-        expira_at=ahora() + timedelta(minutes=await parametros.obtener_int(session, "reserva_expira_minutos")),
+        expira_at=expira_at
+        or ahora() + timedelta(minutes=await parametros.obtener_int(session, "reserva_expira_minutos")),
         vendida_por_usuario_id=usuario.id if usuario else None,
         oficina_venta_id=usuario.oficina_id if usuario else None,
     )
@@ -277,6 +280,12 @@ def mensaje_reserva(venta: VentaPasaje) -> str:
     )
     n = len(venta.boletos)
     match venta.estado:
+        case EstadoVenta.pendiente_pago if venta.expira_at is None:
+            # Sin plazo: hay un comprobante de pago en revisión (compra por WhatsApp).
+            return (
+                f"Reserva {venta.codigo_reserva}: {n} asiento(s) para {viaje}. Total Bs {venta.total_bs:.2f}. "
+                "El comprobante de pago está en revisión."
+            )
         case EstadoVenta.pendiente_pago:
             return (
                 f"Reserva {venta.codigo_reserva}: {n} asiento(s) para {viaje}. Total Bs {venta.total_bs:.2f}. "
@@ -349,11 +358,26 @@ async def a_respuesta(session: AsyncSession, venta: VentaPasaje) -> dict[str, An
 # --- Pagar (simulado) --------------------------------------------------------------------------
 
 
+def qr_payload(venta: VentaPasaje) -> str:
+    """Contenido del QR de cobro (de demostración: no corresponde a ninguna cuenta bancaria)."""
+    return f"000201|BOB|{venta.total_bs:.2f}|TRANSDEMO|{venta.codigo_reserva}|DEMO"
+
+
 def _codigo_qr(boleto: Boleto) -> str:
     return f"TD|{boleto.numero_boleto}|{secrets.token_hex(4).upper()}"
 
 
-async def pagar(session: AsyncSession, codigo: str, datos: PagoIn, *, usuario: Usuario | None = None) -> VentaPasaje:
+async def pagar(
+    session: AsyncSession,
+    codigo: str,
+    datos: PagoIn,
+    *,
+    usuario: Usuario | None = None,
+    proveedor: str | None = None,
+    transaccion_externa_id: str | None = None,
+) -> VentaPasaje:
+    """Cobra la reserva y emite los boletos. `proveedor` y `transaccion_externa_id` vienen de un pago verificado
+    fuera del sistema (comprobante QR aprobado en el panel); si no, se simula el cobro."""
     venta = await obtener(session, codigo)
     if venta.estado != EstadoVenta.pendiente_pago:
         raise ReglaNegocio(mensaje_reserva(venta), codigo="reserva_no_pagable")
@@ -366,7 +390,9 @@ async def pagar(session: AsyncSession, codigo: str, datos: PagoIn, *, usuario: U
         raise ReglaNegocio("La salida ya partió o fue cancelada; no se puede pagar la reserva.")
 
     ultimos4 = datos.numero_tarjeta[-4:] if datos.numero_tarjeta else None
-    if usuario:
+    if proveedor:
+        pass
+    elif usuario:
         proveedor = "boleteria"
     elif datos.metodo == MetodoPago.tigo_money:
         proveedor = "tigo_money"
@@ -377,13 +403,9 @@ async def pagar(session: AsyncSession, codigo: str, datos: PagoIn, *, usuario: U
         metodo=datos.metodo,
         monto_bs=venta.total_bs,
         proveedor=proveedor,
-        transaccion_externa_id=f"SIM-{secrets.token_hex(6).upper()}",
+        transaccion_externa_id=transaccion_externa_id or f"SIM-{secrets.token_hex(6).upper()}",
         ultimos4_tarjeta=ultimos4,
-        qr_payload=(
-            f"000201|BOB|{venta.total_bs:.2f}|TRANSDEMO|{venta.codigo_reserva}"
-            if datos.metodo == MetodoPago.qr
-            else None
-        ),
+        qr_payload=qr_payload(venta) if datos.metodo == MetodoPago.qr else None,
         cobrado_por_usuario_id=usuario.id if usuario else None,
     )
     session.add(pago)

@@ -11,3 +11,4 @@ pydantic-settings==2.15.0
 tzdata==2026.4
 pyjwt==2.15.1
 argon2-cffi==25.1.0
+httpx==0.28.1

@@ -61,6 +61,11 @@ python -m seeds.api_key --rotar       # muestra la API key del agente de voz UNA
    | `TRUST_PROXY_HEADERS` | `true` |
    | `RATE_LIMIT_ENABLED` | `true` |
    | `JOB_EXPIRAR_RESERVAS_SEGUNDOS` | `1800` (despierta la base cada 30 min, no cada minuto) |
+   | `WEB_PUBLICA_URL` | la URL de Vercel (página del QR de pago por WhatsApp) |
+   | `ELEVENLABS_API_KEY` | API key de ElevenLabs con permiso ElevenAgents: escritura |
+   | `ELEVENLABS_AGENT_ID` | id del agente |
+   | `ELEVENLABS_WHATSAPP_PHONE_NUMBER_ID` | id del número de WhatsApp (WhatsApp Manager → Números de teléfono) |
+   | `ELEVENLABS_WEBHOOK_SECRET` | secreto del webhook post-llamada de ElevenLabs |
 
 5. En **Advanced → Health Check Path** pon `/ping`.
 6. **Create Web Service**. El primer despliegue tarda unos minutos. Al terminar, abre `https://transdemo-api.onrender.com/health`: debe responder `"estado":"ok"`.

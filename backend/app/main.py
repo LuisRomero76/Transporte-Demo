@@ -12,12 +12,13 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
 from app.api import bot as bot_api
+from app.api import webhooks
 from app.api.v1.router import api_router
 from app.core.config import get_settings
 from app.core.db import SessionLocal, engine
 from app.core.errors import registrar_manejadores
 from app.core.security import secreto_debil
-from app.services.jobs import expirar_reservas_periodicamente
+from app.services.jobs import descargar_comprobantes_periodicamente, expirar_reservas_periodicamente
 from app.utils.fechas import ahora
 
 settings = get_settings()
@@ -40,11 +41,13 @@ _CABECERAS_SEGURIDAD = {
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    tarea = None
+    tareas = []
     if settings.job_expirar_reservas_segundos > 0:
-        tarea = asyncio.create_task(expirar_reservas_periodicamente(settings.job_expirar_reservas_segundos))
+        tareas.append(asyncio.create_task(expirar_reservas_periodicamente(settings.job_expirar_reservas_segundos)))
+    if settings.job_comprobantes_segundos > 0 and settings.elevenlabs_api_key:
+        tareas.append(asyncio.create_task(descargar_comprobantes_periodicamente(settings.job_comprobantes_segundos)))
     yield
-    if tarea:
+    for tarea in tareas:
         tarea.cancel()
         with contextlib.suppress(asyncio.CancelledError):
             await tarea
@@ -91,6 +94,7 @@ async def cabeceras_de_seguridad(request: Request, call_next):
 registrar_manejadores(app)
 app.include_router(api_router)
 app.include_router(bot_api.router)
+app.include_router(webhooks.router)
 
 
 @app.get("/health", tags=["Sistema"], summary="Estado del servicio y de la base de datos")

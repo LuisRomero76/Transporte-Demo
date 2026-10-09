@@ -46,6 +46,12 @@ const publico: RouteRecordRaw = {
       meta: { title: 'Compra confirmada' },
     },
     {
+      path: 'pagar/:codigo',
+      name: 'pagar-qr',
+      component: () => import('@/pages/public/PayQrPage.vue'),
+      meta: { title: 'Pagar con QR' },
+    },
+    {
       path: 'mi-reserva',
       name: 'mi-reserva',
       component: () => import('@/pages/public/MyBookingPage.vue'),
@@ -143,6 +149,12 @@ const panel: RouteRecordRaw[] = [
         name: 'admin-ventas',
         component: () => import('@/pages/admin/SalesPage.vue'),
         meta: { title: 'Ventas', roles: ACCESO.ventas },
+      },
+      {
+        path: 'pagos-whatsapp',
+        name: 'admin-pagos-whatsapp',
+        component: () => import('@/pages/admin/PaymentsReviewPage.vue'),
+        meta: { title: 'Pagos por WhatsApp', roles: ACCESO.pagosWhatsapp },
       },
       {
         path: 'reembolsos',

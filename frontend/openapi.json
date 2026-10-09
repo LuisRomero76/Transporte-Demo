@@ -697,6 +697,48 @@
     }
    }
   },
+  "/api/v1/reservas/{codigo}/pago-qr": {
+   "get": {
+    "tags": [
+     "Reservas y pasajes"
+    ],
+    "summary": "QR de pago de una reserva hecha por WhatsApp (sin datos personales)",
+    "operationId": "pago_qr_api_v1_reservas__codigo__pago_qr_get",
+    "parameters": [
+     {
+      "name": "codigo",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Codigo"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/PagoQrOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/api/v1/reservas/{codigo}/pagar": {
    "post": {
     "tags": [
@@ -2387,6 +2429,239 @@
        "application/json": {
         "schema": {
          "$ref": "#/components/schemas/ReembolsoOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/admin/comprobantes": {
+   "get": {
+    "tags": [
+     "Admin · Pagos por WhatsApp"
+    ],
+    "summary": "Listar comprobantes (por revisar: más antiguos primero)",
+    "operationId": "listar_api_v1_admin_comprobantes_get",
+    "security": [
+     {
+      "OAuth2PasswordBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "estado",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "$ref": "#/components/schemas/EstadoComprobante"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Estado"
+      }
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "maximum": 100,
+       "minimum": 1,
+       "description": "Cantidad de resultados",
+       "default": 20,
+       "title": "Limit"
+      },
+      "description": "Cantidad de resultados"
+     },
+     {
+      "name": "offset",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "minimum": 0,
+       "description": "Resultados a saltar",
+       "default": 0,
+       "title": "Offset"
+      },
+      "description": "Resultados a saltar"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/Pagina_ComprobanteOut_"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/admin/comprobantes/{comprobante_id}/imagen": {
+   "get": {
+    "tags": [
+     "Admin · Pagos por WhatsApp"
+    ],
+    "summary": "Imagen del comprobante enviada por el cliente",
+    "operationId": "imagen_api_v1_admin_comprobantes__comprobante_id__imagen_get",
+    "security": [
+     {
+      "OAuth2PasswordBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "comprobante_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Comprobante Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "image/jpeg": {},
+       "image/png": {},
+       "application/pdf": {}
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/admin/comprobantes/{comprobante_id}/aprobar": {
+   "post": {
+    "tags": [
+     "Admin · Pagos por WhatsApp"
+    ],
+    "summary": "Aprobar: emite los boletos y avisa al cliente por WhatsApp",
+    "operationId": "aprobar_api_v1_admin_comprobantes__comprobante_id__aprobar_post",
+    "security": [
+     {
+      "OAuth2PasswordBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "comprobante_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Comprobante Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ComprobanteOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/admin/comprobantes/{comprobante_id}/rechazar": {
+   "post": {
+    "tags": [
+     "Admin · Pagos por WhatsApp"
+    ],
+    "summary": "Rechazar: el cliente recibe el motivo y un plazo corto para enviar otro comprobante",
+    "operationId": "rechazar_api_v1_admin_comprobantes__comprobante_id__rechazar_post",
+    "security": [
+     {
+      "OAuth2PasswordBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "comprobante_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Comprobante Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/RechazarComprobanteIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ComprobanteOut"
         }
        }
       }
@@ -6859,6 +7134,145 @@
     }
    }
   },
+  "/api/bot/salidas/{codigo_salida}/asientos": {
+   "get": {
+    "tags": [
+     "Agente de voz (ElevenLabs)"
+    ],
+    "summary": "ver_asientos: asientos libres de una salida por clase",
+    "description": "El código de la salida viene de `consultar_salidas`. Solo salidas que aún se venden por chat.",
+    "operationId": "ver_asientos_api_bot_salidas__codigo_salida__asientos_get",
+    "parameters": [
+     {
+      "name": "codigo_salida",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Codigo Salida"
+      }
+     },
+     {
+      "name": "clase",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "description": "Suite Cama o Leito Cama (opcional)",
+       "title": "Clase"
+      },
+      "description": "Suite Cama o Leito Cama (opcional)"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/bot/reservas": {
+   "post": {
+    "tags": [
+     "Agente de voz (ElevenLabs)"
+    ],
+    "summary": "crear_reserva_chat: reserva asientos y devuelve el enlace del QR de pago",
+    "description": "Solo con `confirmado=true` (el cliente aceptó el resumen). El comprador es el primer pasajero y su\nteléfono es `caller_id`. Si el número ya tiene una reserva pendiente para esa salida, la devuelve.",
+    "operationId": "crear_reserva_chat_api_bot_reservas_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/BotReservaIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/bot/comprobantes": {
+   "post": {
+    "tags": [
+     "Agente de voz (ElevenLabs)"
+    ],
+    "summary": "registrar_comprobante: deja en revisión el comprobante de pago por QR",
+    "description": "El agente lee la foto del comprobante y envía lo que ve. `conversation_id` ({{system__conversation_id}})\npermite descargar la imagen cuando termina la conversación para mostrarla en el panel.",
+    "operationId": "registrar_comprobante_api_bot_comprobantes_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/BotComprobanteIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
   "/health": {
    "get": {
     "tags": [
@@ -6872,6 +7286,31 @@
       "content": {
        "application/json": {
         "schema": {}
+       }
+      }
+     }
+    }
+   }
+  },
+  "/ping": {
+   "get": {
+    "tags": [
+     "Sistema"
+    ],
+    "summary": "Responde sin consultar la base (para monitores y keep-alive)",
+    "operationId": "ping_ping_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": {
+          "type": "boolean"
+         },
+         "type": "object",
+         "title": "Response Ping Ping Get"
+        }
        }
       }
      }
@@ -7167,6 +7606,118 @@
     ],
     "title": "BoletoOut"
    },
+   "BotComprobanteIn": {
+    "properties": {
+     "caller_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Caller Id"
+     },
+     "conversation_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Conversation Id"
+     },
+     "codigo_reserva": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Codigo Reserva"
+     },
+     "es_comprobante": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Es Comprobante",
+      "description": "false si la imagen no es un comprobante de pago"
+     },
+     "monto": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Monto"
+     },
+     "fecha": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fecha"
+     },
+     "numero_transaccion": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Numero Transaccion"
+     },
+     "banco": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Banco"
+     },
+     "cuenta_destino": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cuenta Destino"
+     }
+    },
+    "type": "object",
+    "title": "BotComprobanteIn"
+   },
    "BotConsultaOut": {
     "properties": {
      "id": {
@@ -7254,6 +7805,59 @@
      "created_at"
     ],
     "title": "BotConsultaOut"
+   },
+   "BotPasajeroIn": {
+    "properties": {
+     "numero_documento": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Numero Documento"
+     },
+     "nombres": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Nombres"
+     },
+     "apellidos": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Apellidos"
+     },
+     "numero_asiento": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Numero Asiento"
+     }
+    },
+    "type": "object",
+    "title": "BotPasajeroIn"
    },
    "BotPuertaIn": {
     "properties": {
@@ -7404,6 +8008,67 @@
     "type": "object",
     "title": "BotPuertaIn",
     "description": "Datos que el agente recoge en la conversación; todos opcionales para poder pedir lo que falte."
+   },
+   "BotReservaIn": {
+    "properties": {
+     "caller_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Caller Id"
+     },
+     "codigo_salida": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Codigo Salida"
+     },
+     "clase": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Clase",
+      "description": "Suite Cama o Leito Cama; obligatoria si no se eligen asientos"
+     },
+     "pasajeros": {
+      "items": {
+       "$ref": "#/components/schemas/BotPasajeroIn"
+      },
+      "type": "array",
+      "title": "Pasajeros"
+     },
+     "confirmado": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Confirmado"
+     }
+    },
+    "type": "object",
+    "title": "BotReservaIn"
    },
    "BusIn": {
     "properties": {
@@ -8059,6 +8724,219 @@
      "telefono"
     ],
     "title": "CompradorIn"
+   },
+   "ComprobanteOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "estado": {
+      "$ref": "#/components/schemas/EstadoComprobante"
+     },
+     "codigo_reserva": {
+      "type": "string",
+      "title": "Codigo Reserva"
+     },
+     "estado_reserva": {
+      "$ref": "#/components/schemas/EstadoVenta"
+     },
+     "comprador": {
+      "type": "string",
+      "title": "Comprador"
+     },
+     "telefono": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Telefono"
+     },
+     "total_bs": {
+      "type": "number",
+      "title": "Total Bs"
+     },
+     "monto_leido_bs": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Monto Leido Bs"
+     },
+     "monto_coincide": {
+      "type": "boolean",
+      "title": "Monto Coincide"
+     },
+     "fecha_leida": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fecha Leida"
+     },
+     "numero_transaccion": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Numero Transaccion"
+     },
+     "transaccion_repetida": {
+      "type": "boolean",
+      "title": "Transaccion Repetida",
+      "description": "Otro comprobante tiene el mismo número de transacción"
+     },
+     "banco": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Banco"
+     },
+     "cuenta_destino": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cuenta Destino"
+     },
+     "tiene_imagen": {
+      "type": "boolean",
+      "title": "Tiene Imagen"
+     },
+     "viaje": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Viaje"
+     },
+     "fecha_hora_salida": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fecha Hora Salida"
+     },
+     "boletos": {
+      "type": "integer",
+      "title": "Boletos"
+     },
+     "salida_proxima": {
+      "type": "boolean",
+      "title": "Salida Proxima",
+      "description": "La salida es en menos de 6 horas"
+     },
+     "motivo_rechazo": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Motivo Rechazo"
+     },
+     "revisado_at": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Revisado At"
+     },
+     "notificado_at": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notificado At"
+     },
+     "notificacion_error": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notificacion Error"
+     },
+     "created_at": {
+      "type": "string",
+      "title": "Created At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "estado",
+     "codigo_reserva",
+     "estado_reserva",
+     "comprador",
+     "telefono",
+     "total_bs",
+     "monto_leido_bs",
+     "monto_coincide",
+     "fecha_leida",
+     "numero_transaccion",
+     "transaccion_repetida",
+     "banco",
+     "cuenta_destino",
+     "tiene_imagen",
+     "viaje",
+     "fecha_hora_salida",
+     "boletos",
+     "salida_proxima",
+     "motivo_rechazo",
+     "revisado_at",
+     "notificado_at",
+     "notificacion_error",
+     "created_at"
+    ],
+    "title": "ComprobanteOut"
    },
    "CotizacionOut": {
     "properties": {
@@ -9344,6 +10222,15 @@
      "fuera_de_servicio"
     ],
     "title": "EstadoBus"
+   },
+   "EstadoComprobante": {
+    "type": "string",
+    "enum": [
+     "en_revision",
+     "aprobado",
+     "rechazado"
+    ],
+    "title": "EstadoComprobante"
    },
    "EstadoEncomienda": {
     "type": "string",
@@ -11063,6 +11950,37 @@
     ],
     "title": "Pagina[ClienteOut]"
    },
+   "Pagina_ComprobanteOut_": {
+    "properties": {
+     "total": {
+      "type": "integer",
+      "title": "Total"
+     },
+     "limit": {
+      "type": "integer",
+      "title": "Limit"
+     },
+     "offset": {
+      "type": "integer",
+      "title": "Offset"
+     },
+     "items": {
+      "items": {
+       "$ref": "#/components/schemas/ComprobanteOut"
+      },
+      "type": "array",
+      "title": "Items"
+     }
+    },
+    "type": "object",
+    "required": [
+     "total",
+     "limit",
+     "offset",
+     "items"
+    ],
+    "title": "Pagina[ComprobanteOut]"
+   },
    "Pagina_CuentaCorporativaOut_": {
     "properties": {
      "total": {
@@ -11650,6 +12568,78 @@
      "pagado_at"
     ],
     "title": "PagoOut"
+   },
+   "PagoQrOut": {
+    "properties": {
+     "codigo_reserva": {
+      "type": "string",
+      "title": "Codigo Reserva"
+     },
+     "estado": {
+      "$ref": "#/components/schemas/EstadoVenta"
+     },
+     "en_revision": {
+      "type": "boolean",
+      "title": "En Revision"
+     },
+     "total_bs": {
+      "type": "number",
+      "title": "Total Bs"
+     },
+     "expira_at": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Expira At"
+     },
+     "origen": {
+      "type": "string",
+      "title": "Origen"
+     },
+     "destino": {
+      "type": "string",
+      "title": "Destino"
+     },
+     "fecha_hora_salida": {
+      "type": "string",
+      "title": "Fecha Hora Salida"
+     },
+     "boletos": {
+      "type": "integer",
+      "title": "Boletos"
+     },
+     "qr_payload": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Qr Payload"
+     }
+    },
+    "type": "object",
+    "required": [
+     "codigo_reserva",
+     "estado",
+     "en_revision",
+     "total_bs",
+     "expira_at",
+     "origen",
+     "destino",
+     "fecha_hora_salida",
+     "boletos",
+     "qr_payload"
+    ],
+    "title": "PagoQrOut",
+    "description": "Datos mínimos para la página pública del QR (sin nombres ni documentos)."
    },
    "ParadaOut": {
     "properties": {
@@ -12544,6 +13534,22 @@
     ],
     "title": "RastreoOut",
     "description": "Vista pública: sin nombres, teléfonos, montos ni PIN."
+   },
+   "RechazarComprobanteIn": {
+    "properties": {
+     "motivo": {
+      "type": "string",
+      "maxLength": 200,
+      "minLength": 3,
+      "title": "Motivo",
+      "description": "Se le envía al cliente por WhatsApp"
+     }
+    },
+    "type": "object",
+    "required": [
+     "motivo"
+    ],
+    "title": "RechazarComprobanteIn"
    },
    "ReembolsoAdminIn": {
     "properties": {

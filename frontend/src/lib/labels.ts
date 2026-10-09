@@ -16,6 +16,12 @@ export const ESTADO_SALIDA: Record<string, Etiqueta> = {
   cancelada: { label: 'Cancelada', tono: 'peligro' },
 }
 
+export const ESTADO_COMPROBANTE: Record<string, Etiqueta> = {
+  en_revision: { label: 'Por revisar', tono: 'aviso' },
+  aprobado: { label: 'Aprobado', tono: 'exito' },
+  rechazado: { label: 'Rechazado', tono: 'peligro' },
+}
+
 export const ESTADO_ENCOMIENDA: Record<string, Etiqueta> = {
   registrada: { label: 'Registrada', tono: 'neutro' },
   recibida_en_origen: { label: 'Recibida en origen', tono: 'neutro' },

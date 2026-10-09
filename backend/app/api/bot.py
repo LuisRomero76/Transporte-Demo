@@ -19,7 +19,7 @@ from app.core.db import SessionLocal
 from app.core.deps import SessionDep, requiere_bot
 from app.core.errors import DomainError
 from app.models import ApiKey, BotConsultaLog
-from app.services import bot
+from app.services import bot, compra_chat
 from app.services.api_keys import SCOPE_ESCRITURA, SCOPE_LECTURA, KeyValida
 from app.utils.fechas import ahora
 
@@ -197,4 +197,44 @@ async def solicitar_puerta_a_puerta(session: SessionDep, key: Escritura, datos: 
         "solicitar_puerta_a_puerta",
         datos.model_dump(),
         bot.solicitar_puerta_a_puerta(session, datos),
+    )
+
+
+# --- Compra de pasajes por chat -------------------------------------------------------------------
+
+
+@router.get("/salidas/{codigo_salida}/asientos", summary="ver_asientos: asientos libres de una salida por clase")
+async def ver_asientos(
+    session: SessionDep,
+    key: Lectura,
+    codigo_salida: str,
+    clase: Annotated[str | None, Query(description="Suite Cama o Leito Cama (opcional)")] = None,
+):
+    """El código de la salida viene de `consultar_salidas`. Solo salidas que aún se venden por chat."""
+    return await _responder(
+        key,
+        "ver_asientos",
+        {"codigo_salida": codigo_salida, "clase": clase},
+        compra_chat.ver_asientos(session, codigo_salida, clase),
+    )
+
+
+@router.post("/reservas", summary="crear_reserva_chat: reserva asientos y devuelve el enlace del QR de pago")
+async def crear_reserva_chat(session: SessionDep, key: Escritura, datos: compra_chat.BotReservaIn):
+    """Solo con `confirmado=true` (el cliente aceptó el resumen). El comprador es el primer pasajero y su
+    teléfono es `caller_id`. Si el número ya tiene una reserva pendiente para esa salida, la devuelve."""
+    return await _responder(
+        key, "crear_reserva_chat", datos.model_dump(mode="json"), compra_chat.crear_reserva(session, datos)
+    )
+
+
+@router.post("/comprobantes", summary="registrar_comprobante: deja en revisión el comprobante de pago por QR")
+async def registrar_comprobante(session: SessionDep, key: Escritura, datos: compra_chat.BotComprobanteIn):
+    """El agente lee la foto del comprobante y envía lo que ve. `conversation_id` ({{system__conversation_id}})
+    permite descargar la imagen cuando termina la conversación para mostrarla en el panel."""
+    return await _responder(
+        key,
+        "registrar_comprobante",
+        datos.model_dump(mode="json"),
+        compra_chat.registrar_comprobante(session, datos),
     )

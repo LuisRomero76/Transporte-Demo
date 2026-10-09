@@ -8,6 +8,7 @@ export const ACCESO = {
   boleteria: ['supervisor', 'boletero'] as Rol[],
   abordaje: ['supervisor', 'boletero', 'conductor'] as Rol[],
   ventas: ['supervisor', 'boletero'] as Rol[],
+  pagosWhatsapp: ['supervisor', 'boletero'] as Rol[],
   reembolsos: ['supervisor', 'soporte'] as Rol[],
   reembolsosResolver: ['supervisor'] as Rol[],
   encomiendas: ['supervisor', 'encargado_bodega', 'repartidor'] as Rol[],

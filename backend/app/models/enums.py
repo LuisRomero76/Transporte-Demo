@@ -116,6 +116,12 @@ class EstadoPago(StrEnum):
     anulado = "anulado"
 
 
+class EstadoComprobante(StrEnum):
+    en_revision = "en_revision"
+    aprobado = "aprobado"
+    rechazado = "rechazado"
+
+
 class EstadoFactura(StrEnum):
     valida = "valida"
     anulada = "anulada"

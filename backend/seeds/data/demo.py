@@ -80,6 +80,22 @@ PARAMETROS = {
     "venta_anticipacion_max_dias": (30, "Días de anticipación máxima para vender", True),
     "venta_cierre_minutos_antes": (30, "La venta en línea cierra estos minutos antes de la salida", True),
     "boletos_max_por_venta": (6, "Boletos máximos por reserva", True),
+    "reserva_chat_expira_minutos": (120, "Minutos para pagar por QR una reserva hecha por WhatsApp", True),
+    "venta_chat_cierre_minutos_antes": (
+        180,
+        "La venta por WhatsApp cierra estos minutos antes de la salida (y el plazo de pago nunca los supera)",
+        True,
+    ),
+    "reservas_chat_pendientes_max": (
+        2,
+        "Reservas pendientes de pago que puede tener a la vez un número de WhatsApp",
+        True,
+    ),
+    "comprobante_rechazo_plazo_minutos": (
+        60,
+        "Minutos para enviar otro comprobante cuando se rechaza el anterior",
+        True,
+    ),
 }
 
 FERIADOS = [

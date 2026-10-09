@@ -245,6 +245,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/reservas/{codigo}/pago-qr": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** QR de pago de una reserva hecha por WhatsApp (sin datos personales) */
+        get: operations["pago_qr_api_v1_reservas__codigo__pago_qr_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/reservas/{codigo}/pagar": {
         parameters: {
             query?: never;
@@ -749,6 +766,74 @@ export interface paths {
         put?: never;
         /** Aprobar, rechazar o marcar como pagado un reembolso */
         post: operations["resolver_reembolso_api_v1_admin_reembolsos__reembolso_id__resolver_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/comprobantes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Listar comprobantes (por revisar: más antiguos primero) */
+        get: operations["listar_api_v1_admin_comprobantes_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/comprobantes/{comprobante_id}/imagen": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Imagen del comprobante enviada por el cliente */
+        get: operations["imagen_api_v1_admin_comprobantes__comprobante_id__imagen_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/comprobantes/{comprobante_id}/aprobar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Aprobar: emite los boletos y avisa al cliente por WhatsApp */
+        post: operations["aprobar_api_v1_admin_comprobantes__comprobante_id__aprobar_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/comprobantes/{comprobante_id}/rechazar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Rechazar: el cliente recibe el motivo y un plazo corto para enviar otro comprobante */
+        post: operations["rechazar_api_v1_admin_comprobantes__comprobante_id__rechazar_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1709,6 +1794,68 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/bot/salidas/{codigo_salida}/asientos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * ver_asientos: asientos libres de una salida por clase
+         * @description El código de la salida viene de `consultar_salidas`. Solo salidas que aún se venden por chat.
+         */
+        get: operations["ver_asientos_api_bot_salidas__codigo_salida__asientos_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/bot/reservas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * crear_reserva_chat: reserva asientos y devuelve el enlace del QR de pago
+         * @description Solo con `confirmado=true` (el cliente aceptó el resumen). El comprador es el primer pasajero y su
+         *     teléfono es `caller_id`. Si el número ya tiene una reserva pendiente para esa salida, la devuelve.
+         */
+        post: operations["crear_reserva_chat_api_bot_reservas_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/bot/comprobantes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * registrar_comprobante: deja en revisión el comprobante de pago por QR
+         * @description El agente lee la foto del comprobante y envía lo que ve. `conversation_id` ({{system__conversation_id}})
+         *     permite descargar la imagen cuando termina la conversación para mostrarla en el panel.
+         */
+        post: operations["registrar_comprobante_api_bot_comprobantes_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -1718,6 +1865,23 @@ export interface paths {
         };
         /** Estado del servicio y de la base de datos */
         get: operations["health_health_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ping": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Responde sin consultar la base (para monitores y keep-alive) */
+        get: operations["ping_ping_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1838,6 +2002,30 @@ export interface components {
             /** Viaja Con Perro Guia */
             viaja_con_perro_guia: boolean;
         };
+        /** BotComprobanteIn */
+        BotComprobanteIn: {
+            /** Caller Id */
+            caller_id?: string | null;
+            /** Conversation Id */
+            conversation_id?: string | null;
+            /** Codigo Reserva */
+            codigo_reserva?: string | null;
+            /**
+             * Es Comprobante
+             * @description false si la imagen no es un comprobante de pago
+             */
+            es_comprobante?: boolean | string | null;
+            /** Monto */
+            monto?: string | number | null;
+            /** Fecha */
+            fecha?: string | null;
+            /** Numero Transaccion */
+            numero_transaccion?: string | null;
+            /** Banco */
+            banco?: string | null;
+            /** Cuenta Destino */
+            cuenta_destino?: string | null;
+        };
         /** BotConsultaOut */
         BotConsultaOut: {
             /** Id */
@@ -1864,6 +2052,17 @@ export interface components {
             latencia_ms: number;
             /** Created At */
             created_at: string;
+        };
+        /** BotPasajeroIn */
+        BotPasajeroIn: {
+            /** Numero Documento */
+            numero_documento?: string | null;
+            /** Nombres */
+            nombres?: string | null;
+            /** Apellidos */
+            apellidos?: string | null;
+            /** Numero Asiento */
+            numero_asiento?: number | string | null;
         };
         /**
          * BotPuertaIn
@@ -1896,6 +2095,22 @@ export interface components {
             descripcion?: string | null;
             /** Numero Guia */
             numero_guia?: string | null;
+        };
+        /** BotReservaIn */
+        BotReservaIn: {
+            /** Caller Id */
+            caller_id?: string | null;
+            /** Codigo Salida */
+            codigo_salida?: string | null;
+            /**
+             * Clase
+             * @description Suite Cama o Leito Cama; obligatoria si no se eligen asientos
+             */
+            clase?: string | null;
+            /** Pasajeros */
+            pasajeros?: components["schemas"]["BotPasajeroIn"][];
+            /** Confirmado */
+            confirmado?: boolean | string | null;
         };
         /** BusIn */
         BusIn: {
@@ -2097,6 +2312,64 @@ export interface components {
             nit_facturacion?: string | null;
             /** Razon Social Facturacion */
             razon_social_facturacion?: string | null;
+        };
+        /** ComprobanteOut */
+        ComprobanteOut: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            estado: components["schemas"]["EstadoComprobante"];
+            /** Codigo Reserva */
+            codigo_reserva: string;
+            estado_reserva: components["schemas"]["EstadoVenta"];
+            /** Comprador */
+            comprador: string;
+            /** Telefono */
+            telefono: string | null;
+            /** Total Bs */
+            total_bs: number;
+            /** Monto Leido Bs */
+            monto_leido_bs: number | null;
+            /** Monto Coincide */
+            monto_coincide: boolean;
+            /** Fecha Leida */
+            fecha_leida: string | null;
+            /** Numero Transaccion */
+            numero_transaccion: string | null;
+            /**
+             * Transaccion Repetida
+             * @description Otro comprobante tiene el mismo número de transacción
+             */
+            transaccion_repetida: boolean;
+            /** Banco */
+            banco: string | null;
+            /** Cuenta Destino */
+            cuenta_destino: string | null;
+            /** Tiene Imagen */
+            tiene_imagen: boolean;
+            /** Viaje */
+            viaje: string | null;
+            /** Fecha Hora Salida */
+            fecha_hora_salida: string | null;
+            /** Boletos */
+            boletos: number;
+            /**
+             * Salida Proxima
+             * @description La salida es en menos de 6 horas
+             */
+            salida_proxima: boolean;
+            /** Motivo Rechazo */
+            motivo_rechazo: string | null;
+            /** Revisado At */
+            revisado_at: string | null;
+            /** Notificado At */
+            notificado_at: string | null;
+            /** Notificacion Error */
+            notificacion_error: string | null;
+            /** Created At */
+            created_at: string;
         };
         /** CotizacionOut */
         CotizacionOut: {
@@ -2472,6 +2745,11 @@ export interface components {
          * @enum {string}
          */
         EstadoBus: "operativo" | "mantenimiento" | "fuera_de_servicio";
+        /**
+         * EstadoComprobante
+         * @enum {string}
+         */
+        EstadoComprobante: "en_revision" | "aprobado" | "rechazado";
         /**
          * EstadoEncomienda
          * @enum {string}
@@ -3002,6 +3280,17 @@ export interface components {
             /** Items */
             items: components["schemas"]["ClienteOut"][];
         };
+        /** Pagina[ComprobanteOut] */
+        Pagina_ComprobanteOut_: {
+            /** Total */
+            total: number;
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
+            /** Items */
+            items: components["schemas"]["ComprobanteOut"][];
+        };
         /** Pagina[CuentaCorporativaOut] */
         Pagina_CuentaCorporativaOut_: {
             /** Total */
@@ -3203,6 +3492,31 @@ export interface components {
             qr_payload: string | null;
             /** Pagado At */
             pagado_at: string | null;
+        };
+        /**
+         * PagoQrOut
+         * @description Datos mínimos para la página pública del QR (sin nombres ni documentos).
+         */
+        PagoQrOut: {
+            /** Codigo Reserva */
+            codigo_reserva: string;
+            estado: components["schemas"]["EstadoVenta"];
+            /** En Revision */
+            en_revision: boolean;
+            /** Total Bs */
+            total_bs: number;
+            /** Expira At */
+            expira_at: string | null;
+            /** Origen */
+            origen: string;
+            /** Destino */
+            destino: string;
+            /** Fecha Hora Salida */
+            fecha_hora_salida: string;
+            /** Boletos */
+            boletos: number;
+            /** Qr Payload */
+            qr_payload: string | null;
         };
         /** ParadaOut */
         ParadaOut: {
@@ -3520,6 +3834,14 @@ export interface components {
             eventos: components["schemas"]["EventoOut"][];
             /** Mensaje */
             mensaje: string;
+        };
+        /** RechazarComprobanteIn */
+        RechazarComprobanteIn: {
+            /**
+             * Motivo
+             * @description Se le envía al cliente por WhatsApp
+             */
+            motivo: string;
         };
         /** ReembolsoAdminIn */
         ReembolsoAdminIn: {
@@ -4704,6 +5026,37 @@ export interface operations {
             };
         };
     };
+    pago_qr_api_v1_reservas__codigo__pago_qr_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                codigo: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PagoQrOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     pagar_api_v1_reservas__codigo__pagar_post: {
         parameters: {
             query?: never;
@@ -5692,6 +6045,140 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ReembolsoOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    listar_api_v1_admin_comprobantes_get: {
+        parameters: {
+            query?: {
+                estado?: components["schemas"]["EstadoComprobante"] | null;
+                /** @description Cantidad de resultados */
+                limit?: number;
+                /** @description Resultados a saltar */
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Pagina_ComprobanteOut_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    imagen_api_v1_admin_comprobantes__comprobante_id__imagen_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                comprobante_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "image/jpeg": unknown;
+                    "image/png": unknown;
+                    "application/pdf": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    aprobar_api_v1_admin_comprobantes__comprobante_id__aprobar_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                comprobante_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComprobanteOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    rechazar_api_v1_admin_comprobantes__comprobante_id__rechazar_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                comprobante_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RechazarComprobanteIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComprobanteOut"];
                 };
             };
             /** @description Validation Error */
@@ -8235,6 +8722,106 @@ export interface operations {
             };
         };
     };
+    ver_asientos_api_bot_salidas__codigo_salida__asientos_get: {
+        parameters: {
+            query?: {
+                /** @description Suite Cama o Leito Cama (opcional) */
+                clase?: string | null;
+            };
+            header?: never;
+            path: {
+                codigo_salida: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    crear_reserva_chat_api_bot_reservas_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BotReservaIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    registrar_comprobante_api_bot_comprobantes_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BotComprobanteIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     health_health_get: {
         parameters: {
             query?: never;
@@ -8251,6 +8838,28 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+        };
+    };
+    ping_ping_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: boolean;
+                    };
                 };
             };
         };

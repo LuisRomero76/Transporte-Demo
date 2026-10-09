@@ -207,10 +207,25 @@ Ejemplo de respuesta (`rastrear_encomienda` con el número del destinatario):
 | `buscar_faq` | GET `https://tu-dominio/api/bot/faqs/buscar` | query `q` | La pregunta del cliente con sus palabras |
 | `info_empresa` | GET `https://tu-dominio/api/bot/empresa` | — | — |
 | `solicitar_puerta_a_puerta` | POST `https://tu-dominio/api/bot/puerta-a-puerta` | body: `caller_id` (dynamic variable), `tipo`, `ciudad`, `numero_documento`, `nombres`, `apellidos`, `direccion`, `referencia`, `fecha`, `peso_kg`, `descripcion`, `numero_guia`, `telefono` | `tipo` recojo o entrega; carnet, nombre, dirección y día; `telefono` solo si quiere que lo contacten a otro número; `numero_guia` para entregas |
+| `ver_asientos` | GET `https://tu-dominio/api/bot/salidas/{codigo_salida}/asientos` | path `codigo_salida` (requerido), query `clase` (opcional) | Código de la salida que devolvió `consultar_salidas`; clase Suite Cama o Leito Cama |
+| `crear_reserva_chat` | POST `https://tu-dominio/api/bot/reservas` | body: `caller_id` (dynamic variable), `codigo_salida`, `clase`, `pasajeros` (lista de `numero_documento`, `nombres`, `apellidos`, `numero_asiento`), `confirmado` | Solo tras mostrar el resumen y recibir un «sí»; el primer pasajero es el comprador |
+| `registrar_comprobante` | POST `https://tu-dominio/api/bot/comprobantes` | body: `caller_id` y `conversation_id` (dynamic variables `system__caller_id` y `system__conversation_id`), `codigo_reserva`, `es_comprobante`, `monto`, `fecha`, `numero_transaccion`, `banco`, `cuenta_destino` | Lo que se lee en la foto del comprobante; `es_comprobante` false si la imagen no es un comprobante |
 
 3. **Prompt del agente** (sugerencia): «Usa las herramientas para responder sobre encomiendas, pasajes, oficinas y preguntas frecuentes. Di el contenido de `mensaje` con tus palabras, sin inventar datos. Nunca pidas ni digas el código de retiro. Si `encontrado` es falso, sigue la sugerencia del mensaje.»
 
 `system__caller_id` solo tiene valor en llamadas telefónicas (Twilio o SIP). En las pruebas desde el navegador llega vacío y la API responde como a un número desconocido. Para ver los datos completos, prueba con `curl` y `caller_id=` el número de `DEMO_TELEFONO_E164`.
+
+### Compra de pasajes por WhatsApp
+
+1. `consultar_salidas` → `ver_asientos` → el agente pide los datos de cada pasajero (carnet, nombres, apellidos), muestra el resumen y, con el «sí» del cliente, llama a `crear_reserva_chat`.
+2. La reserva queda pendiente de pago `reserva_chat_expira_minutos` (120), sin pasar `venta_chat_cierre_minutos_antes` (180) antes de la salida. El cliente recibe el enlace `WEB_PUBLICA_URL/pagar/CÓDIGO` con el QR de demostración.
+3. El cliente envía la foto del comprobante; el agente la lee y llama a `registrar_comprobante`. La reserva deja de vencer mientras se revisa y el agente termina la conversación.
+4. Al terminar la conversación, el webhook post-llamada de ElevenLabs (`POST /api/webhooks/elevenlabs`, firmado con `ELEVENLABS_WEBHOOK_SECRET`) dispara la descarga de la imagen; una tarea cada `JOB_COMPROBANTES_SEGUNDOS` hace de respaldo.
+5. En el panel, *Pagos por WhatsApp*: **Aprobar** emite los boletos y envía la plantilla `compra_confirmada`; **Rechazar** envía `pago_rechazado` con el motivo y da `comprobante_rechazo_plazo_minutos` (60) para otro comprobante.
+
+Contra compras duplicadas: la salida se bloquea antes de validar, un número tiene una sola reserva pendiente por salida (si el agente repite la llamada recibe la misma), un carnet tiene un solo pasaje por salida, cada número tiene como máximo `reservas_chat_pendientes_max` (2) reservas pendientes y un número de transacción no se acepta en dos reservas.
+
+Variables de entorno: `ELEVENLABS_API_KEY` (permiso ElevenAgents: escritura), `ELEVENLABS_AGENT_ID`, `ELEVENLABS_WHATSAPP_PHONE_NUMBER_ID`, `ELEVENLABS_WEBHOOK_SECRET` y `WEB_PUBLICA_URL`. Las plantillas de Meta (`compra_confirmada`, `pago_rechazado`, idioma `es`) deben estar aprobadas y la cuenta de WhatsApp Business necesita un método de pago; sin él, Meta descarta las plantillas sin avisar.
 
 ### Registro
 

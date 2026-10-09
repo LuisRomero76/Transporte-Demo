@@ -24,6 +24,10 @@ DEFAULTS: dict[str, Any] = {
     "venta_anticipacion_max_dias": 30,
     "venta_cierre_minutos_antes": 30,
     "boletos_max_por_venta": 6,
+    "reserva_chat_expira_minutos": 120,
+    "venta_chat_cierre_minutos_antes": 180,
+    "reservas_chat_pendientes_max": 2,
+    "comprobante_rechazo_plazo_minutos": 60,
 }
 
 

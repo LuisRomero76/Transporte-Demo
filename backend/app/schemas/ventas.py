@@ -272,3 +272,18 @@ class CalendarioOut(BaseModel):
     origen: str
     destino: str
     dias: list[DiaCalendario]
+
+
+class PagoQrOut(BaseModel):
+    """Datos mínimos para la página pública del QR (sin nombres ni documentos)."""
+
+    codigo_reserva: str
+    estado: EstadoVenta
+    en_revision: bool
+    total_bs: Monto
+    expira_at: FechaHora | None
+    origen: str
+    destino: str
+    fecha_hora_salida: FechaHora
+    boletos: int
+    qr_payload: str | None
