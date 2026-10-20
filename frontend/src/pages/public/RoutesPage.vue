@@ -21,8 +21,8 @@ function ver(origen: string, destino: string): void {
 
 <template>
   <div>
-    <section class="contenedor pt-2">
-      <div class="hero px-6 sm:px-10 py-10 sm:py-14">
+    <section class="hero rounded-none!">
+      <div class="contenedor py-10 sm:py-14">
         <h1 class="text-[34px] font-medium tracking-tight sm:text-[44px]">Rutas e itinerarios</h1>
         <p class="mt-2 max-w-2xl text-on-accent/85">
           Viajes nocturnos entre Sucre y Santa Cruz, Tarija y La Paz, en buses de dos pisos Suite Cama y Leito Cama.

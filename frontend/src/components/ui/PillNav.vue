@@ -4,7 +4,12 @@ import { nextTick, onMounted, ref, watch } from 'vue'
 import { RouterLink, type RouteLocationRaw } from 'vue-router'
 
 /** Navegación en pastilla con la opción activa invertida; la pastilla se desliza entre opciones. */
-const props = defineProps<{ items: { key: string; label: string; to: RouteLocationRaw; active: boolean }[]; label: string }>()
+const props = defineProps<{
+  items: { key: string; label: string; to: RouteLocationRaw; active: boolean }[]
+  label: string
+  /** Sin contenedor en pastilla: para barras de ancho completo. */
+  plano?: boolean
+}>()
 
 const caja = ref<HTMLElement | null>(null)
 const marca = ref({ left: 0, width: 0, visible: false })
@@ -22,7 +27,7 @@ useResizeObserver(caja, medir)
 </script>
 
 <template>
-  <nav :aria-label="label" class="pill-group relative max-w-full overflow-x-auto scrollbar-none">
+  <nav :aria-label="label" class="relative max-w-full overflow-x-auto scrollbar-none" :class="plano ? '' : 'pill-group'">
     <div ref="caja" class="relative flex gap-1">
       <span
         aria-hidden="true"
@@ -36,7 +41,7 @@ useResizeObserver(caja, medir)
         :to="i.to"
         :data-activo="i.active"
         :aria-current="i.active ? 'page' : undefined"
-        class="relative rounded-full px-3.5 py-2 text-[13px] whitespace-nowrap transition-colors duration-200"
+        class="relative rounded-full px-4 py-2 text-sm whitespace-nowrap transition-colors duration-200"
         :class="i.active ? 'text-pill-active-fg' : 'text-muted hover:text-fg'"
       >
         {{ i.label }}

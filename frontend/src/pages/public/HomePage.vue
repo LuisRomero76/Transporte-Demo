@@ -5,9 +5,12 @@ import {
   Bed,
   Home,
   Package,
+  PackageSearch,
   ReceiptText,
   RotateCcw,
   ShieldCheck,
+  Ticket,
+  TicketCheck,
   Truck,
 } from '@lucide/vue'
 import { useQuery } from '@tanstack/vue-query'
@@ -55,6 +58,14 @@ const pestanas = [
   { key: 'reserva', label: 'Mi reserva' },
 ] as const
 
+// Accesos directos del cliente: cada uno lleva a una sección que ya existe.
+const accesos = [
+  { icono: Ticket, titulo: 'Comprar pasaje', texto: 'Busca tu salida y elige tu asiento', to: { name: 'inicio', hash: '#buscador' } },
+  { icono: TicketCheck, titulo: 'Mi reserva', texto: 'Consulta, paga o descarga tu e-ticket', to: { name: 'mi-reserva' } },
+  { icono: PackageSearch, titulo: 'Rastrear envío', texto: 'Sigue tu encomienda con la guía', to: { name: 'rastreo' } },
+  { icono: Package, titulo: 'Enviar encomienda', texto: 'Cotiza y envía a 7 ciudades', to: { name: 'carga' } },
+]
+
 const ventajas = [
   { icono: ReceiptText, titulo: 'Tu e-ticket es tu factura', texto: 'Recíbelo al instante y muéstralo desde tu celular.' },
   { icono: ShieldCheck, titulo: 'Pago 100 % seguro', texto: 'QR de bancos bolivianos, tarjeta Visa o Mastercard y Tigo Money.' },
@@ -65,8 +76,9 @@ const ventajas = [
 
 <template>
   <div>
-    <section class="contenedor pt-2">
-      <div class="hero grid items-center gap-10 px-6 pt-10 pb-44 sm:px-10 sm:pb-40 lg:grid-cols-[1.1fr_1fr] lg:pt-14 lg:pb-32">
+    <section>
+      <div class="hero rounded-none!">
+      <div class="contenedor grid items-center gap-10 pt-12 pb-44 sm:pb-40 lg:grid-cols-[1.1fr_1fr] lg:pt-16 lg:pb-36">
         <div class="relative flex flex-col gap-5">
           <span class="hero-chip w-fit sm:text-[13px]">Sucre · Santa Cruz · Tarija · La Paz</span>
           <h1 class="text-[40px] leading-[1.05] font-semibold tracking-tight sm:text-5xl lg:text-[56px]">Viaja de noche,<br />llega descansado.</h1>
@@ -81,8 +93,9 @@ const ventajas = [
         </div>
         <div class="relative hidden lg:block"><RouteMapArt /></div>
       </div>
+      </div>
 
-      <div class="relative -mt-36 px-3 sm:-mt-32 sm:px-6 lg:-mt-24">
+      <div id="buscador" class="contenedor relative -mt-36 scroll-mt-24 sm:-mt-32 lg:-mt-28">
         <div class="rounded-card border border-line bg-surface p-4 pb-5 text-fg shadow-flotante sm:p-5">
           <div role="tablist" aria-label="¿Qué quieres hacer?" class="mb-4 flex w-fit max-w-full gap-1 overflow-x-auto rounded-full border border-line bg-surface-2 p-1">
             <button
@@ -111,7 +124,28 @@ const ventajas = [
       </div>
     </section>
 
-    <div class="contenedor entrada flex flex-col gap-16 pt-14 pb-6">
+    <nav aria-label="Accesos directos" class="contenedor mt-8">
+      <ul class="entrada grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
+        <li v-for="a in accesos" :key="a.titulo">
+          <RouterLink
+            :to="a.to"
+            class="group flex h-full items-center gap-4 rounded-card border border-line bg-surface p-4 shadow-suave transition-colors hover:border-accent-line sm:p-5"
+            @click="a.to.name === 'inicio' && (pestana = 'pasajes')"
+          >
+            <span class="grid size-12 shrink-0 place-items-center rounded-full bg-accent-soft text-accent-fg">
+              <component :is="a.icono" class="size-5" aria-hidden="true" />
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block font-medium">{{ a.titulo }}</span>
+              <span class="hidden text-[13px] text-muted sm:block">{{ a.texto }}</span>
+            </span>
+            <ArrowRight class="hidden size-4 shrink-0 text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-accent-fg sm:block" aria-hidden="true" />
+          </RouterLink>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="contenedor flex flex-col gap-16 pt-16">
       <DepartureBoard />
 
       <section aria-labelledby="rutas-titulo" class="flex flex-col gap-6">
@@ -145,12 +179,25 @@ const ventajas = [
         </div>
       </section>
 
-      <section aria-labelledby="buses-titulo" class="grid gap-5 md:grid-cols-2">
-        <h2 id="buses-titulo" class="sr-only">Nuestros buses</h2>
+    </div>
+
+    <div class="mt-16 border-y border-line bg-surface">
+      <div class="contenedor flex flex-col gap-10 py-16">
+      <section aria-labelledby="buses-titulo" class="flex flex-col gap-6">
+        <div class="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 id="buses-titulo" class="text-[28px] font-medium tracking-tight sm:text-[30px]">Nuestros buses</h2>
+            <p class="mt-1 text-muted">Dos pisos pensados para viajar de noche.</p>
+          </div>
+          <RouterLink :to="{ name: 'buses' }" class="flex items-center gap-1 font-semibold text-accent-fg hover:underline">
+            Conocer la flota <ArrowRight class="size-4" aria-hidden="true" />
+          </RouterLink>
+        </div>
+        <div class="grid gap-5 md:grid-cols-2">
         <article
           v-for="t in tipos ?? []"
           :key="t.id"
-          class="flex flex-col gap-3 rounded-card border border-line bg-surface p-7 shadow-suave"
+          class="flex flex-col gap-3 rounded-card border border-line bg-canvas p-7"
         >
           <span class="w-fit rounded-full bg-accent-soft px-2.5 py-1 text-xs text-accent-fg">Planta {{ t.planta }}</span>
           <h3 class="text-[26px] font-medium tracking-tight">{{ t.nombre }} · {{ t.inclinacion_grados }}°</h3>
@@ -161,12 +208,13 @@ const ventajas = [
             </li>
           </ul>
         </article>
+      </div>
       </section>
 
       <section aria-labelledby="ventajas-titulo">
         <h2 id="ventajas-titulo" class="sr-only">Por qué viajar con nosotros</h2>
         <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <li v-for="v in ventajas" :key="v.titulo" class="flex gap-4 rounded-card border border-line bg-surface p-5">
+          <li v-for="v in ventajas" :key="v.titulo" class="flex gap-4 rounded-card border border-line bg-canvas p-5">
             <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent-fg">
               <component :is="v.icono" class="size-5" aria-hidden="true" />
             </span>
@@ -177,6 +225,10 @@ const ventajas = [
           </li>
         </ul>
       </section>
+      </div>
+    </div>
+
+    <div class="contenedor flex flex-col gap-16 pt-16">
 
       <section aria-labelledby="carga-titulo" class="grid gap-8 overflow-hidden rounded-card border border-line bg-surface p-6 sm:p-10 lg:grid-cols-[1.2fr_1fr]">
         <div class="flex flex-col gap-4">

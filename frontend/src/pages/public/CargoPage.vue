@@ -47,8 +47,8 @@ const servicios = [
 
 <template>
   <div>
-    <section class="contenedor pt-2">
-      <div class="hero px-6 sm:px-10 flex flex-col gap-4 py-10 sm:py-14">
+    <section class="hero rounded-none!">
+      <div class="contenedor flex flex-col gap-4 py-10 sm:py-14">
         <span class="hero-chip w-fit">7 ciudades · rastreo en tiempo real</span>
         <h1 class="max-w-2xl text-[34px] leading-tight font-medium tracking-tight sm:text-[44px]">Carga y encomiendas con guía electrónica</h1>
         <p class="max-w-2xl text-on-accent/85">

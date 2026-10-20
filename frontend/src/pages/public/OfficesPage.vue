@@ -21,8 +21,8 @@ const porCiudad = computed(() => {
 
 <template>
   <div>
-    <section class="contenedor pt-2">
-      <div class="hero px-6 sm:px-10 py-10 sm:py-14">
+    <section class="hero rounded-none!">
+      <div class="contenedor py-10 sm:py-14">
         <h1 class="text-[34px] font-medium tracking-tight sm:text-[44px]">Boleterías y bodegas</h1>
         <p class="mt-2 max-w-2xl text-on-accent/85">Boleterías de 07:00 a 20:00 y bodegas de 08:00 a 18:00 en 7 ciudades.</p>
       </div>

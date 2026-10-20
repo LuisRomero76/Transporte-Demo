@@ -95,9 +95,9 @@ const esRutaInvalida = computed(() => (busqueda.error.value as { code?: string }
 <template>
   <div>
     <BookingSteps :paso="1" />
-    <section class="contenedor pt-4">
-      <div class="hero">
-      <div class="flex flex-col gap-4 px-6 py-6 md:flex-row md:items-center md:justify-between sm:px-8">
+    <section class="hero rounded-none!">
+      <div class="contenedor">
+      <div class="flex flex-col gap-4 py-7 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 class="flex flex-wrap items-center gap-3 text-2xl font-medium tracking-tight sm:text-[28px]">
             {{ origen }} <ArrowRight class="size-6 text-on-accent/85" aria-hidden="true" /> {{ destino }}
@@ -110,8 +110,8 @@ const esRutaInvalida = computed(() => (busqueda.error.value as { code?: string }
           <SlidersHorizontal class="size-4" aria-hidden="true" />{{ modificar ? 'Cerrar' : 'Modificar búsqueda' }}
         </BaseButton>
       </div>
-      <div v-if="modificar" class="px-3 pb-3 sm:px-4 sm:pb-4">
-        <div class="rounded-inner bg-surface p-4 text-fg">
+      <div v-if="modificar" class="pb-6">
+        <div class="rounded-card bg-surface p-4 text-fg shadow-flotante sm:p-5">
           <TripSearchForm
             :key="route.fullPath"
             :initial="{ origen, destino, fecha, pasajeros }"

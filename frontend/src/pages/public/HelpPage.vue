@@ -40,8 +40,8 @@ onMounted(async () => {
 
 <template>
   <div>
-    <section class="contenedor pt-2">
-      <div class="hero px-6 sm:px-10 flex flex-col gap-5 py-10 sm:py-14">
+    <section class="hero rounded-none!">
+      <div class="contenedor flex flex-col gap-5 py-10 sm:py-14">
         <h1 class="text-[34px] font-medium tracking-tight sm:text-[44px]">¿En qué te ayudamos?</h1>
         <div class="relative max-w-2xl">
           <label for="faq-buscar" class="sr-only">Buscar en las preguntas frecuentes</label>

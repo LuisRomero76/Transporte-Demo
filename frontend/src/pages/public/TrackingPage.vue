@@ -59,8 +59,8 @@ const estado = computed(() => etiqueta(ESTADO_ENCOMIENDA, rastreo.data.value?.es
 
 <template>
   <div>
-    <section class="contenedor pt-2">
-      <div class="hero px-6 sm:px-10 flex flex-col gap-5 py-8 sm:py-10">
+    <section class="hero rounded-none!">
+      <div class="contenedor flex flex-col gap-5 py-8 sm:py-10">
         <div>
           <h1 class="text-[28px] font-medium tracking-tight sm:text-[34px]">Rastrea tu envío</h1>
           <p class="mt-1 text-on-accent/85">Sigue tu encomienda o carga en tiempo real con el número de guía.</p>

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 const CLAVE = 'em.panel.tema'
 
-/** Modo claro/oscuro de toda la app (portal y panel). Se aplica con data-theme en <html>. */
+/** Modo oscuro del panel de operación (el portal de clientes es siempre claro). Se aplica con data-theme en <html>. */
 export const useTemaStore = defineStore('tema', () => {
   const oscuro = ref(leer())
 

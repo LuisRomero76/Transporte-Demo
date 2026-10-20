@@ -21,8 +21,8 @@ const iconos: Record<string, Component> = {
 
 <template>
   <div>
-    <section class="contenedor pt-2">
-      <div class="hero px-6 sm:px-10 py-10 sm:py-14">
+    <section class="hero rounded-none!">
+      <div class="contenedor py-10 sm:py-14">
         <h1 class="text-[34px] font-medium tracking-tight sm:text-[44px]">Nuestros buses</h1>
         <p class="mt-2 max-w-2xl text-on-accent/85">
           Flota de dos pisos pensada para viajar de noche: Suite Cama en la planta alta y Leito Cama en la planta baja.

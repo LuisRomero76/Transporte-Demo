@@ -7,8 +7,8 @@ const estado = (i: number) => (i + 1 < props.paso ? 'hecho' : i + 1 === props.pa
 </script>
 
 <template>
-  <nav aria-label="Pasos de la compra" class="contenedor pt-2">
-    <ol class="flex h-13 w-fit max-w-full items-center gap-2 overflow-x-auto rounded-full border border-line bg-surface px-4 text-[13px] shadow-suave sm:gap-4">
+  <nav aria-label="Pasos de la compra" class="border-b border-line bg-surface">
+    <ol class="contenedor flex h-14 items-center gap-2 overflow-x-auto text-sm sm:gap-4">
       <li v-for="(p, i) in pasos" :key="p" class="flex shrink-0 items-center gap-2 sm:gap-4">
         <span
           class="flex items-center gap-2"

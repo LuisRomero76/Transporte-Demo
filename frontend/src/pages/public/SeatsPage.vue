@@ -176,7 +176,7 @@ const precioTexto = (codigo: string) => {
       </div>
     </div>
 
-    <div class="fixed inset-x-3 bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+4.25rem)] z-30 flex items-center gap-4 rounded-card border border-line bg-surface px-4 py-3 shadow-flotante lg:hidden">
+    <div class="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-30 flex items-center gap-4 border-t border-line bg-surface px-4 py-3 shadow-flotante lg:hidden">
       <div class="min-w-0 flex-1">
         <p class="truncate text-[13px] text-muted">
           {{ elegidos.length ? `Asientos ${elegidos.map((a) => a.numero).join(', ')}` : `Elige ${pasajeros} ${pasajeros === 1 ? 'asiento' : 'asientos'}` }}
