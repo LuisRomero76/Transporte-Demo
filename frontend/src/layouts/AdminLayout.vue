@@ -11,6 +11,8 @@ import {
   Moon,
   Package,
   PackagePlus,
+  PanelLeftClose,
+  PanelLeftOpen,
   Receipt,
   RotateCcw,
   ScanLine,
@@ -22,7 +24,7 @@ import {
   Users,
   X,
 } from '@lucide/vue'
-import { onKeyStroke } from '@vueuse/core'
+import { onKeyStroke, useStorage } from '@vueuse/core'
 import { DialogContent, DialogOverlay, DialogPortal, DialogRoot, DialogTitle } from 'reka-ui'
 import { computed, ref, watch, type Component } from 'vue'
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
@@ -40,6 +42,8 @@ const router = useRouter()
 const menuMovil = ref(false)
 watch(() => route.fullPath, () => (menuMovil.value = false))
 
+// Rail lateral: solo iconos o expandido con texto (preferencia de cada navegador).
+const railAbierto = useStorage('em.panel.rail', false)
 
 interface Item {
   to: string
@@ -87,6 +91,10 @@ function activo(to: string): boolean {
   if (to === '/admin/encomiendas') return route.path.startsWith('/admin/encomiendas') && route.path !== '/admin/encomiendas/nueva'
   return route.path.startsWith(to)
 }
+// Barra inferior en móvil: tres accesos frecuentes (según permisos) y el menú completo.
+const rapidos = computed(() =>
+  visibles.value.flatMap((s) => s.items).filter((i) => ['/admin', '/admin/boleteria', '/admin/encomiendas'].includes(i.to)),
+)
 
 async function salir(): Promise<void> {
   await auth.cerrarSesion()
@@ -114,50 +122,91 @@ function buscar(): void {
   busqueda.value = ''
 }
 const titulo = computed(() => route.meta.title ?? 'Panel')
+const nombreCompleto = computed(() => `${auth.usuario?.nombres ?? ''} ${auth.usuario?.apellidos ?? ''}`)
 </script>
 
 <template>
   <div class="min-h-dvh bg-canvas text-fg">
-    <aside class="no-print fixed inset-y-0 left-0 z-30 hidden w-[248px] flex-col bg-noche-900 text-noche-200 lg:flex dark:bg-noche-950">
-      <div class="px-5 pt-5 pb-4"><LogoMark :size="32" subtitle="Panel de operación" /></div>
-      <nav aria-label="Panel" class="flex-1 overflow-y-auto px-3 pb-4">
-        <div v-for="s in visibles" :key="s.titulo" class="mt-3">
-          <p class="px-3 pb-1.5 text-[11px] font-bold tracking-[0.1em] text-noche-400 uppercase">{{ s.titulo }}</p>
+    <aside
+      class="no-print fixed inset-y-3 left-3 z-30 hidden flex-col gap-2 transition-[width] duration-300 ease-[cubic-bezier(.2,.8,.2,1)] lg:flex"
+      :class="railAbierto ? 'w-58' : 'w-14'"
+    >
+      <RouterLink
+        to="/admin"
+        class="flex h-14 shrink-0 items-center overflow-hidden rounded-full border border-line bg-surface shadow-suave"
+        :class="railAbierto ? 'px-3' : 'justify-center'"
+        aria-label="TransDemo, ir al tablero"
+      >
+        <LogoMark :size="32" tone="dark" :wordmark="railAbierto" subtitle="Panel de operación" />
+      </RouterLink>
+
+      <nav aria-label="Panel" class="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto [scrollbar-width:thin]">
+        <div
+          v-for="s in visibles"
+          :key="s.titulo"
+          class="flex shrink-0 flex-col gap-0.5 border border-line bg-surface p-1 shadow-suave"
+          :class="railAbierto ? 'rounded-inner' : 'rounded-full'"
+          role="group"
+          :aria-label="s.titulo"
+        >
+          <p v-if="railAbierto" class="px-3 pt-1.5 pb-0.5 text-xs text-muted">{{ s.titulo }}</p>
           <RouterLink
             v-for="i in s.items"
             :key="i.to"
             :to="i.to"
-            class="flex h-10 items-center gap-3 rounded-lg px-3 text-sm transition-colors"
-            :class="activo(i.to) ? 'bg-noche-700 font-semibold text-white' : 'hover:bg-white/5 hover:text-white'"
+            class="flex shrink-0 items-center gap-3 rounded-full text-[13px] transition-colors"
+            :class="[
+              railAbierto ? 'h-9 px-3.5' : 'h-10 justify-center',
+              activo(i.to) ? 'bg-pill-active font-medium text-pill-active-fg' : 'text-muted hover:bg-surface-2 hover:text-fg',
+            ]"
             :aria-current="activo(i.to) ? 'page' : undefined"
+            :title="railAbierto ? undefined : i.label"
           >
-            <component :is="i.icono" class="size-[18px]" aria-hidden="true" />{{ i.label }}
+            <component :is="i.icono" class="size-[18px] shrink-0" aria-hidden="true" />
+            <span :class="railAbierto ? 'truncate' : 'sr-only'">{{ i.label }}</span>
           </RouterLink>
         </div>
       </nav>
-      <div class="flex items-center gap-3 border-t border-noche-800 px-4 py-4">
-        <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-noche-700 text-[13px] font-bold text-white">
-          {{ iniciales(`${auth.usuario?.nombres ?? ''} ${auth.usuario?.apellidos ?? ''}`) }}
-        </span>
-        <div class="min-w-0 flex-1 text-[13px]">
-          <p class="truncate font-semibold text-white">{{ auth.usuario?.nombres }} {{ auth.usuario?.apellidos?.split(' ')[0] }}</p>
-          <p class="truncate">{{ ROL[auth.usuario?.rol ?? ''] }}</p>
-        </div>
-        <button class="flex size-9 items-center justify-center rounded-lg hover:bg-white/10 hover:text-white" aria-label="Cerrar sesión" title="Cerrar sesión" @click="salir">
-          <LogOut class="size-[18px]" />
+
+      <div class="flex shrink-0 flex-col gap-1 border border-line bg-surface p-1 shadow-suave" :class="railAbierto ? 'rounded-inner' : 'rounded-full'">
+        <button
+          class="flex h-11 items-center gap-3 rounded-full text-[13px] text-muted transition-colors hover:bg-surface-2 hover:text-fg"
+          :class="railAbierto ? 'px-3.5' : 'justify-center'"
+          :aria-label="railAbierto ? 'Contraer menú' : 'Expandir menú'"
+          :aria-expanded="railAbierto"
+          :title="railAbierto ? undefined : 'Expandir menú'"
+          @click="railAbierto = !railAbierto"
+        >
+          <PanelLeftClose v-if="railAbierto" class="size-[18px] shrink-0" aria-hidden="true" />
+          <PanelLeftOpen v-else class="size-[18px] shrink-0" aria-hidden="true" />
+          <span v-if="railAbierto">Contraer</span>
+        </button>
+        <button
+          class="flex h-11 items-center gap-3 rounded-full text-[13px] text-muted transition-colors hover:bg-danger-soft hover:text-danger-fg"
+          :class="railAbierto ? 'px-3.5' : 'justify-center'"
+          aria-label="Cerrar sesión"
+          title="Cerrar sesión"
+          @click="salir"
+        >
+          <LogOut class="size-[18px] shrink-0" aria-hidden="true" />
+          <span v-if="railAbierto">Cerrar sesión</span>
         </button>
       </div>
     </aside>
 
-    <div class="flex min-h-dvh flex-col lg:pl-[248px]">
-      <header class="no-print sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-line bg-surface/95 px-4 backdrop-blur sm:px-6">
-        <button class="flex size-10 items-center justify-center rounded-lg hover:bg-surface-2 lg:hidden" aria-label="Abrir menú" @click="menuMovil = true">
-          <Menu class="size-5" />
-        </button>
-        <span class="truncate font-display text-base font-semibold lg:hidden">{{ titulo }}</span>
-        <form class="ml-auto hidden max-w-md flex-1 md:block lg:ml-0" role="search" @submit.prevent="buscar">
+    <div class="flex min-h-dvh flex-col transition-[padding] duration-300" :class="railAbierto ? 'lg:pl-64' : 'lg:pl-20'">
+      <header class="no-print sticky top-0 z-20 flex items-center gap-3 px-3 pt-3 pb-2 sm:px-6 lg:pr-8 lg:pl-4">
+        <div class="pill-group min-w-0 items-center lg:hidden">
+          <RouterLink to="/admin" class="flex size-9 shrink-0 items-center justify-center" aria-label="TransDemo, ir al tablero">
+            <LogoMark :size="30" :wordmark="false" />
+          </RouterLink>
+          <span class="truncate pr-3 text-[13px] font-medium">{{ titulo }}</span>
+        </div>
+        <form class="hidden max-w-md flex-1 md:block" role="search" @submit.prevent="buscar">
           <label for="buscador-global" class="sr-only">Buscar guía, reserva o cliente</label>
-          <div class="flex h-10 items-center gap-2 rounded-control border-[1.5px] border-line-strong px-3 focus-within:border-noche-700">
+          <div
+            class="flex h-11 items-center gap-2 rounded-full border border-line bg-surface px-4 shadow-suave transition-colors focus-within:border-accent-line focus-within:ring-4 focus-within:ring-(--ring)"
+          >
             <Search class="size-4 text-muted" aria-hidden="true" />
             <input
               id="buscador-global"
@@ -167,54 +216,95 @@ const titulo = computed(() => route.meta.title ?? 'Panel')
               placeholder="Guía, código de reserva o CI"
               autocomplete="off"
             />
-            <kbd class="rounded border border-line-strong px-1.5 font-mono text-[11px] text-muted">/</kbd>
+            <kbd class="rounded-full border border-line bg-surface-2 px-2 text-[11px] text-muted">/</kbd>
           </div>
         </form>
-        <div class="ml-auto flex items-center gap-2">
-          <RouterLink :to="{ name: 'inicio' }" class="hidden text-sm font-semibold text-muted hover:text-fg xl:inline">Ver portal</RouterLink>
+        <div class="pill-group ml-auto shrink-0 items-center">
+          <RouterLink :to="{ name: 'inicio' }" class="hidden h-9 items-center rounded-full px-3.5 text-[13px] font-medium text-muted hover:bg-surface-2 hover:text-fg xl:inline-flex">
+            Ver portal
+          </RouterLink>
           <button
-            class="flex size-10 items-center justify-center rounded-control border-[1.5px] border-line-strong hover:bg-surface-2"
+            class="flex size-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-fg"
             :aria-label="tema.oscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
             :aria-pressed="tema.oscuro"
             @click="tema.alternar()"
           >
             <Sun v-if="tema.oscuro" class="size-[18px]" /><Moon v-else class="size-[18px]" />
           </button>
+          <span class="hidden items-center gap-2.5 rounded-full bg-surface-2 py-1 pr-4 pl-1 sm:flex">
+            <span class="flex size-8 shrink-0 items-center justify-center rounded-full bg-pill-active text-[12px] font-medium text-pill-active-fg">
+              {{ iniciales(nombreCompleto) }}
+            </span>
+            <span class="min-w-0 text-[12px] leading-tight">
+              <span class="block max-w-36 truncate font-medium">{{ auth.usuario?.nombres }} {{ auth.usuario?.apellidos?.split(' ')[0] }}</span>
+              <span class="block max-w-36 truncate text-muted">{{ ROL[auth.usuario?.rol ?? ''] }}</span>
+            </span>
+          </span>
         </div>
       </header>
-      <main id="contenido" class="flex-1 px-4 py-6 sm:px-6 lg:px-8" tabindex="-1">
+      <main id="contenido" class="flex-1 px-3 pt-4 pb-28 sm:px-6 lg:pr-8 lg:pb-8 lg:pl-4" tabindex="-1">
         <RouterView />
       </main>
     </div>
 
+    <nav
+      aria-label="Accesos rápidos del panel"
+      class="no-print fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-30 flex gap-1 rounded-full border border-line bg-surface/95 p-1 shadow-flotante backdrop-blur lg:hidden"
+    >
+      <RouterLink
+        v-for="i in rapidos"
+        :key="i.to"
+        :to="i.to"
+        class="flex h-13 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-full text-[11px] font-medium transition-colors"
+        :class="activo(i.to) ? 'bg-pill-active text-pill-active-fg' : 'text-muted hover:text-fg'"
+        :aria-current="activo(i.to) ? 'page' : undefined"
+      >
+        <component :is="i.icono" class="size-5" aria-hidden="true" /><span class="max-w-full truncate px-1">{{ i.label }}</span>
+      </RouterLink>
+      <button
+        class="flex h-13 flex-1 flex-col items-center justify-center gap-0.5 rounded-full text-[11px] font-medium text-muted hover:text-fg"
+        aria-label="Abrir menú"
+        @click="menuMovil = true"
+      >
+        <Menu class="size-5" aria-hidden="true" />Menú
+      </button>
+    </nav>
+
     <DialogRoot v-model:open="menuMovil">
       <DialogPortal>
-        <DialogOverlay class="fixed inset-0 z-50 bg-noche-950/60 lg:hidden" />
-        <DialogContent class="fixed inset-y-0 left-0 z-50 flex w-[82vw] max-w-xs flex-col bg-noche-900 text-noche-200 data-[state=open]:animate-aparecer lg:hidden">
+        <DialogOverlay class="fixed inset-0 z-50 bg-overlay lg:hidden" />
+        <DialogContent
+          class="fixed inset-y-3 left-3 z-50 flex w-[calc(82vw-0.75rem)] max-w-xs flex-col rounded-card border border-line bg-surface text-fg shadow-flotante data-[state=open]:animate-aparecer lg:hidden"
+        >
           <div class="flex items-center justify-between px-5 pt-5 pb-3">
             <DialogTitle class="sr-only">Menú del panel</DialogTitle>
-            <LogoMark :size="30" />
-            <button class="flex size-10 items-center justify-center rounded-lg hover:bg-white/10" aria-label="Cerrar menú" @click="menuMovil = false"><X class="size-5" /></button>
+            <LogoMark :size="30" tone="dark" />
+            <button class="flex size-10 items-center justify-center rounded-full bg-surface-2 text-muted hover:text-fg" aria-label="Cerrar menú" @click="menuMovil = false"><X class="size-5" /></button>
           </div>
           <form class="px-4 pb-2" role="search" @submit.prevent="buscar">
             <label for="buscador-movil" class="sr-only">Buscar</label>
-            <input id="buscador-movil" v-model="busqueda" class="h-11 w-full rounded-lg bg-white/10 px-3 text-sm text-white outline-none placeholder:text-noche-300" placeholder="Guía, reserva o CI" />
+            <input
+              id="buscador-movil"
+              v-model="busqueda"
+              class="h-11 w-full rounded-full border border-line bg-surface-2 px-4 text-sm text-fg outline-none placeholder:text-muted focus:border-accent-line focus:ring-4 focus:ring-(--ring)"
+              placeholder="Guía, reserva o CI"
+            />
           </form>
           <nav aria-label="Panel móvil" class="flex-1 overflow-y-auto px-3 pb-4">
             <div v-for="s in visibles" :key="s.titulo" class="mt-3">
-              <p class="px-3 pb-1.5 text-[11px] font-bold tracking-[0.1em] text-noche-400 uppercase">{{ s.titulo }}</p>
+              <p class="px-3 pb-1.5 text-xs text-muted">{{ s.titulo }}</p>
               <RouterLink
                 v-for="i in s.items"
                 :key="i.to"
                 :to="i.to"
-                class="flex h-11 items-center gap-3 rounded-lg px-3 text-[15px]"
-                :class="activo(i.to) ? 'bg-noche-700 font-semibold text-white' : 'hover:bg-white/5'"
+                class="flex h-11 items-center gap-3 rounded-full px-3.5 text-[15px] transition-colors"
+                :class="activo(i.to) ? 'bg-pill-active font-medium text-pill-active-fg' : 'hover:bg-surface-2'"
               >
                 <component :is="i.icono" class="size-5" aria-hidden="true" />{{ i.label }}
               </RouterLink>
             </div>
           </nav>
-          <button class="m-4 flex h-11 items-center justify-center gap-2 rounded-lg border border-noche-700 font-semibold text-white" @click="salir">
+          <button class="m-4 flex h-11 items-center justify-center gap-2 rounded-full border border-line bg-surface-2 font-medium text-fg hover:text-danger-fg" @click="salir">
             <LogOut class="size-4" aria-hidden="true" />Cerrar sesión
           </button>
         </DialogContent>

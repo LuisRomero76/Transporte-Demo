@@ -8,10 +8,13 @@ const props = defineProps<{ items: { key: string; label: string; to: RouteLocati
 
 const caja = ref<HTMLElement | null>(null)
 const marca = ref({ left: 0, width: 0, visible: false })
+// La primera vez la pastilla aparece en su sitio; solo se desliza en los cambios siguientes.
+const animar = ref(false)
 
 function medir(): void {
   const activo = caja.value?.querySelector<HTMLElement>('[data-activo="true"]')
   marca.value = activo ? { left: activo.offsetLeft, width: activo.offsetWidth, visible: true } : { ...marca.value, visible: false }
+  if (activo && !animar.value) requestAnimationFrame(() => requestAnimationFrame(() => (animar.value = true)))
 }
 onMounted(medir)
 watch(() => props.items.map((i) => i.active).join(), () => nextTick(medir))
@@ -19,11 +22,12 @@ useResizeObserver(caja, medir)
 </script>
 
 <template>
-  <nav :aria-label="label" class="pill-group relative max-w-full overflow-x-auto [scrollbar-width:none]">
+  <nav :aria-label="label" class="pill-group relative max-w-full overflow-x-auto scrollbar-none">
     <div ref="caja" class="relative flex gap-1">
       <span
         aria-hidden="true"
-        class="absolute inset-y-0 rounded-full bg-pill-active transition-[left,width,opacity] duration-300 ease-[cubic-bezier(.2,.8,.2,1)]"
+        class="absolute inset-y-0 rounded-full bg-pill-active"
+        :class="animar ? 'transition-[left,width,opacity] duration-300 ease-[cubic-bezier(.2,.8,.2,1)]' : ''"
         :style="{ left: `${marca.left}px`, width: `${marca.width}px`, opacity: marca.visible ? 1 : 0 }"
       />
       <RouterLink
