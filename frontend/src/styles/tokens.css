@@ -1,0 +1,96 @@
+/* soft-pill-ui · tokens. Para otra marca cambia solo --accent y --accent-2. */
+:root {
+  --accent: #f26a3d;
+  --accent-2: #dc4422;
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+  --accent-line: color-mix(in srgb, var(--accent) 45%, transparent);
+  /* Texto de acento sobre fondo claro (contraste AA). */
+  --accent-fg: #b93a17;
+
+  --bg: #eeeef1;
+  --surface: #ffffff;
+  --surface-2: #f5f5f7;
+  --text: #0e0e10;
+  /* #8A8A93 de la skill, oscurecido lo justo para AA sobre --surface-2. */
+  --muted: #6e6e77;
+  --line: rgba(0, 0, 0, 0.06);
+  --line-strong: rgba(0, 0, 0, 0.12);
+  --pill-active-bg: #111113;
+  --pill-active-fg: #ffffff;
+  /* Texto oscuro fijo para botones blancos sobre el héroe (no cambia con el tema). */
+  --ink: #111113;
+  --overlay: rgba(9, 9, 10, 0.45);
+
+  /* Estados: color sólido + versión suave para chips. */
+  --success: #16a34a;
+  --success-fg: #15803d;
+  --success-soft: color-mix(in srgb, var(--success) 12%, transparent);
+  --danger: #e5484d;
+  --danger-fg: #c62a2f;
+  --danger-soft: color-mix(in srgb, var(--danger) 12%, transparent);
+  --warning: #f59e0b;
+  --warning-fg: #b45309;
+  --warning-soft: color-mix(in srgb, var(--warning) 16%, transparent);
+  --info: #3b82f6;
+  --info-fg: #1d4ed8;
+  --info-soft: color-mix(in srgb, var(--info) 12%, transparent);
+
+  --r-card: 24px;
+  --r-inner: 18px;
+  --r-pill: 999px;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.04);
+  --shadow-pop: 0 24px 48px -12px rgba(0, 0, 0, 0.18);
+  --ring: color-mix(in srgb, var(--accent) 22%, transparent);
+  --font: 'Inter Variable', 'Inter', 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --accent-fg: #ff8a63;
+    --bg: #09090a;
+    --surface: #141416;
+    --surface-2: #1c1c1f;
+    --text: #f4f4f5;
+    --muted: #9a9aa3;
+    --line: rgba(255, 255, 255, 0.06);
+    --line-strong: rgba(255, 255, 255, 0.14);
+    --pill-active-bg: #ffffff;
+    --pill-active-fg: #111113;
+    --overlay: rgba(0, 0, 0, 0.6);
+    --success-fg: #4ade80;
+    --danger-fg: #ff7b7f;
+    --warning-fg: #fbbf24;
+    --info-fg: #93b8ff;
+    --success-soft: color-mix(in srgb, var(--success) 20%, transparent);
+    --danger-soft: color-mix(in srgb, var(--danger) 20%, transparent);
+    --warning-soft: color-mix(in srgb, var(--warning) 20%, transparent);
+    --info-soft: color-mix(in srgb, var(--info) 20%, transparent);
+    --shadow: none;
+    --shadow-pop: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --accent-fg: #ff8a63;
+  --bg: #09090a;
+  --surface: #141416;
+  --surface-2: #1c1c1f;
+  --text: #f4f4f5;
+  --muted: #9a9aa3;
+  --line: rgba(255, 255, 255, 0.06);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --pill-active-bg: #ffffff;
+  --pill-active-fg: #111113;
+  --overlay: rgba(0, 0, 0, 0.6);
+  --success-fg: #4ade80;
+  --danger-fg: #ff7b7f;
+  --warning-fg: #fbbf24;
+  --info-fg: #93b8ff;
+  --success-soft: color-mix(in srgb, var(--success) 20%, transparent);
+  --danger-soft: color-mix(in srgb, var(--danger) 20%, transparent);
+  --warning-soft: color-mix(in srgb, var(--warning) 20%, transparent);
+  --info-soft: color-mix(in srgb, var(--info) 20%, transparent);
+  --shadow: none;
+  --shadow-pop: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}

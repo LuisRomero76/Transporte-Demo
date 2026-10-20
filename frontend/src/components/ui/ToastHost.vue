@@ -4,7 +4,7 @@ import { useToastStore } from '@/stores/toast'
 
 const avisos = useToastStore()
 const iconos = { exito: CircleCheck, error: CircleAlert, info: Info }
-const colores = { exito: 'text-exito-600', error: 'text-peligro-600', info: 'text-info-600' }
+const colores = { exito: 'bg-success-soft text-success-fg', error: 'bg-danger-soft text-danger-fg', info: 'bg-info-soft text-info-fg' }
 </script>
 
 <template>
@@ -22,15 +22,15 @@ const colores = { exito: 'text-exito-600', error: 'text-peligro-600', info: 'tex
       <div
         v-for="a in avisos.avisos"
         :key="a.id"
-        class="pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-xl border border-line bg-surface p-4 text-fg shadow-flotante"
+        class="pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-inner border border-line bg-surface p-4 text-fg shadow-flotante"
         :role="a.tipo === 'error' ? 'alert' : 'status'"
       >
-        <component :is="iconos[a.tipo]" class="mt-0.5 size-5 shrink-0" :class="colores[a.tipo]" aria-hidden="true" />
-        <div class="min-w-0 flex-1">
-          <p class="text-sm font-semibold">{{ a.titulo }}</p>
+        <span class="grid size-8 shrink-0 place-items-center rounded-full" :class="colores[a.tipo]"><component :is="iconos[a.tipo]" class="size-4" aria-hidden="true" /></span>
+        <div class="min-w-0 flex-1 pt-1">
+          <p class="text-sm font-medium">{{ a.titulo }}</p>
           <p v-if="a.detalle" class="mt-0.5 text-sm text-muted">{{ a.detalle }}</p>
         </div>
-        <button class="-m-1 flex size-8 items-center justify-center rounded-md text-muted hover:bg-surface-2" aria-label="Cerrar aviso" @click="avisos.cerrar(a.id)">
+        <button class="flex size-8 items-center justify-center rounded-full text-muted hover:bg-surface-2" aria-label="Cerrar aviso" @click="avisos.cerrar(a.id)">
           <X class="size-4" />
         </button>
       </div>

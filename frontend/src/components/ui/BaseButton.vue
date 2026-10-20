@@ -20,23 +20,21 @@ const props = withDefaults(
 
 const clases = computed(() => {
   const base =
-    'relative inline-flex items-center justify-center gap-2 font-semibold whitespace-nowrap rounded-control transition-colors select-none disabled:cursor-not-allowed aria-disabled:cursor-not-allowed'
+    'relative inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap rounded-full transition-[background-color,color,border-color,opacity] duration-200 select-none disabled:cursor-not-allowed aria-disabled:cursor-not-allowed'
   const tam = {
     sm: props.iconOnly ? 'size-9' : 'h-9 px-3 text-sm',
     md: props.iconOnly ? 'size-11' : 'h-11 px-4 text-[15px]',
     lg: props.iconOnly ? 'size-13' : 'h-13 px-6 text-base',
   }[props.size]
   const variante = {
-    primary:
-      'bg-carmin-600 text-white hover:bg-carmin-700 active:bg-carmin-800 disabled:bg-arena-300 disabled:text-muted',
-    secondary: 'bg-noche-900 text-white hover:bg-noche-800 dark:bg-noche-700 dark:hover:bg-noche-600 disabled:opacity-50',
-    outline:
-      'border-[1.5px] border-noche-900 text-noche-900 bg-surface hover:bg-noche-100 dark:border-noche-300 dark:text-fg dark:hover:bg-surface-2 disabled:opacity-50',
+    primary: 'bg-accent text-white hover:bg-accent-2 disabled:bg-surface-2 disabled:text-muted',
+    secondary: 'bg-pill-active text-pill-active-fg hover:opacity-85 disabled:opacity-50',
+    outline: 'border border-line-strong bg-surface text-fg hover:bg-surface-2 disabled:opacity-50',
     ghost: 'text-fg hover:bg-surface-2 disabled:opacity-50',
-    subtle: 'border-[1.5px] border-line-strong bg-surface text-fg hover:bg-surface-2 disabled:opacity-50',
-    danger: 'bg-peligro-600 text-white hover:bg-peligro-800 disabled:opacity-50',
-    white: 'bg-white text-noche-900 hover:bg-noche-100',
-    success: 'bg-exito-600 text-white hover:bg-exito-800 disabled:opacity-50',
+    subtle: 'border border-line bg-surface-2 text-fg hover:border-line-strong disabled:opacity-50',
+    danger: 'bg-danger text-white hover:opacity-90 disabled:opacity-50',
+    white: 'bg-white text-ink hover:opacity-90',
+    success: 'bg-success text-white hover:opacity-90 disabled:opacity-50',
   }[props.variant]
   return [base, tam, variante, props.block ? 'w-full' : ''].join(' ')
 })

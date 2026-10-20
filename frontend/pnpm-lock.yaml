@@ -8,13 +8,7 @@ importers:
 
   .:
     dependencies:
-      '@fontsource-variable/jetbrains-mono':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource-variable/public-sans':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource-variable/sora':
+      '@fontsource-variable/inter':
         specifier: ^5.3.0
         version: 5.3.0
       '@lucide/vue':
@@ -261,14 +255,8 @@ packages:
   '@floating-ui/vue@1.1.11':
     resolution: {integrity: sha512-HzHKCNVxnGS35r9fCHBc3+uCnjw9IWIlCPL683cGgM9Kgj2BiAl8x1mS7vtvP6F9S/e/q4O6MApwSHj8hNLGfw==}
 
-  '@fontsource-variable/jetbrains-mono@5.3.0':
-    resolution: {integrity: sha512-F32xpS2NsGYoQi2ADSkKTgpJj7ozajsGgDJ8woTnqjmIB+dxDIqImjl4pXZVEExu8UFZ2ndhmX18EBS/hdz3Lw==}
-
-  '@fontsource-variable/public-sans@5.3.0':
-    resolution: {integrity: sha512-AVfkmAt50BMXWpOO21FAntiJFKGX6xTc2dSL8dxtDteONe9IuRXJWGbs0EbG955vAMCq23ENeuopuW87cGWDSQ==}
-
-  '@fontsource-variable/sora@5.3.0':
-    resolution: {integrity: sha512-h8kHta4Z8SkfUGeI82TUy1n3rbrKpBRGwuk4t4qCwto5oEHxlbOFD2yGP+Df5fbmTXwKGn+o667vYp0E4K8Whw==}
+  '@fontsource-variable/inter@5.3.0':
+    resolution: {integrity: sha512-OupL48va4JNofb97w6NYeF9S7W/kHNKM0Er8Dem5nqi4jeOLrVJDoE8tZEpnMJmtkvNbB1EIPPwHcdkF6b1oUA==}
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -2127,11 +2115,7 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@fontsource-variable/jetbrains-mono@5.3.0': {}
-
-  '@fontsource-variable/public-sans@5.3.0': {}
-
-  '@fontsource-variable/sora@5.3.0': {}
+  '@fontsource-variable/inter@5.3.0': {}
 
   '@humanfs/core@0.19.2':
     dependencies:

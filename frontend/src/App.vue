@@ -1,14 +1,22 @@
 <script setup lang="ts">
-import { onBeforeUnmount } from 'vue'
+import { onBeforeUnmount, watchEffect } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
 import { onSesionExpirada } from '@/api/client'
 import ToastHost from '@/components/ui/ToastHost.vue'
 import { useAuthStore } from '@/stores/auth'
+import { useTemaStore } from '@/stores/tema'
 import { useToastStore } from '@/stores/toast'
 
 const router = useRouter()
 const auth = useAuthStore()
 const avisos = useToastStore()
+const tema = useTemaStore()
+
+// El tema vive en <html> para que también cubra los diálogos montados en <body>.
+watchEffect(() => {
+  document.documentElement.dataset.theme = tema.oscuro ? 'dark' : 'light'
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', tema.oscuro ? '#09090A' : '#EEEEF1')
+})
 
 // Si una llamada del panel responde 401, la sesión expiró: volver al inicio de sesión.
 const quitar = onSesionExpirada(() => {
@@ -23,7 +31,7 @@ onBeforeUnmount(quitar)
 <template>
   <a
     href="#contenido"
-    class="sr-only z-[70] rounded-lg bg-noche-900 px-4 py-2 font-semibold text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+    class="sr-only z-[70] rounded-full bg-pill-active px-4 py-2 font-semibold text-pill-active-fg focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
   >
     Saltar al contenido
   </a>

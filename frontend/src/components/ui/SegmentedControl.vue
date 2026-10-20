@@ -17,12 +17,12 @@ const nombre = useId()
     <legend class="mb-2 text-[13px] font-semibold" :class="hideLabel ? 'sr-only' : ''">{{ label }}</legend>
     <div
       v-if="variant === 'switch'"
-      class="flex rounded-control bg-surface-2 p-1"
+      class="flex rounded-full border border-line bg-surface-2 p-1"
     >
       <label
         v-for="o in options"
         :key="o.value"
-        class="flex h-9 flex-1 cursor-pointer items-center justify-center rounded-lg px-3 text-[13px] font-semibold whitespace-nowrap transition-colors has-focus-visible:outline-2 has-focus-visible:outline-carmin-600"
+        class="flex h-9 flex-1 cursor-pointer items-center justify-center rounded-full px-3.5 text-[13px] font-medium whitespace-nowrap transition-colors has-focus-visible:outline-2 has-focus-visible:outline-accent"
         :class="modelo === o.value ? 'bg-surface text-fg shadow-suave' : 'text-muted hover:text-fg'"
       >
         <input v-model="modelo" class="sr-only" type="radio" :name="nombre" :value="o.value" :disabled="o.disabled" />
@@ -33,15 +33,15 @@ const nombre = useId()
       <label
         v-for="o in options"
         :key="o.value"
-        class="flex min-h-11 cursor-pointer items-center gap-2.5 rounded-control border-[1.5px] px-3.5 py-2 text-sm transition-colors has-focus-visible:outline-2 has-focus-visible:outline-carmin-600"
+        class="flex min-h-11 cursor-pointer items-center gap-2.5 rounded-inner border px-4 py-2 text-sm transition-colors has-focus-visible:outline-2 has-focus-visible:outline-accent"
         :class="[
           modelo === o.value
-            ? 'border-carmin-600 bg-carmin-50 font-semibold text-carmin-800 dark:bg-carmin-800/30 dark:text-carmin-100'
-            : 'border-line-strong bg-surface hover:border-noche-400',
+            ? 'border-accent-line bg-accent-soft font-medium text-fg'
+            : 'border-line bg-surface hover:border-line-strong',
           o.disabled ? 'cursor-not-allowed opacity-50' : '',
         ]"
       >
-        <input v-model="modelo" class="size-4 accent-carmin-600" type="radio" :name="nombre" :value="o.value" :disabled="o.disabled" />
+        <input v-model="modelo" class="size-4 accent-(--accent)" type="radio" :name="nombre" :value="o.value" :disabled="o.disabled" />
         <span class="flex flex-col leading-tight">
           <span>{{ o.label }}</span>
           <span v-if="o.hint" class="text-xs font-normal text-muted">{{ o.hint }}</span>

@@ -15,7 +15,7 @@ defineProps<{ title: string; subtitle?: string; crumbs?: { label: string; to?: R
           <ChevronRight v-if="i < crumbs.length - 1" class="size-3.5" aria-hidden="true" />
         </template>
       </nav>
-      <h1 class="text-2xl font-bold text-fg md:text-[26px]">{{ title }}</h1>
+      <h1 class="text-[26px] leading-tight font-medium tracking-tight text-fg md:text-[32px]">{{ title }}</h1>
       <p v-if="subtitle" class="mt-1 text-sm text-muted">{{ subtitle }}</p>
       <slot name="meta" />
     </div>

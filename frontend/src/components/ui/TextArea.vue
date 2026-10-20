@@ -29,8 +29,8 @@ const { raiz, control } = useAtributosDeCampo()
         :required="required"
         :aria-invalid="invalid || undefined"
         :aria-describedby="describedby"
-        class="w-full rounded-control border-[1.5px] bg-surface px-3.5 py-2.5 text-[15px] text-fg outline-none focus:border-noche-900 focus:ring-4 focus:ring-(--ring)"
-        :class="invalid ? 'border-peligro-600' : 'border-line-strong'"
+        class="w-full rounded-inner border bg-surface-2 px-4 py-3 text-[15px] text-fg outline-none transition-colors focus:border-accent-line focus:ring-4 focus:ring-(--ring)"
+        :class="invalid ? 'border-danger' : 'border-line'"
       />
     </template>
   </FormField>

@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 const props = defineProps<{ value: number; max: number; label?: string }>()
 const pct = computed(() => (props.max > 0 ? Math.min(100, Math.round((props.value / props.max) * 100)) : 0))
-const color = computed(() => (pct.value >= 90 ? 'bg-carmin-600' : 'bg-noche-700 dark:bg-sky-400'))
+const color = computed(() => (pct.value >= 90 ? 'bg-accent' : 'bg-pill-active'))
 </script>
 
 <template>

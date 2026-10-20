@@ -5,13 +5,18 @@ import { ref, watchEffect } from 'vue'
 const props = withDefaults(defineProps<{ value: string; size?: number; label?: string }>(), { size: 160 })
 const src = ref<string>('')
 
+// El QR siempre se dibuja oscuro sobre blanco para que lo lea cualquier cámara.
+function tinta(): string {
+  return getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#111113'
+}
+
 watchEffect(async () => {
   try {
     src.value = await QRCode.toDataURL(props.value, {
       width: props.size * 2,
       margin: 1,
       errorCorrectionLevel: 'M',
-      color: { dark: '#0B1B33', light: '#FFFFFF' },
+      color: { dark: tinta(), light: '#FFFFFF' },
     })
   } catch {
     src.value = ''
@@ -26,6 +31,6 @@ watchEffect(async () => {
     :width="size"
     :height="size"
     :alt="label ?? 'Código QR'"
-    class="rounded-lg bg-white p-1.5"
+    class="rounded-xl bg-white p-1.5"
   />
 </template>

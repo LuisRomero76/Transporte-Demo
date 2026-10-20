@@ -12,11 +12,11 @@ const hasta = computed(() => Math.min(props.total, offset.value + props.limit))
 </script>
 
 <template>
-  <nav class="flex items-center justify-between gap-3 border-t border-line px-5 py-3 text-sm text-muted" aria-label="Paginación">
+  <nav class="flex items-center justify-between gap-3 border-t border-line px-6 py-3 text-sm text-muted" aria-label="Paginación">
     <span>{{ desde }}–{{ hasta }} de {{ total }}</span>
     <div class="flex items-center gap-1">
       <button
-        class="flex size-9 items-center justify-center rounded-lg hover:bg-surface-2 disabled:opacity-40"
+        class="flex size-9 items-center justify-center rounded-full border border-line bg-surface hover:bg-surface-2 disabled:opacity-40"
         :disabled="pagina <= 1"
         aria-label="Página anterior"
         @click="offset = Math.max(0, offset - limit)"
@@ -25,7 +25,7 @@ const hasta = computed(() => Math.min(props.total, offset.value + props.limit))
       </button>
       <span class="px-2 font-medium text-fg">{{ pagina }} / {{ paginas }}</span>
       <button
-        class="flex size-9 items-center justify-center rounded-lg hover:bg-surface-2 disabled:opacity-40"
+        class="flex size-9 items-center justify-center rounded-full border border-line bg-surface hover:bg-surface-2 disabled:opacity-40"
         :disabled="pagina >= paginas"
         aria-label="Página siguiente"
         @click="offset = offset + limit"

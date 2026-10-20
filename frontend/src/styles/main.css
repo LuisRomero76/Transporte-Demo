@@ -1,97 +1,99 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/sora';
-@import '@fontsource-variable/public-sans';
-@import '@fontsource-variable/jetbrains-mono';
+@import '@fontsource-variable/inter';
+@import './tokens.css';
 
-@custom-variant dark (&:where(.dark, .dark *));
-
-/* Colores semánticos: cambian con el modo oscuro (solo el panel lo activa). */
-:root {
-  --canvas: #f7f4ef;
-  --surface: #ffffff;
-  --surface-2: #efebe4;
-  --line: #e7e1d6;
-  --line-strong: #d6cfc2;
-  --fg: #161b26;
-  --muted: #586174;
-  --ring: rgb(27 51 88 / 0.18);
-}
-
-.dark {
-  --canvas: #0a1424;
-  --surface: #0f1d33;
-  --surface-2: #162a49;
-  --line: #213659;
-  --line-strong: #2f4870;
-  --fg: #e8edf6;
-  --muted: #a3b2cc;
-  --ring: rgb(125 211 252 / 0.25);
-  color-scheme: dark;
-}
+/* El tema se fija con data-theme en <html> (store `tema`). */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
 @theme inline {
-  --color-canvas: var(--canvas);
+  --color-canvas: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
-  --color-fg: var(--fg);
+  --color-fg: var(--text);
   --color-muted: var(--muted);
+  --color-overlay: var(--overlay);
+  --color-ink: var(--ink);
+
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+  --color-accent-fg: var(--accent-fg);
+  --color-pill-active: var(--pill-active-bg);
+  --color-pill-active-fg: var(--pill-active-fg);
+
+  --color-success: var(--success);
+  --color-success-fg: var(--success-fg);
+  --color-success-soft: var(--success-soft);
+  --color-danger: var(--danger);
+  --color-danger-fg: var(--danger-fg);
+  --color-danger-soft: var(--danger-soft);
+  --color-warning: var(--warning);
+  --color-warning-fg: var(--warning-fg);
+  --color-warning-soft: var(--warning-soft);
+  --color-info: var(--info);
+  --color-info-fg: var(--info-fg);
+  --color-info-soft: var(--info-soft);
+
+  --radius-card: var(--r-card);
+  --radius-inner: var(--r-inner);
+  --radius-control: var(--r-pill);
+
+  --shadow-suave: var(--shadow);
+  --shadow-flotante: var(--shadow-pop);
+
+  --font-sans: var(--font);
+  --font-display: var(--font);
+  --font-mono: var(--font);
+}
+
+/* TEMPORAL (fase 2-3): nombres de la paleta anterior apuntando a los tokens nuevos.
+   Se eliminan al migrar cada pantalla. */
+@theme inline {
+  --color-noche-950: var(--pill-active-bg);
+  --color-noche-900: var(--pill-active-bg);
+  --color-noche-800: var(--pill-active-bg);
+  --color-noche-700: var(--pill-active-bg);
+  --color-noche-600: var(--muted);
+  --color-noche-400: var(--muted);
+  --color-noche-300: var(--muted);
+  --color-noche-200: var(--line-strong);
+  --color-noche-100: var(--surface-2);
+  --color-carmin-800: var(--accent-fg);
+  --color-carmin-700: var(--accent-2);
+  --color-carmin-600: var(--accent);
+  --color-carmin-500: var(--accent);
+  --color-carmin-200: var(--accent-line);
+  --color-carmin-100: var(--accent-soft);
+  --color-carmin-50: var(--accent-soft);
+  --color-arena-50: var(--bg);
+  --color-arena-100: var(--surface-2);
+  --color-arena-200: var(--line);
+  --color-arena-300: var(--line-strong);
+  --color-exito-800: var(--success-fg);
+  --color-exito-600: var(--success);
+  --color-exito-50: var(--success-soft);
+  --color-aviso-800: var(--warning-fg);
+  --color-aviso-700: var(--warning-fg);
+  --color-aviso-600: var(--warning);
+  --color-aviso-50: var(--warning-soft);
+  --color-peligro-800: var(--danger-fg);
+  --color-peligro-600: var(--danger);
+  --color-peligro-50: var(--danger-soft);
+  --color-info-800: var(--info-fg);
+  --color-info-600: var(--info);
+  --color-info-50: var(--info-soft);
+  --color-turquesa-800: var(--info-fg);
+  --color-turquesa-600: var(--info);
+  --color-turquesa-50: var(--info-soft);
 }
 
 @theme {
-  --font-sans: 'Public Sans Variable', system-ui, sans-serif;
-  --font-display: 'Sora Variable', 'Public Sans Variable', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
-
-  --color-noche-950: #07111f;
-  --color-noche-900: #0b1b33;
-  --color-noche-800: #13294b;
-  --color-noche-700: #1b3358;
-  --color-noche-600: #3a5078;
-  --color-noche-400: #7d8fb0;
-  --color-noche-300: #9fb0cc;
-  --color-noche-200: #c9d3e3;
-  --color-noche-100: #e8edf5;
-
-  --color-carmin-800: #74091c;
-  --color-carmin-700: #8e0e24;
-  --color-carmin-600: #b3122e;
-  --color-carmin-500: #e0314f;
-  --color-carmin-200: #f2a7b3;
-  --color-carmin-100: #f7d3d9;
-  --color-carmin-50: #fbeaec;
-
-  --color-arena-50: #f7f4ef;
-  --color-arena-100: #efebe4;
-  --color-arena-200: #e7e1d6;
-  --color-arena-300: #d6cfc2;
-
-  --color-exito-600: #1f7a4d;
-  --color-exito-50: #e6f4ec;
-  --color-exito-800: #14532d;
-  --color-aviso-600: #d97706;
-  --color-aviso-700: #b45309;
-  --color-aviso-50: #fef3e2;
-  --color-aviso-800: #7c2d12;
-  --color-peligro-600: #b42318;
-  --color-peligro-50: #fdecec;
-  --color-peligro-800: #7f1d1d;
-  --color-info-600: #1d4ed8;
-  --color-info-50: #e8eefb;
-  --color-info-800: #1e3a8a;
-  --color-turquesa-600: #0f766e;
-  --color-turquesa-50: #e0f2f1;
-  --color-turquesa-800: #134e4a;
-
-  --radius-control: 10px;
-  --radius-card: 16px;
-
-  --shadow-flotante: 0 24px 48px -12px rgb(11 27 51 / 0.22);
-  --shadow-suave: 0 1px 2px rgb(11 27 51 / 0.06), 0 1px 3px rgb(11 27 51 / 0.08);
-
   --animate-aparecer: aparecer 0.22s ease-out;
   --animate-deslizar: deslizar 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-entrar: entrar 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 
   @keyframes aparecer {
     from {
@@ -111,6 +113,16 @@
       transform: none;
     }
   }
+  @keyframes entrar {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
 @layer base {
@@ -120,6 +132,10 @@
   }
   body {
     @apply bg-canvas text-fg font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+    transition:
+      background-color 0.3s,
+      color 0.3s;
   }
   h1,
   h2,
@@ -128,18 +144,18 @@
     text-wrap: balance;
   }
   ::selection {
-    background: var(--color-carmin-100);
-    color: var(--color-carmin-800);
+    background: var(--accent-soft);
+    color: var(--text);
   }
   :focus-visible {
-    outline: 2px solid var(--color-carmin-600);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
-  }
-  .dark :focus-visible {
-    outline-color: #7dd3fc;
   }
   input[type='date']::-webkit-calendar-picker-indicator {
     cursor: pointer;
+  }
+  [data-theme='dark'] input[type='date']::-webkit-calendar-picker-indicator {
+    filter: invert(1);
   }
 }
 
@@ -160,10 +176,66 @@
   }
 }
 
+/* Códigos (guía, reserva, asiento): misma familia, cifras tabulares y algo de aire. */
 @utility codigo {
-  font-family: var(--font-mono);
-  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
   font-weight: 600;
+}
+
+/* ===== Recetas soft-pill ===== */
+@layer components {
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--r-card);
+    color: #fff;
+    background:
+      radial-gradient(60% 80% at 75% 20%, rgb(255 255 255 / 0.28), transparent 60%),
+      linear-gradient(135deg, var(--accent), var(--accent-2));
+  }
+  .hero-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: var(--r-pill);
+    background: rgb(255 255 255 / 0.18);
+    color: #fff;
+  }
+  .hero-progress {
+    height: 6px;
+    border-radius: 99px;
+    background: repeating-linear-gradient(90deg, rgb(255 255 255 / 0.4) 0 2px, transparent 2px 5px);
+  }
+  .hero-progress > i {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #fff;
+    transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .pill-group {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    box-shadow: var(--shadow);
+  }
+  /* Entrada escalonada al cargar: añade .entrada a los hijos y --i con su índice. */
+  .entrada > * {
+    animation: var(--animate-entrar);
+    animation-delay: calc(var(--i, 0) * 60ms);
+  }
+  .entrada > :nth-child(2) { --i: 1; }
+  .entrada > :nth-child(3) { --i: 2; }
+  .entrada > :nth-child(4) { --i: 3; }
+  .entrada > :nth-child(5) { --i: 4; }
+  .entrada > :nth-child(6) { --i: 5; }
+  .entrada > :nth-child(n + 7) { --i: 6; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -171,12 +243,26 @@
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
   }
 }
 
 /* Impresión: e-tickets, manifiestos y guías. */
 @media print {
+  /* Siempre se imprime en claro, aunque el panel esté en modo oscuro. */
+  :root[data-theme] {
+    --bg: #fff;
+    --surface: #fff;
+    --surface-2: #f5f5f7;
+    --text: #000;
+    --muted: #555;
+    --line: #ccc;
+    --line-strong: #999;
+    --pill-active-bg: #111113;
+    --pill-active-fg: #fff;
+    color-scheme: light;
+  }
   .no-print {
     display: none !important;
   }

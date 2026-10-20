@@ -24,7 +24,7 @@ import {
 } from '@lucide/vue'
 import { onKeyStroke } from '@vueuse/core'
 import { DialogContent, DialogOverlay, DialogPortal, DialogRoot, DialogTitle } from 'reka-ui'
-import { computed, onBeforeUnmount, ref, watch, watchEffect, type Component } from 'vue'
+import { computed, ref, watch, type Component } from 'vue'
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
 import LogoMark from '@/components/brand/LogoMark.vue'
 import { iniciales } from '@/lib/format'
@@ -40,9 +40,6 @@ const router = useRouter()
 const menuMovil = ref(false)
 watch(() => route.fullPath, () => (menuMovil.value = false))
 
-// El modo oscuro también debe cubrir los diálogos (se montan en <body>).
-watchEffect(() => document.documentElement.classList.toggle('dark', tema.oscuro))
-onBeforeUnmount(() => document.documentElement.classList.remove('dark'))
 
 interface Item {
   to: string

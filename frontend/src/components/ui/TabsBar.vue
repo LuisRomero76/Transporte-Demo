@@ -13,7 +13,7 @@ function mover(e: KeyboardEvent, tabs: { key: string }[]): void {
 </script>
 
 <template>
-  <div role="tablist" :aria-label="label" class="flex gap-1 overflow-x-auto border-b border-line" @keydown="mover($event, tabs)">
+  <div role="tablist" :aria-label="label" class="flex w-fit max-w-full gap-1 overflow-x-auto rounded-full border border-line bg-surface-2 p-1" @keydown="mover($event, tabs)">
     <button
       v-for="t in tabs"
       :key="t.key"
@@ -21,12 +21,14 @@ function mover(e: KeyboardEvent, tabs: { key: string }[]): void {
       type="button"
       :aria-selected="activo === t.key"
       :tabindex="activo === t.key ? 0 : -1"
-      class="-mb-px flex h-12 shrink-0 items-center gap-2 border-b-[3px] px-3.5 text-sm transition-colors"
-      :class="activo === t.key ? 'border-carmin-600 font-bold text-fg' : 'border-transparent font-semibold text-muted hover:text-fg'"
+      class="flex h-9 shrink-0 items-center gap-2 rounded-full px-3.5 text-[13px] font-medium transition-colors"
+      :class="activo === t.key ? 'bg-surface text-fg shadow-suave' : 'text-muted hover:text-fg'"
       @click="activo = t.key"
     >
       {{ t.label }}
-      <span v-if="t.count != null" class="rounded-full bg-surface-2 px-2 py-0.5 text-xs font-bold text-muted">{{ t.count }}</span>
+      <span
+v-if="t.count != null" class="rounded-full px-2 py-0.5 text-xs font-medium"
+        :class="activo === t.key ? 'bg-accent-soft text-accent-fg' : 'bg-surface text-muted'">{{ t.count }}</span>
     </button>
   </div>
 </template>

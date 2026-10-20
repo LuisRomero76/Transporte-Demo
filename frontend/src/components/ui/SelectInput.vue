@@ -41,15 +41,15 @@ const { raiz, control } = useAtributosDeCampo()
           :required="required"
           :aria-invalid="invalid || undefined"
           :aria-describedby="describedby"
-          class="w-full appearance-none rounded-control border-[1.5px] bg-surface pr-10 pl-3.5 text-[15px] font-medium text-fg outline-none focus:border-noche-900 focus:ring-4 focus:ring-(--ring) dark:focus:border-noche-300"
-          :class="[invalid ? 'border-peligro-600' : 'border-line-strong', size === 'lg' ? 'h-14' : 'h-11']"
+          class="w-full appearance-none rounded-full border bg-surface-2 pr-10 pl-4 text-[15px] text-fg outline-none transition-colors focus:border-accent-line focus:ring-4 focus:ring-(--ring)"
+          :class="[invalid ? 'border-danger' : 'border-line', size === 'lg' ? 'h-14' : 'h-11']"
         >
           <option v-if="placeholder" :value="null" disabled>{{ placeholder }}</option>
           <option v-for="o in options" :key="String(o.value)" :value="o.value" :disabled="o.disabled">
             {{ o.label }}
           </option>
         </select>
-        <ChevronDown class="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted" aria-hidden="true" />
+        <ChevronDown class="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-muted" aria-hidden="true" />
       </div>
     </template>
   </FormField>

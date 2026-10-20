@@ -9,24 +9,21 @@ const props = withDefaults(defineProps<{ tono?: Tono; label: string; dot?: boole
 })
 
 const estilos: Record<Tono, { caja: string; punto: string }> = {
-  exito: { caja: 'bg-exito-50 text-exito-800 dark:bg-exito-600/20 dark:text-emerald-200', punto: 'bg-exito-600' },
-  info: { caja: 'bg-info-50 text-info-800 dark:bg-info-600/20 dark:text-blue-200', punto: 'bg-info-600' },
-  aviso: { caja: 'bg-aviso-50 text-aviso-800 dark:bg-aviso-600/20 dark:text-amber-200', punto: 'bg-aviso-600' },
-  peligro: { caja: 'bg-peligro-50 text-peligro-800 dark:bg-peligro-600/25 dark:text-red-200', punto: 'bg-peligro-600' },
-  neutro: { caja: 'bg-[#EEF0F3] text-[#374151] dark:bg-white/10 dark:text-noche-200', punto: 'bg-[#6B7280]' },
-  turquesa: {
-    caja: 'bg-turquesa-50 text-turquesa-800 dark:bg-turquesa-600/25 dark:text-teal-200',
-    punto: 'bg-turquesa-600',
-  },
-  noche: { caja: 'bg-noche-900 text-white dark:bg-noche-600', punto: 'bg-sky-300' },
-  carmin: { caja: 'bg-carmin-50 text-carmin-800', punto: 'bg-carmin-600' },
+  exito: { caja: 'bg-success-soft text-success-fg', punto: 'bg-success' },
+  info: { caja: 'bg-info-soft text-info-fg', punto: 'bg-info' },
+  aviso: { caja: 'bg-warning-soft text-warning-fg', punto: 'bg-warning' },
+  peligro: { caja: 'bg-danger-soft text-danger-fg', punto: 'bg-danger' },
+  neutro: { caja: 'bg-surface-2 text-muted', punto: 'bg-muted' },
+  turquesa: { caja: 'bg-info-soft text-info-fg', punto: 'bg-info' },
+  noche: { caja: 'bg-pill-active text-pill-active-fg', punto: 'bg-accent' },
+  carmin: { caja: 'bg-accent-soft text-accent-fg', punto: 'bg-accent' },
 }
 const e = computed(() => estilos[props.tono])
 </script>
 
 <template>
   <span
-    class="inline-flex shrink-0 items-center gap-1.5 rounded-full font-semibold whitespace-nowrap"
+    class="inline-flex shrink-0 items-center gap-1.5 rounded-full font-medium whitespace-nowrap"
     :class="[e.caja, size === 'sm' ? 'h-6 px-2 text-xs' : 'h-7 px-2.5 text-[13px]']"
   >
     <span v-if="dot" class="size-2 rounded-full" :class="e.punto" aria-hidden="true" />

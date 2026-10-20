@@ -40,12 +40,12 @@ function alTeclado(e: KeyboardEvent, fila: T): void {
     <table class="w-full min-w-[640px] border-collapse text-sm">
       <caption v-if="caption" class="sr-only">{{ caption }}</caption>
       <thead>
-        <tr class="text-xs tracking-wide text-muted uppercase">
+        <tr class="text-xs text-muted">
           <th
             v-for="c in columns"
             :key="c.key"
             scope="col"
-            class="px-4 py-3 font-bold whitespace-nowrap first:pl-5 last:pr-5"
+            class="px-4 py-3 font-medium whitespace-nowrap first:pl-6 last:pr-6"
             :class="[alinear(c), c.hideSm ? 'hidden md:table-cell' : '', c.class]"
           >
             {{ c.label }}
@@ -55,7 +55,7 @@ function alTeclado(e: KeyboardEvent, fila: T): void {
       <tbody>
         <template v-if="loading">
           <tr v-for="n in 6" :key="n" class="border-t border-line">
-            <td v-for="c in columns" :key="c.key" class="px-4 py-3.5 first:pl-5 last:pr-5" :class="c.hideSm ? 'hidden md:table-cell' : ''">
+            <td v-for="c in columns" :key="c.key" class="px-4 py-4 first:pl-6 last:pr-6" :class="c.hideSm ? 'hidden md:table-cell' : ''">
               <SkeletonBlock class="h-4 w-3/4" />
             </td>
           </tr>
@@ -78,7 +78,7 @@ function alTeclado(e: KeyboardEvent, fila: T): void {
             <td
               v-for="c in columns"
               :key="c.key"
-              class="px-4 py-3 align-middle first:pl-5 last:pr-5"
+              class="px-4 py-4 align-middle first:pl-6 last:pr-6"
               :class="[alinear(c), c.hideSm ? 'hidden md:table-cell' : '', c.class]"
             >
               <slot :name="`cell-${c.key}`" :row="fila" :value="fila[c.key]">{{ fila[c.key] ?? '—' }}</slot>
