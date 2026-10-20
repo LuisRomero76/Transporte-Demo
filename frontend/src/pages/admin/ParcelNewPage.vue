@@ -278,14 +278,14 @@ function imprimir(): void {
       </div>
 
       <aside class="flex flex-col gap-4 xl:sticky xl:top-20">
-        <div class="overflow-hidden rounded-2xl border border-line bg-surface">
-          <div class="flex items-center justify-between bg-noche-900 px-5 py-4 text-white">
+        <div class="overflow-hidden rounded-card border border-line bg-surface shadow-suave">
+          <div class="hero flex items-center justify-between rounded-none! px-5 py-4">
             <strong>Cotización</strong>
-            <span v-if="cotizacion.data.value" class="rounded-full bg-noche-700 px-2.5 py-1 text-xs font-semibold">{{ TIPO_ENVIO[cotizacion.data.value.tipo_envio] }}</span>
+            <span v-if="cotizacion.data.value" class="hero-chip">{{ TIPO_ENVIO[cotizacion.data.value.tipo_envio] }}</span>
           </div>
           <div class="flex flex-col gap-2.5 p-5 text-sm" aria-live="polite">
             <SkeletonBlock v-if="cotizacion.isFetching.value && !cotizacion.data.value" class="h-24" />
-            <p v-else-if="cotizacion.isError.value" class="rounded-xl bg-peligro-50 p-3 text-peligro-800">{{ (cotizacion.error.value as Error).message }}</p>
+            <p v-else-if="cotizacion.isError.value" class="rounded-inner bg-danger-soft p-3 text-danger-fg">{{ (cotizacion.error.value as Error).message }}</p>
             <template v-else-if="cotizacion.data.value">
               <div class="flex justify-between"><span>Base</span><span class="tabular">{{ bsExacto(cotizacion.data.value.precio_base_bs) }}</span></div>
               <div v-if="cotizacion.data.value.kg_adicionales" class="flex justify-between">
@@ -294,7 +294,7 @@ function imprimir(): void {
               </div>
               <div v-if="cotizacion.data.value.puerta_a_puerta" class="flex justify-between"><span>Puerta a puerta</span><span class="tabular">{{ bsExacto(cotizacion.data.value.recargo_puerta_a_puerta_bs) }}</span></div>
               <div class="flex items-baseline justify-between border-t border-line pt-3">
-                <strong>Total</strong><span class="font-display text-[28px] font-bold tabular">{{ bsExacto(cotizacion.data.value.total_bs) }}</span>
+                <strong>Total</strong><span class="text-[28px] font-semibold tracking-tight tabular">{{ bsExacto(cotizacion.data.value.total_bs) }}</span>
               </div>
             </template>
             <p v-else class="text-muted">Indica el peso para cotizar.</p>
@@ -308,7 +308,7 @@ function imprimir(): void {
 
     <AppDialog :open="!!creada" title="Encomienda registrada" size="lg" @update:open="(v) => !v && otra()">
       <div v-if="creada" class="flex flex-col gap-5">
-        <div class="no-print flex items-center gap-2 font-semibold text-exito-600"><CircleCheck class="size-5" aria-hidden="true" />Entrega el comprobante al remitente.</div>
+        <div class="no-print flex items-center gap-2 font-semibold text-success-fg"><CircleCheck class="size-5" aria-hidden="true" />Entrega el comprobante al remitente.</div>
         <ParcelLabel :encomienda="creada" />
       </div>
       <template #footer>

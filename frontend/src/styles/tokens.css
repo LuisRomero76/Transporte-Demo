@@ -19,6 +19,8 @@
   --pill-active-fg: #ffffff;
   /* Texto oscuro fijo para botones blancos sobre el héroe (no cambia con el tema). */
   --ink: #111113;
+  /* Texto e iconos sobre el acento. */
+  --on-accent: #ffffff;
   --overlay: rgba(9, 9, 10, 0.45);
 
   /* Estados: color sólido + versión suave para chips. */

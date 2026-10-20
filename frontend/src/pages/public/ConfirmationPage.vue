@@ -51,16 +51,16 @@ const compartir = computed(() => {
     <EmptyState v-if="!documento" title="Consulta tu reserva" text="Ingresa con tu código y documento para ver tus boletos.">
       <BaseButton :to="{ name: 'mi-reserva', query: { codigo } }">Ir a Mi reserva</BaseButton>
     </EmptyState>
-    <SkeletonBlock v-else-if="reserva.isLoading.value" class="h-96 rounded-2xl" />
+    <SkeletonBlock v-else-if="reserva.isLoading.value" class="h-96 rounded-card" />
     <ErrorState v-else-if="reserva.isError.value" :error="reserva.error.value" @retry="reserva.refetch()" />
     <template v-else-if="reserva.data.value">
       <div class="no-print mb-8 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
         <div class="flex items-center gap-4">
-          <span class="flex size-14 shrink-0 items-center justify-center rounded-full bg-exito-50 text-exito-600">
+          <span class="flex size-14 shrink-0 items-center justify-center rounded-full bg-success-soft text-success-fg">
             <Check class="size-7" stroke-width="2.6" aria-hidden="true" />
           </span>
           <div>
-            <h1 class="text-2xl font-bold sm:text-[30px]">
+            <h1 class="text-2xl font-medium tracking-tight sm:text-[30px]">
               {{ reserva.data.value.estado === 'pagada' ? `¡Listo, ${nombre}! Tu viaje está confirmado.` : reserva.data.value.mensaje }}
             </h1>
             <p class="mt-1 text-[15px] text-muted">
@@ -81,8 +81,8 @@ const compartir = computed(() => {
           <TicketCard v-for="b in reserva.data.value.boletos" :key="b.numero_boleto" :boleto="b" :salida="reserva.data.value.salida" />
         </div>
         <aside class="no-print flex flex-col gap-4">
-          <div v-if="politicas" class="rounded-2xl border border-line bg-surface p-5">
-            <h2 class="font-sans text-base font-bold">Antes de viajar</h2>
+          <div v-if="politicas" class="rounded-card border border-line bg-surface p-5">
+            <h2 class="font-sans text-base font-medium tracking-tight">Antes de viajar</h2>
             <ul class="mt-3 flex list-disc flex-col gap-1.5 pl-5 text-sm text-muted">
               <li>Llega a la terminal 30 minutos antes.</li>
               <li>Lleva el documento que figura en el boleto.</li>
@@ -90,8 +90,8 @@ const compartir = computed(() => {
               <li>Solo se permiten perros guía.</li>
             </ul>
           </div>
-          <div v-if="reserva.data.value.factura" class="flex flex-col gap-2 rounded-2xl border border-line bg-surface p-5 text-sm">
-            <h2 class="font-sans text-base font-bold">Factura</h2>
+          <div v-if="reserva.data.value.factura" class="flex flex-col gap-2 rounded-card border border-line bg-surface p-5 text-sm">
+            <h2 class="font-sans text-base font-medium tracking-tight">Factura</h2>
             <div class="flex justify-between"><span class="text-muted">N.º</span><strong>{{ reserva.data.value.factura.numero_factura }}</strong></div>
             <div class="flex justify-between"><span class="text-muted">NIT / CI</span><strong>{{ reserva.data.value.factura.nit_ci_cliente }}</strong></div>
             <div class="flex justify-between"><span class="text-muted">Emitida</span><strong>{{ fechaHora(reserva.data.value.factura.fecha_emision) }}</strong></div>
@@ -100,10 +100,10 @@ const compartir = computed(() => {
               <strong>{{ bsExacto(reserva.data.value.total_bs) }}</strong>
             </div>
           </div>
-          <div class="flex flex-col gap-2 rounded-2xl bg-noche-900 p-5 text-sm text-white">
-            <strong class="font-display text-base">¿Cambio de planes?</strong>
-            <span class="text-noche-200">Puedes pedir la devolución del 85 % hasta 2 horas antes de la salida.</span>
-            <button type="button" class="self-start font-semibold text-carmin-200 hover:underline" @click="gestionar">
+          <div class="flex flex-col gap-2 rounded-card border border-line bg-surface shadow-suave p-5 text-sm text-fg">
+            <strong class="text-base">¿Cambio de planes?</strong>
+            <span class="text-muted">Puedes pedir la devolución del 85 % hasta 2 horas antes de la salida.</span>
+            <button type="button" class="self-start font-semibold text-accent-fg hover:underline" @click="gestionar">
               Gestionar mi reserva
             </button>
           </div>

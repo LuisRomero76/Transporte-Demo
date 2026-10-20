@@ -15,7 +15,8 @@ const tema = useTemaStore()
 // El tema vive en <html> para que también cubra los diálogos montados en <body>.
 watchEffect(() => {
   document.documentElement.dataset.theme = tema.oscuro ? 'dark' : 'light'
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', tema.oscuro ? '#09090A' : '#EEEEF1')
+  const fondo = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()
+  if (fondo) document.querySelector('meta[name="theme-color"]')?.setAttribute('content', fondo)
 })
 
 // Si una llamada del panel responde 401, la sesión expiró: volver al inicio de sesión.

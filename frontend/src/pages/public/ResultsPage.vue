@@ -95,13 +95,14 @@ const esRutaInvalida = computed(() => (busqueda.error.value as { code?: string }
 <template>
   <div>
     <BookingSteps :paso="1" />
-    <section class="bg-noche-900 text-white">
-      <div class="contenedor flex flex-col gap-4 py-5 md:flex-row md:items-center md:justify-between">
+    <section class="contenedor pt-4">
+      <div class="hero">
+      <div class="flex flex-col gap-4 px-6 py-6 md:flex-row md:items-center md:justify-between sm:px-8">
         <div>
-          <h1 class="flex flex-wrap items-center gap-3 text-2xl font-bold sm:text-[28px]">
-            {{ origen }} <ArrowRight class="size-6 text-carmin-200" aria-hidden="true" /> {{ destino }}
+          <h1 class="flex flex-wrap items-center gap-3 text-2xl font-medium tracking-tight sm:text-[28px]">
+            {{ origen }} <ArrowRight class="size-6 text-on-accent/85" aria-hidden="true" /> {{ destino }}
           </h1>
-          <p class="mt-1 text-sm text-noche-200">
+          <p class="mt-1 text-sm text-on-accent/85">
             {{ fechaLarga(fecha) }} · {{ pasajeros }} {{ pasajeros === 1 ? 'pasajero' : 'pasajeros' }}
           </p>
         </div>
@@ -109,14 +110,15 @@ const esRutaInvalida = computed(() => (busqueda.error.value as { code?: string }
           <SlidersHorizontal class="size-4" aria-hidden="true" />{{ modificar ? 'Cerrar' : 'Modificar búsqueda' }}
         </BaseButton>
       </div>
-      <div v-if="modificar" class="contenedor pb-6">
-        <div class="rounded-2xl bg-surface p-4 text-fg">
+      <div v-if="modificar" class="px-3 pb-3 sm:px-4 sm:pb-4">
+        <div class="rounded-inner bg-surface p-4 text-fg">
           <TripSearchForm
             :key="route.fullPath"
             :initial="{ origen, destino, fecha, pasajeros }"
             @submitted="modificar = false"
           />
         </div>
+      </div>
       </div>
     </section>
 
@@ -132,7 +134,7 @@ const esRutaInvalida = computed(() => (busqueda.error.value as { code?: string }
 
       <div class="grid items-start gap-6 lg:grid-cols-[280px_1fr]">
         <aside class="flex flex-col gap-4 lg:sticky lg:top-24">
-          <div class="flex flex-col gap-5 rounded-2xl border border-line bg-surface p-5">
+          <div class="flex flex-col gap-5 rounded-card border border-line bg-surface p-5">
             <SegmentedControl
               v-model="clase"
               label="Clase"
@@ -163,17 +165,17 @@ const esRutaInvalida = computed(() => (busqueda.error.value as { code?: string }
               ]"
             />
           </div>
-          <div v-if="politicas" class="hidden flex-col gap-2.5 rounded-2xl bg-noche-900 p-5 text-sm leading-relaxed text-white lg:flex">
-            <strong class="font-display text-base">Antes de viajar</strong>
-            <span class="text-noche-200">{{ politicas.equipaje_bodega_kg }} kg en bodega y {{ politicas.equipaje_mano_kg }} kg de mano por pasajero.</span>
-            <span class="text-noche-200">Menores de 3 a 11 años (50 %) y adultos mayores (20 %) compran en boletería con su documento.</span>
-            <RouterLink :to="{ name: 'ayuda' }" class="font-semibold text-carmin-200 hover:underline">Ver políticas de viaje</RouterLink>
+          <div v-if="politicas" class="hidden flex-col gap-2.5 rounded-card border border-line bg-surface shadow-suave p-5 text-sm leading-relaxed text-fg lg:flex">
+            <strong class="text-base">Antes de viajar</strong>
+            <span class="text-muted">{{ politicas.equipaje_bodega_kg }} kg en bodega y {{ politicas.equipaje_mano_kg }} kg de mano por pasajero.</span>
+            <span class="text-muted">Menores de 3 a 11 años (50 %) y adultos mayores (20 %) compran en boletería con su documento.</span>
+            <RouterLink :to="{ name: 'ayuda' }" class="font-semibold text-accent-fg hover:underline">Ver políticas de viaje</RouterLink>
           </div>
         </aside>
 
         <div class="flex min-w-0 flex-col gap-4" aria-live="polite">
           <template v-if="busqueda.isLoading.value">
-            <SkeletonBlock v-for="n in 2" :key="n" class="h-56 rounded-2xl" />
+            <SkeletonBlock v-for="n in 2" :key="n" class="h-56 rounded-card" />
           </template>
           <ErrorState
             v-else-if="busqueda.isError.value"
@@ -200,7 +202,7 @@ const esRutaInvalida = computed(() => (busqueda.error.value as { code?: string }
               title="No hay salidas con esos filtros"
               text="Prueba con otra fecha de la franja superior o quita los filtros."
             />
-            <div class="flex gap-3 rounded-2xl border border-aviso-600/30 bg-aviso-50 p-4 text-sm text-aviso-800 dark:bg-aviso-600/10 dark:text-amber-200">
+            <div class="flex gap-3 rounded-card border border-warning/30 bg-warning-soft p-4 text-sm text-warning-fg">
               <CircleAlert class="size-5 shrink-0" aria-hidden="true" />
               <span>Los horarios pueden cambiar por condiciones del camino o del clima. Si cancelamos un viaje, te devolvemos el 100 % de inmediato.</span>
             </div>

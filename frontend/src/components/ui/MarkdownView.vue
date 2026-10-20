@@ -47,7 +47,7 @@ const html = computed(() => {
   margin: 0 0 1rem;
 }
 .markdown :deep(a) {
-  color: var(--color-carmin-600);
+  color: var(--accent-fg);
   font-weight: 600;
   text-decoration: underline;
 }

@@ -12,7 +12,7 @@ defineProps<{ eventos: Schemas['EventoOut'][]; /** El primero es el más recient
       <div class="flex flex-col items-center" aria-hidden="true">
         <span
           class="mt-1 rounded-full"
-          :class="i === 0 ? 'size-3.5 bg-turquesa-600 ring-4 ring-turquesa-50 dark:ring-turquesa-600/25' : 'size-3 bg-muted/60'"
+          :class="i === 0 ? 'size-3.5 bg-info ring-4 ring-info-soft' : 'size-3 bg-muted/60'"
         />
         <span v-if="i < eventos.length - 1" class="w-0.5 flex-1 bg-line-strong" />
       </div>

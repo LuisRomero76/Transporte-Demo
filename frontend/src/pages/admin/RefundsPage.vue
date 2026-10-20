@@ -89,7 +89,7 @@ const columnas = [
   <div class="flex flex-col gap-6">
     <PageHeader title="Reembolsos" subtitle="85 % cuando lo pide el cliente con 2 h de anticipación; 100 % cuando la empresa cancela." />
     <ErrorState v-if="lista.isError.value" :error="lista.error.value" @retry="lista.refetch()" />
-    <div v-else class="overflow-hidden rounded-2xl border border-line bg-surface">
+    <div v-else class="overflow-hidden rounded-card border border-line bg-surface">
       <TabsBar v-model="pestana" :tabs="pestanas" label="Estado de los reembolsos" class="px-3" />
       <DataTable :columns="columnas" :rows="lista.data.value?.items ?? []" row-key="id" :loading="lista.isLoading.value" caption="Reembolsos" empty-text="No hay reembolsos en esta bandeja.">
         <template #cell-solicitado_at="{ row }"><span class="text-muted">{{ fechaHora(row.solicitado_at) }}</span></template>

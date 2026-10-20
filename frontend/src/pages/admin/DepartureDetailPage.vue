@@ -248,20 +248,20 @@ function imprimir(): void {
       </PageHeader>
 
       <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <div class="flex flex-col gap-1 rounded-2xl border border-line bg-surface p-5">
+        <div class="flex flex-col gap-1 rounded-card border border-line bg-surface p-5">
           <span class="text-[13px] text-muted">Ocupación</span>
           <SkeletonBlock v-if="!s" class="h-7 w-24" />
-          <strong v-else class="font-display text-2xl">{{ s.asientos_ocupados ?? '—' }} / {{ s.asientos_total ?? '—' }}</strong>
+          <strong v-else class="text-2xl">{{ s.asientos_ocupados ?? '—' }} / {{ s.asientos_total ?? '—' }}</strong>
           <span class="text-[13px] text-muted">{{ abordados }} abordaron</span>
         </div>
-        <div class="flex flex-col gap-1 rounded-2xl border border-line bg-surface p-5">
+        <div class="flex flex-col gap-1 rounded-card border border-line bg-surface p-5">
           <span class="flex items-center gap-1.5 text-[13px] text-muted"><Bus class="size-4" aria-hidden="true" />Bus · andén</span>
-          <strong class="font-display text-2xl">{{ s?.bus ?? 'Sin bus' }}<template v-if="s?.anden"> · {{ s.anden }}</template></strong>
-          <button v-if="puedeOperar && ['programada', 'demorada', 'abordando'].includes(s?.estado ?? '')" class="self-start text-[13px] font-semibold text-carmin-600 hover:underline dark:text-carmin-200" @click="busElegido = null; dialogoBus = true">
+          <strong class="text-2xl">{{ s?.bus ?? 'Sin bus' }}<template v-if="s?.anden"> · {{ s.anden }}</template></strong>
+          <button v-if="puedeOperar && ['programada', 'demorada', 'abordando'].includes(s?.estado ?? '')" class="self-start text-[13px] font-semibold text-accent-fg hover:underline" @click="busElegido = null; dialogoBus = true">
             Cambiar bus
           </button>
         </div>
-        <div class="flex flex-col gap-1 rounded-2xl border border-line bg-surface p-5">
+        <div class="flex flex-col gap-1 rounded-card border border-line bg-surface p-5">
           <span class="flex items-center gap-1.5 text-[13px] text-muted"><Users class="size-4" aria-hidden="true" />Tripulación</span>
           <template v-if="manifiesto.data.value?.tripulacion.length">
             <span v-for="t in manifiesto.data.value.tripulacion" :key="t.usuario_id" class="text-sm">
@@ -269,20 +269,20 @@ function imprimir(): void {
             </span>
           </template>
           <span v-else class="text-sm text-muted">Sin asignar</span>
-          <button v-if="puedeOperar" class="self-start text-[13px] font-semibold text-carmin-600 hover:underline dark:text-carmin-200" @click="abrirTripulacion">
+          <button v-if="puedeOperar" class="self-start text-[13px] font-semibold text-accent-fg hover:underline" @click="abrirTripulacion">
             Editar tripulación
           </button>
         </div>
-        <div class="flex flex-col gap-1 rounded-2xl border border-line bg-surface p-5">
+        <div class="flex flex-col gap-1 rounded-card border border-line bg-surface p-5">
           <span class="text-[13px] text-muted">Carga a bordo</span>
-          <strong class="font-display text-2xl">{{ manifiesto.data.value?.encomiendas.length ?? 0 }} guías</strong>
+          <strong class="text-2xl">{{ manifiesto.data.value?.encomiendas.length ?? 0 }} guías</strong>
           <span class="text-[13px] text-muted">{{ manifiesto.data.value?.total_encomiendas_kg ?? 0 }} kg</span>
         </div>
       </div>
 
-      <section class="overflow-hidden rounded-2xl border border-line bg-surface print-plain">
+      <section class="overflow-hidden rounded-card border border-line bg-surface print-plain">
         <div class="print-only px-5 pt-5">
-          <p class="font-display text-lg font-bold">TransDemo S.R.L. · Manifiesto de pasajeros</p>
+          <p class="text-lg font-bold">TransDemo S.R.L. · Manifiesto de pasajeros</p>
           <p class="text-sm">
             {{ s?.codigo }} · {{ s?.origen }} → {{ s?.destino }} · {{ fechaHora(s?.fecha_hora_salida) }} · Bus {{ s?.bus }} ·
             Tripulación: {{ manifiesto.data.value?.tripulacion.map((t) => t.nombre).join(', ') }}
@@ -317,7 +317,7 @@ function imprimir(): void {
             empty-text="No hay encomiendas asignadas a esta salida."
           >
             <template #cell-numero_guia="{ row }">
-              <RouterLink :to="{ name: 'admin-encomienda', params: { guia: row.numero_guia } }" class="codigo text-sm text-carmin-600 hover:underline dark:text-carmin-200">{{ row.numero_guia }}</RouterLink>
+              <RouterLink :to="{ name: 'admin-encomienda', params: { guia: row.numero_guia } }" class="codigo text-sm text-accent-fg hover:underline">{{ row.numero_guia }}</RouterLink>
             </template>
             <template #cell-tipo_envio="{ row }">{{ TIPO_ENVIO[row.tipo_envio] }}</template>
             <template #cell-peso_kg="{ row }">{{ row.peso_kg }} kg</template>
@@ -326,13 +326,13 @@ function imprimir(): void {
           <div v-else class="flex flex-col gap-4 p-5">
             <p v-if="precios.isError.value" class="text-sm text-muted">Asigna un bus para ver los precios de esta salida.</p>
             <ul v-else class="grid gap-3 sm:grid-cols-2">
-              <li v-for="p in precios.data.value?.precios ?? []" :key="p.tipo_asiento" class="flex items-center justify-between rounded-xl border border-line p-4">
+              <li v-for="p in precios.data.value?.precios ?? []" :key="p.tipo_asiento" class="flex items-center justify-between rounded-inner border border-line p-4">
                 <div>
                   <p class="font-semibold">{{ p.nombre }}</p>
                   <p class="text-[13px] text-muted">Máximo referencial {{ bs(p.precio_maximo_referencial_bs) }}</p>
                 </div>
                 <div class="text-right">
-                  <p class="font-display text-2xl font-bold">{{ bs(p.precio_bs) }}</p>
+                  <p class="text-2xl font-bold">{{ bs(p.precio_bs) }}</p>
                   <StatusBadge v-if="p.es_precio_especial" size="sm" tono="exito" label="Precio especial" />
                 </div>
               </li>

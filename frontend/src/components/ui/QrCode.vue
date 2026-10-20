@@ -6,8 +6,8 @@ const props = withDefaults(defineProps<{ value: string; size?: number; label?: s
 const src = ref<string>('')
 
 // El QR siempre se dibuja oscuro sobre blanco para que lo lea cualquier cámara.
-function tinta(): string {
-  return getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#111113'
+function token(nombre: string, respaldo: string): string {
+  return getComputedStyle(document.documentElement).getPropertyValue(nombre).trim() || respaldo
 }
 
 watchEffect(async () => {
@@ -16,7 +16,7 @@ watchEffect(async () => {
       width: props.size * 2,
       margin: 1,
       errorCorrectionLevel: 'M',
-      color: { dark: tinta(), light: '#FFFFFF' },
+      color: { dark: token('--ink', '#111113'), light: token('--on-accent', '#ffffff') },
     })
   } catch {
     src.value = ''
@@ -31,6 +31,6 @@ watchEffect(async () => {
     :width="size"
     :height="size"
     :alt="label ?? 'Código QR'"
-    class="rounded-xl bg-white p-1.5"
+    class="rounded-xl bg-on-accent p-1.5"
   />
 </template>

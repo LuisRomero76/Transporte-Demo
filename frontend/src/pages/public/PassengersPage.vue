@@ -140,11 +140,11 @@ const total = computed(() => compra.total)
     <form class="contenedor grid items-start gap-6 py-6 sm:py-8 lg:grid-cols-[1fr_360px]" novalidate @submit.prevent="enviar">
       <div class="flex min-w-0 flex-col gap-5">
         <div>
-          <h1 class="text-2xl font-bold sm:text-[26px]">¿Quiénes viajan?</h1>
+          <h1 class="text-2xl font-medium tracking-tight sm:text-[26px]">¿Quiénes viajan?</h1>
           <p class="mt-1 text-sm text-muted">Los datos deben coincidir con el documento que presentarás al abordar.</p>
         </div>
 
-        <div class="flex gap-3 rounded-2xl border border-info-600/20 bg-info-50 p-4 text-sm text-info-800 dark:bg-info-600/10 dark:text-blue-200">
+        <div class="flex gap-3 rounded-card border border-info/20 bg-info-soft p-4 text-sm text-info-fg">
           <Info class="size-5 shrink-0" aria-hidden="true" />
           <p>
             Menores de 3 a 11 años (50 % de descuento), adultos mayores (20 %) y personas con discapacidad compran en
@@ -155,10 +155,10 @@ const total = computed(() => compra.total)
         <fieldset
           v-for="(p, i) in estado.pasajeros"
           :key="p.numero_asiento"
-          class="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-5"
+          class="flex flex-col gap-4 rounded-card border border-line bg-surface p-5"
         >
           <legend class="float-left mb-1 flex w-full items-center gap-3 text-base font-bold">
-            <span class="flex size-9 items-center justify-center rounded-lg bg-carmin-600 text-sm text-white">{{ p.numero_asiento }}</span>
+            <span class="flex size-9 items-center justify-center rounded-full bg-accent text-sm text-on-accent">{{ p.numero_asiento }}</span>
             Pasajero {{ i + 1 }}
             <span class="text-sm font-normal text-muted">· {{ estado.asientos[i]?.clase }}</span>
           </legend>
@@ -199,7 +199,7 @@ const total = computed(() => compra.total)
           <CheckboxInput v-model="p.viaja_con_perro_guia" label="Viaja con perro guía" hint="No se permiten otras mascotas en cabina ni en bodega." />
         </fieldset>
 
-        <fieldset class="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-5">
+        <fieldset class="flex flex-col gap-4 rounded-card border border-line bg-surface p-5">
           <legend class="float-left mb-1 w-full text-base font-bold">Datos de contacto y factura</legend>
           <CheckboxInput v-model="compradorEsPasajero" label="Quien paga es el pasajero 1" />
           <div v-if="!compradorEsPasajero" class="grid gap-4 sm:grid-cols-3">
@@ -235,7 +235,7 @@ const total = computed(() => compra.total)
         </fieldset>
       </div>
 
-      <aside class="overflow-hidden rounded-2xl border border-line bg-surface lg:sticky lg:top-24">
+      <aside class="overflow-hidden rounded-card border border-line bg-surface lg:sticky lg:top-24">
         <TripSummary :salida="estado.salida" />
         <div class="flex flex-col gap-3 p-5">
           <div v-for="a in estado.asientos" :key="a.numero" class="flex justify-between text-sm">
@@ -243,7 +243,7 @@ const total = computed(() => compra.total)
           </div>
           <div class="flex items-baseline justify-between border-t border-line pt-3">
             <span class="font-semibold">Total</span>
-            <span class="font-display text-[28px] font-bold tabular">{{ bs(total) }}</span>
+            <span class="text-[28px] font-bold tabular">{{ bs(total) }}</span>
           </div>
           <BaseButton type="submit" size="lg" block :loading="reservar.isPending.value">Reservar y continuar al pago</BaseButton>
           <p class="flex items-start gap-2 text-[13px] text-muted">

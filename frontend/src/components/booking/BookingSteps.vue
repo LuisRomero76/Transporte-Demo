@@ -7,20 +7,20 @@ const estado = (i: number) => (i + 1 < props.paso ? 'hecho' : i + 1 === props.pa
 </script>
 
 <template>
-  <nav aria-label="Pasos de la compra" class="border-b border-line bg-surface">
-    <ol class="contenedor flex h-14 items-center gap-2 overflow-x-auto text-sm sm:gap-4">
+  <nav aria-label="Pasos de la compra" class="contenedor pt-2">
+    <ol class="flex h-13 w-fit max-w-full items-center gap-2 overflow-x-auto rounded-full border border-line bg-surface px-4 text-[13px] shadow-suave sm:gap-4">
       <li v-for="(p, i) in pasos" :key="p" class="flex shrink-0 items-center gap-2 sm:gap-4">
         <span
           class="flex items-center gap-2"
-          :class="{ 'font-semibold text-exito-600': estado(i) === 'hecho', 'font-bold text-fg': estado(i) === 'actual', 'text-muted': estado(i) === 'pendiente' }"
+          :class="{ 'text-success-fg': estado(i) === 'hecho', 'font-medium text-fg': estado(i) === 'actual', 'text-muted': estado(i) === 'pendiente' }"
           :aria-current="estado(i) === 'actual' ? 'step' : undefined"
         >
           <span
-            class="flex size-6 items-center justify-center rounded-full text-xs font-bold"
+            class="flex size-6 items-center justify-center rounded-full text-xs font-medium"
             :class="{
-              'bg-exito-600 text-white': estado(i) === 'hecho',
-              'bg-carmin-600 text-white': estado(i) === 'actual',
-              'border-[1.5px] border-muted/60': estado(i) === 'pendiente',
+              'bg-success-soft text-success-fg': estado(i) === 'hecho',
+              'bg-accent text-on-accent': estado(i) === 'actual',
+              'border border-line-strong': estado(i) === 'pendiente',
             }"
           >
             <Check v-if="estado(i) === 'hecho'" class="size-3.5" aria-hidden="true" />

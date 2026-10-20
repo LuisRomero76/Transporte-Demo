@@ -34,10 +34,10 @@ function alternar(a: Asiento): void {
 }
 
 function clases(a: Asiento): string {
-  if (seleccion.value.includes(a.numero)) return 'bg-carmin-600 text-white shadow-[0_4px_12px_-4px_rgb(179_18_46/0.6)]'
+  if (seleccion.value.includes(a.numero)) return 'border border-accent bg-accent-soft text-accent-fg'
   if (a.estado === 'libre')
-    return 'bg-surface text-fg border-[1.5px] border-[#9AA3B2] hover:border-carmin-600 hover:text-carmin-600 dark:border-noche-400'
-  return 'bg-[#D9DDE4] text-[#8A93A3] cursor-not-allowed dark:bg-white/10 dark:text-noche-400'
+    return 'bg-surface text-fg border border-line-strong hover:border-accent-line hover:text-accent-fg'
+  return 'bg-surface-2 text-muted/60 cursor-not-allowed'
 }
 
 function descripcion(a: Asiento): string {
@@ -53,16 +53,16 @@ const pista = (columna: number) => (columna === 3 ? 4 : columna)
 <template>
   <section :aria-label="titulo" class="flex flex-col gap-3">
     <div class="flex items-baseline justify-between gap-3">
-      <h3 class="font-sans text-[15px] font-bold">{{ titulo }}</h3>
+      <h3 class="text-[15px] font-medium">{{ titulo }}</h3>
       <span v-if="precio" class="text-sm text-muted">{{ precio }}</span>
     </div>
     <div class="flex gap-3" :class="horizontal ? 'flex-col md:flex-row' : 'flex-col'">
       <div
-        class="flex items-center justify-center rounded-xl border-[1.5px] border-dashed border-line-strong text-[11px] font-bold tracking-[0.2em] text-muted"
+        class="flex items-center justify-center rounded-full border border-dashed border-line-strong text-xs text-muted"
         :class="horizontal ? 'h-8 md:h-auto md:w-10 md:[writing-mode:vertical-rl] md:rotate-180' : 'h-8'"
         aria-hidden="true"
       >
-        FRENTE
+        Frente
       </div>
       <div
         class="seat-grid grid gap-2 justify-center"
@@ -73,7 +73,7 @@ const pista = (columna: number) => (columna === 3 ? 4 : columna)
           v-for="a in asientos"
           :key="a.numero"
           type="button"
-          class="flex items-center justify-center rounded-lg text-[13px] font-bold transition-[background,box-shadow,transform] active:scale-95"
+          class="flex items-center justify-center rounded-inner text-[13px] font-semibold transition-[background,border-color,color,transform] active:scale-95"
           :class="[clases(a), compacto ? 'h-9 w-11' : 'h-11 w-12 md:w-auto']"
           :style="{ '--fila': a.fila, '--col': pista(a.columna) }"
           :disabled="a.estado !== 'libre'"
@@ -83,7 +83,7 @@ const pista = (columna: number) => (columna === 3 ? 4 : columna)
         >
           {{ a.numero }}
         </button>
-        <span class="pasillo text-[10px] font-bold tracking-[0.25em] text-muted/70" aria-hidden="true">PASILLO</span>
+        <span class="pasillo text-xs text-muted" aria-hidden="true">Pasillo</span>
       </div>
     </div>
   </section>

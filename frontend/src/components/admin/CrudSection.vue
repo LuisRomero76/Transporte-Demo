@@ -199,7 +199,7 @@ defineExpose({ abrir })
   <section class="flex flex-col gap-4">
     <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <h2 class="text-lg font-bold">{{ titulo }}</h2>
+        <h2 class="text-lg font-medium tracking-tight">{{ titulo }}</h2>
         <p v-if="descripcion" class="mt-0.5 text-sm text-muted">{{ descripcion }}</p>
       </div>
       <div class="flex flex-wrap items-end gap-2">
@@ -212,7 +212,7 @@ defineExpose({ abrir })
     </div>
 
     <ErrorState v-if="lista.isError.value" :error="lista.error.value" @retry="lista.refetch()" />
-    <div v-else class="overflow-hidden rounded-2xl border border-line bg-surface">
+    <div v-else class="overflow-hidden rounded-card border border-line bg-surface">
       <DataTable :columns="columnasTabla" :rows="filas" :row-key="(f: Fila) => String(f[clave])" :loading="lista.isLoading.value" :caption="titulo">
         <template v-for="c in columnas" :key="c.key" #[`cell-${c.key}`]="{ row }">
           <StatusBadge v-if="c.estado" size="sm" :tono="row[c.key] ? 'exito' : 'neutro'" :label="row[c.key] ? 'Activo' : 'Inactivo'" />
@@ -222,7 +222,7 @@ defineExpose({ abrir })
           <div class="flex justify-end gap-1">
             <slot name="acciones" :fila="row" />
             <BaseButton v-if="puedeEditar" size="sm" variant="ghost" icon-only :aria-label="`Editar ${nombreItem}`" @click="abrir(row)"><Pencil class="size-4" /></BaseButton>
-            <BaseButton v-if="puedeEliminar" size="sm" variant="ghost" icon-only class="text-peligro-600" :aria-label="`Eliminar ${nombreItem}`" @click="eliminando = row"><Trash2 class="size-4" /></BaseButton>
+            <BaseButton v-if="puedeEliminar" size="sm" variant="ghost" icon-only class="text-danger-fg" :aria-label="`Eliminar ${nombreItem}`" @click="eliminando = row"><Trash2 class="size-4" /></BaseButton>
           </div>
         </template>
       </DataTable>
@@ -261,15 +261,15 @@ defineExpose({ abrir })
                 v-for="(d, i) in DIAS"
                 :key="d"
                 type="button"
-                class="h-9 min-w-11 rounded-lg border px-2 text-sm font-semibold"
-                :class="(form[c.key] ?? []).includes(i + 1) ? 'border-carmin-600 bg-carmin-50 text-carmin-800 dark:bg-carmin-800/30 dark:text-carmin-100' : 'border-line-strong text-muted'"
+                class="h-9 min-w-11 rounded-full border px-2 text-sm font-semibold"
+                :class="(form[c.key] ?? []).includes(i + 1) ? 'border-accent-line bg-accent-soft text-accent-fg' : 'border-line-strong text-muted'"
                 :aria-pressed="(form[c.key] ?? []).includes(i + 1)"
                 @click="toggleDia(c.key, i + 1)"
               >
                 {{ d.slice(0, 3) }}
               </button>
             </div>
-            <p v-if="errores[c.key]" class="mt-1 text-[13px] text-peligro-600">{{ errores[c.key] }}</p>
+            <p v-if="errores[c.key]" class="mt-1 text-[13px] text-danger-fg">{{ errores[c.key] }}</p>
           </fieldset>
           <TextInput
             v-else

@@ -12,12 +12,12 @@ const urlRastreo = computed(() => `${window.location.origin}/rastreo/${e.value.n
 </script>
 
 <template>
-  <article class="print-plain grid gap-5 rounded-2xl border border-line p-5 sm:grid-cols-[1fr_auto]">
+  <article class="print-plain grid gap-5 rounded-card border border-line p-5 sm:grid-cols-[1fr_auto]">
     <div class="flex min-w-0 flex-col gap-4">
       <div class="flex items-center gap-2.5">
         <LogoMark :size="32" :wordmark="false" />
         <div>
-          <p class="font-display text-sm font-bold tracking-wider">TRANSDEMO</p>
+          <p class="text-sm font-bold tracking-wider">TRANSDEMO</p>
           <p class="text-xs text-muted">Comprobante de envío · {{ fechaHora(e.fecha_registro) }}</p>
         </div>
       </div>
@@ -28,7 +28,7 @@ const urlRastreo = computed(() => `${window.location.origin}/rastreo/${e.value.n
         </div>
         <div v-if="e.codigo_retiro">
           <p class="text-xs text-muted">Código de retiro</p>
-          <p class="codigo text-3xl text-carmin-600">{{ e.codigo_retiro }}</p>
+          <p class="codigo text-3xl text-accent-fg">{{ e.codigo_retiro }}</p>
         </div>
       </div>
       <dl class="grid grid-cols-1 gap-x-4 gap-y-2 text-sm sm:grid-cols-2">

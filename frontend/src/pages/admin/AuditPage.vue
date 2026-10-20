@@ -100,7 +100,7 @@ const columnas = [
     />
     <BotLogSection v-if="vista === 'bot'" />
     <template v-else>
-      <div class="grid gap-3 rounded-2xl border border-line bg-surface p-4 sm:grid-cols-2">
+      <div class="grid gap-3 rounded-card border border-line bg-surface p-4 sm:grid-cols-2">
         <SelectInput
           v-model="tabla"
           label="Tabla"
@@ -118,7 +118,7 @@ const columnas = [
       </div>
 
       <ErrorState v-if="lista.isError.value" :error="lista.error.value" @retry="lista.refetch()" />
-      <div v-else class="overflow-hidden rounded-2xl border border-line bg-surface">
+      <div v-else class="overflow-hidden rounded-card border border-line bg-surface">
         <DataTable
           :columns="columnas"
           :rows="lista.data.value?.items ?? []"
@@ -167,7 +167,7 @@ const columnas = [
       "
     >
       <div v-if="elegido" class="flex flex-col gap-4">
-        <dl class="grid grid-cols-2 gap-3 rounded-xl bg-canvas p-4 text-sm">
+        <dl class="grid grid-cols-2 gap-3 rounded-inner bg-canvas p-4 text-sm">
           <div>
             <dt class="text-muted">Tabla</dt>
             <dd class="font-semibold">{{ elegido.tabla }}</dd>
@@ -177,11 +177,11 @@ const columnas = [
             <dd class="codigo text-xs break-all">{{ elegido.registro_id }}</dd>
           </div>
         </dl>
-        <h3 class="font-bold">Datos registrados</h3>
+        <h3 class="font-semibold">Datos registrados</h3>
         <p v-if="!elegido.cambios || !Object.keys(elegido.cambios).length" class="text-sm text-muted">
           Sin detalle de cambios.
         </p>
-        <dl v-else class="flex flex-col divide-y divide-line rounded-xl border border-line">
+        <dl v-else class="flex flex-col divide-y divide-line rounded-inner border border-line">
           <div v-for="(val, clave) in elegido.cambios" :key="clave" class="flex flex-col gap-1 px-4 py-3">
             <dt class="text-xs font-semibold text-muted">{{ clave }}</dt>
             <dd>

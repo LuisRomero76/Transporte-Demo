@@ -6,32 +6,32 @@
 <template>
   <svg viewBox="0 0 520 380" class="h-auto w-full" role="img" aria-labelledby="mapa-titulo">
     <title id="mapa-titulo">Mapa de rutas: Sucre conecta con Santa Cruz, La Paz y Tarija</title>
-    <g fill="none" stroke="#fff" stroke-opacity="0.18" stroke-width="1">
+    <g fill="none" stroke="var(--on-accent)" stroke-opacity="0.18" stroke-width="1">
       <path d="M0 60 H520 M0 140 H520 M0 220 H520 M0 300 H520 M90 0 V380 M210 0 V380 M330 0 V380 M450 0 V380" />
     </g>
-    <g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" class="rutas">
+    <g fill="none" stroke="var(--on-accent)" stroke-width="3" stroke-linecap="round" class="rutas">
       <path d="M250 220 C 320 170, 380 160, 440 150" />
       <path d="M250 220 C 180 170, 140 110, 110 80" />
       <path d="M250 220 C 240 270, 255 310, 270 350" />
     </g>
-    <path d="M250 220 L 214 246 L 244 300" fill="none" stroke="#fff" stroke-opacity="0.6" stroke-width="1.5" stroke-dasharray="4 5" />
-    <path d="M110 80 L 92 70" fill="none" stroke="#fff" stroke-opacity="0.6" stroke-width="1.5" stroke-dasharray="4 5" />
-    <circle cx="250" cy="220" r="18" fill="#fff" opacity="0.3" class="pulso" />
+    <path d="M250 220 L 214 246 L 244 300" fill="none" stroke="var(--on-accent)" stroke-opacity="0.6" stroke-width="1.5" stroke-dasharray="4 5" />
+    <path d="M110 80 L 92 70" fill="none" stroke="var(--on-accent)" stroke-opacity="0.6" stroke-width="1.5" stroke-dasharray="4 5" />
+    <circle cx="250" cy="220" r="18" fill="var(--on-accent)" opacity="0.3" class="pulso" />
     <circle cx="250" cy="220" r="11" fill="var(--ink)" />
-    <circle cx="250" cy="220" r="5" fill="#fff" />
-    <circle cx="440" cy="150" r="7" fill="#fff" />
-    <circle cx="110" cy="80" r="7" fill="#fff" />
-    <circle cx="270" cy="350" r="7" fill="#fff" />
-    <circle cx="214" cy="246" r="4.5" fill="#fff" fill-opacity="0.7" />
-    <circle cx="244" cy="300" r="4.5" fill="#fff" fill-opacity="0.7" />
-    <circle cx="92" cy="70" r="4.5" fill="#fff" fill-opacity="0.7" />
-    <g font-family="inherit" font-size="14" fill="#fff" font-weight="600">
+    <circle cx="250" cy="220" r="5" fill="var(--on-accent)" />
+    <circle cx="440" cy="150" r="7" fill="var(--on-accent)" />
+    <circle cx="110" cy="80" r="7" fill="var(--on-accent)" />
+    <circle cx="270" cy="350" r="7" fill="var(--on-accent)" />
+    <circle cx="214" cy="246" r="4.5" fill="var(--on-accent)" fill-opacity="0.7" />
+    <circle cx="244" cy="300" r="4.5" fill="var(--on-accent)" fill-opacity="0.7" />
+    <circle cx="92" cy="70" r="4.5" fill="var(--on-accent)" fill-opacity="0.7" />
+    <g font-family="inherit" font-size="14" fill="var(--on-accent)" font-weight="600">
       <text x="270" y="214">Sucre</text>
       <text x="400" y="132">Santa Cruz</text>
       <text x="126" y="98">La Paz</text>
       <text x="286" y="355">Tarija</text>
     </g>
-    <g font-family="inherit" font-size="12" fill="#fff" fill-opacity="0.8">
+    <g font-family="inherit" font-size="12" fill="var(--on-accent)" fill-opacity="0.8">
       <text x="150" y="250">Potosí</text>
       <text x="176" y="306">Camargo</text>
       <text x="36" y="58">El Alto</text>

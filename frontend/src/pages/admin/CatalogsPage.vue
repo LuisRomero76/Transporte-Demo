@@ -386,7 +386,7 @@ const horariosDe = ref<{ id: number; codigo: string; nombre: string } | null>(nu
     <div class="grid items-start gap-6 lg:grid-cols-[230px_1fr]">
       <nav aria-label="Secciones de catálogos" class="hidden flex-col gap-4 lg:sticky lg:top-20 lg:flex">
         <div v-for="g in grupos" :key="g">
-          <p class="mb-1.5 px-3 text-[11px] font-bold tracking-widest text-muted uppercase">{{ g }}</p>
+          <p class="mb-1.5 px-3 text-[11px] font-boldst text-muted">{{ g }}</p>
           <RouterLink
             v-for="s in disponibles.filter((x) => x.grupo === g)"
             :key="s.key"

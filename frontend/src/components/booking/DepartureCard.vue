@@ -19,25 +19,25 @@ const alcanza = computed(() => libresTotal.value >= props.pasajeros)
 </script>
 
 <template>
-  <article class="overflow-hidden rounded-2xl border border-line bg-surface transition-shadow hover:shadow-suave">
+  <article class="overflow-hidden rounded-card border border-line bg-surface shadow-suave transition-colors hover:border-line-strong">
     <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-7 sm:px-6">
       <div class="flex flex-1 items-center gap-4 sm:gap-7">
         <div class="flex flex-col">
-          <span class="font-display text-[28px] leading-none font-bold tabular sm:text-[30px]">{{ hora(salida.fecha_hora_salida) }}</span>
+          <span class="text-[28px] leading-none font-semibold tracking-tight tabular sm:text-[30px]">{{ hora(salida.fecha_hora_salida) }}</span>
           <span class="mt-1 text-sm text-muted">{{ salida.origen }}</span>
         </div>
         <div class="flex flex-1 flex-col items-center gap-1.5">
           <span class="flex items-center gap-1 text-xs text-muted"><Clock3 class="size-3.5" aria-hidden="true" />{{ duracion(duracionMin) }}</span>
           <div class="flex w-full items-center gap-1.5" aria-hidden="true">
-            <span class="size-2.5 rounded-full border-2 border-noche-900 dark:border-noche-300" />
-            <span class="h-0.5 flex-1 bg-noche-900 dark:bg-noche-300" />
-            <span class="size-2.5 rounded-full bg-noche-900 dark:bg-noche-300" />
+            <span class="size-2.5 rounded-full border-2 border-fg" />
+            <span class="h-0.5 flex-1 bg-line-strong" />
+            <span class="size-2.5 rounded-full bg-accent" />
           </div>
           <span class="text-xs text-muted">Directo</span>
         </div>
         <div class="flex flex-col text-right">
-          <span class="font-display text-[28px] leading-none font-bold tabular sm:text-[30px]">
-            {{ hora(salida.fecha_hora_llegada_estimada) }}<sup v-if="esDiaSiguiente(salida.fecha_hora_salida, salida.fecha_hora_llegada_estimada)" class="ml-0.5 text-xs font-semibold text-carmin-600">+1</sup>
+          <span class="text-[28px] leading-none font-semibold tracking-tight tabular sm:text-[30px]">
+            {{ hora(salida.fecha_hora_llegada_estimada) }}<sup v-if="esDiaSiguiente(salida.fecha_hora_salida, salida.fecha_hora_llegada_estimada)" class="ml-0.5 text-xs font-semibold text-accent-fg">+1</sup>
           </span>
           <span class="mt-1 text-sm text-muted">{{ salida.destino }} · {{ fechaCorta(salida.fecha_hora_llegada_estimada) }}</span>
         </div>
@@ -54,7 +54,7 @@ const alcanza = computed(() => libresTotal.value >= props.pasajeros)
           <span class="font-semibold">{{ c.nombre }} <span class="font-normal text-muted">· {{ c.codigo === 'SUITE_CAMA' ? '180°' : '160°' }}</span></span>
           <span
             class="flex items-center gap-1 text-[13px] font-semibold"
-            :class="c.asientos_libres === 0 ? 'text-muted' : c.asientos_libres <= 5 ? 'text-aviso-700' : 'text-exito-600'"
+            :class="c.asientos_libres === 0 ? 'text-muted' : c.asientos_libres <= 5 ? 'text-warning-fg' : 'text-success-fg'"
           >
             <Armchair class="size-3.5" aria-hidden="true" />
             {{ c.asientos_libres === 0 ? 'Agotado' : c.asientos_libres <= 5 ? `Quedan ${c.asientos_libres}` : `${c.asientos_libres} libres` }}
@@ -62,11 +62,11 @@ const alcanza = computed(() => libresTotal.value >= props.pasajeros)
         </div>
         <div class="text-right">
           <span class="block text-xs text-muted">por asiento</span>
-          <span class="font-display text-[22px] font-bold tabular">{{ bs(c.precio_bs) }}</span>
+          <span class="text-[22px] font-semibold tracking-tight tabular">{{ bs(c.precio_bs) }}</span>
         </div>
       </div>
     </div>
-    <div class="flex flex-col gap-3 bg-surface-2/60 px-5 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <div class="flex flex-col gap-3 bg-surface-2 px-5 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
       <span class="text-[13px] text-muted">
         Bus {{ salida.bus ?? 'por asignar' }}<template v-if="salida.anden"> · Andén {{ salida.anden }}</template> · Aire · Calefacción · USB · Baño
       </span>

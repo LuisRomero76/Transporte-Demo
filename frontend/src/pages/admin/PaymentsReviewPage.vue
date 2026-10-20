@@ -105,12 +105,12 @@ const motivoValido = computed(() => motivo.value.trim().length >= 3)
       subtitle="Comprobantes de pago por QR enviados al bot. Al aprobar se emiten los boletos; al rechazar, el cliente tiene 1 hora para enviar otro."
     />
 
-    <div class="overflow-hidden rounded-2xl border border-line bg-surface">
+    <div class="overflow-hidden rounded-card border border-line bg-surface">
       <TabsBar v-model="pestana" :tabs="pestanas" label="Estado de los comprobantes" class="px-3" />
 
       <ErrorState v-if="lista.isError.value" :error="lista.error.value" class="m-5" @retry="lista.refetch()" />
       <div v-else-if="lista.isLoading.value" class="grid gap-4 p-5 lg:grid-cols-2">
-        <SkeletonBlock v-for="i in 4" :key="i" class="h-64 rounded-2xl" />
+        <SkeletonBlock v-for="i in 4" :key="i" class="h-64 rounded-card" />
       </div>
       <EmptyState
         v-else-if="!lista.data.value?.items.length"
@@ -120,7 +120,7 @@ const motivoValido = computed(() => motivo.value.trim().length >= 3)
       />
 
       <ul v-else class="grid gap-4 p-5 lg:grid-cols-2">
-        <li v-for="c in lista.data.value.items" :key="c.id" class="flex flex-col overflow-hidden rounded-2xl border border-line sm:flex-row">
+        <li v-for="c in lista.data.value.items" :key="c.id" class="flex flex-col overflow-hidden rounded-card border border-line sm:flex-row">
           <!-- Imagen -->
           <div class="relative flex h-56 shrink-0 items-center justify-center overflow-hidden bg-surface-2 sm:h-auto sm:min-h-64 sm:w-44">
             <template v-if="c.tiene_imagen && !sinVistaPrevia.has(c.id)">
@@ -133,7 +133,7 @@ const motivoValido = computed(() => motivo.value.trim().length >= 3)
               />
               <button
                 type="button"
-                class="absolute right-2 bottom-2 inline-flex size-9 items-center justify-center rounded-full bg-noche-900/80 text-white hover:bg-noche-900"
+                class="absolute right-2 bottom-2 inline-flex size-9 items-center justify-center rounded-full bg-pill-active/80 text-pill-active-fg hover:bg-pill-active"
                 aria-label="Ver comprobante en grande"
                 @click="ampliada = c"
               >
@@ -162,11 +162,11 @@ const motivoValido = computed(() => motivo.value.trim().length >= 3)
               <span class="block text-muted">{{ c.viaje }} · {{ fechaHora(c.fecha_hora_salida) }} · {{ c.boletos }} pasaje(s)</span>
             </p>
 
-            <dl class="grid grid-cols-2 gap-x-3 gap-y-1.5 rounded-xl bg-canvas p-3 text-[13px]">
+            <dl class="grid grid-cols-2 gap-x-3 gap-y-1.5 rounded-inner bg-canvas p-3 text-[13px]">
               <dt class="text-muted">Total de la reserva</dt>
               <dd class="text-right font-bold tabular">{{ bsExacto(c.total_bs) }}</dd>
               <dt class="text-muted">Monto leído</dt>
-              <dd class="text-right tabular" :class="c.monto_coincide ? 'text-exito-800' : 'font-bold text-peligro-600'">
+              <dd class="text-right tabular" :class="c.monto_coincide ? 'text-success-fg' : 'font-bold text-danger-fg'">
                 {{ c.monto_leido_bs != null ? bsExacto(c.monto_leido_bs) : '—' }}
               </dd>
               <dt class="text-muted">N.º de transacción</dt>
@@ -175,11 +175,11 @@ const motivoValido = computed(() => motivo.value.trim().length >= 3)
               <dd class="truncate text-right">{{ [c.fecha_leida, c.banco].filter(Boolean).join(' · ') || '—' }}</dd>
             </dl>
 
-            <p v-if="c.transaccion_repetida" class="flex items-start gap-1.5 text-[13px] font-semibold text-peligro-600">
+            <p v-if="c.transaccion_repetida" class="flex items-start gap-1.5 text-[13px] font-semibold text-danger-fg">
               <TriangleAlert class="mt-0.5 size-4 shrink-0" aria-hidden="true" /> Este número de transacción aparece en otro comprobante.
             </p>
             <p v-if="c.motivo_rechazo" class="text-[13px] text-muted">Motivo del rechazo: {{ c.motivo_rechazo }}</p>
-            <p v-if="c.notificacion_error" class="flex items-start gap-1.5 text-[13px] text-aviso-700">
+            <p v-if="c.notificacion_error" class="flex items-start gap-1.5 text-[13px] text-warning-fg">
               <MessageCircleWarning class="mt-0.5 size-4 shrink-0" aria-hidden="true" /> No se pudo avisar al cliente por WhatsApp.
             </p>
 
@@ -198,7 +198,7 @@ const motivoValido = computed(() => motivo.value.trim().length >= 3)
     </div>
 
     <AppDialog :open="!!ampliada" size="lg" :title="`Comprobante · ${ampliada?.codigo_reserva ?? ''}`" @update:open="(v) => !v && (ampliada = null)">
-      <img v-if="ampliada" :src="urlImagen(ampliada)" :alt="`Comprobante de la reserva ${ampliada.codigo_reserva}`" class="mx-auto max-h-[75vh] rounded-xl" />
+      <img v-if="ampliada" :src="urlImagen(ampliada)" :alt="`Comprobante de la reserva ${ampliada.codigo_reserva}`" class="mx-auto max-h-[75vh] rounded-inner" />
     </AppDialog>
 
     <ConfirmDialog
@@ -232,8 +232,8 @@ const motivoValido = computed(() => motivo.value.trim().length >= 3)
             v-for="m in MOTIVOS"
             :key="m"
             type="button"
-            class="rounded-full border border-line-strong px-3 py-1 text-xs hover:border-noche-400"
-            :class="motivo === m ? 'border-carmin-600 bg-carmin-50' : ''"
+            class="rounded-full border border-line-strong px-3 py-1 text-xs hover:border-line-strong"
+            :class="motivo === m ? 'border-accent-line bg-accent-soft' : ''"
             @click="motivo = m"
           >
             {{ m }}

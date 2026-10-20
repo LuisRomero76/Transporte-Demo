@@ -72,7 +72,7 @@ const columnas = [
 
 <template>
   <section class="flex flex-col gap-4">
-    <div class="grid gap-3 rounded-2xl border border-line bg-surface p-4 sm:grid-cols-2">
+    <div class="grid gap-3 rounded-card border border-line bg-surface p-4 sm:grid-cols-2">
       <SelectInput
         v-model="tool"
         label="Herramienta"
@@ -93,7 +93,7 @@ const columnas = [
     </div>
 
     <ErrorState v-if="lista.isError.value" :error="lista.error.value" @retry="lista.refetch()" />
-    <div v-else class="overflow-hidden rounded-2xl border border-line bg-surface">
+    <div v-else class="overflow-hidden rounded-card border border-line bg-surface">
       <DataTable
         :columns="columnas"
         :rows="lista.data.value?.items ?? []"
@@ -149,7 +149,7 @@ const columnas = [
       "
     >
       <div v-if="elegido" class="flex flex-col gap-4">
-        <dl class="grid grid-cols-2 gap-3 rounded-xl bg-canvas p-4 text-sm">
+        <dl class="grid grid-cols-2 gap-3 rounded-inner bg-canvas p-4 text-sm">
           <div>
             <dt class="text-muted">Resultado</dt>
             <dd class="font-semibold">{{ elegido.encontrado ? 'Encontrado' : 'Sin resultado' }}</dd>
@@ -172,17 +172,17 @@ const columnas = [
           </div>
         </dl>
         <div>
-          <h3 class="mb-1.5 font-bold">Lo que preguntó</h3>
+          <h3 class="mb-1.5 font-semibold">Lo que preguntó</h3>
           <p class="text-sm text-muted">{{ parametros(elegido) }}</p>
         </div>
         <div>
-          <h3 class="mb-1.5 font-bold">Lo que respondió el agente</h3>
-          <p class="rounded-xl border border-line p-4 text-sm">{{ mensaje(elegido) }}</p>
+          <h3 class="mb-1.5 font-semibold">Lo que respondió el agente</h3>
+          <p class="rounded-inner border border-line p-4 text-sm">{{ mensaje(elegido) }}</p>
         </div>
         <details class="text-sm">
           <summary class="cursor-pointer font-semibold">Respuesta completa (JSON)</summary>
           <pre
-            class="mt-2 overflow-x-auto rounded-xl bg-canvas p-3 font-mono text-xs whitespace-pre-wrap break-all"
+            class="mt-2 overflow-x-auto rounded-inner bg-canvas p-3 font-mono text-xs whitespace-pre-wrap break-all"
             >{{ JSON.stringify(elegido.resultado, null, 2) }}</pre>
         </details>
       </div>

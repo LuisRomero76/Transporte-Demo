@@ -11,6 +11,7 @@ import BaseButton from '@/components/ui/BaseButton.vue'
 import DataTable from '@/components/ui/DataTable.vue'
 import ErrorState from '@/components/ui/ErrorState.vue'
 import KpiCard from '@/components/ui/KpiCard.vue'
+import StatHero from '@/components/ui/StatHero.vue'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
 import SegmentedControl from '@/components/ui/SegmentedControl.vue'
@@ -18,6 +19,7 @@ import SkeletonBlock from '@/components/ui/SkeletonBlock.vue'
 import StatusBadge from '@/components/ui/StatusBadge.vue'
 import SurfaceCard from '@/components/ui/SurfaceCard.vue'
 import TextInput from '@/components/ui/TextInput.vue'
+import { coloresGrafico } from '@/lib/chartColors'
 import { bs, bsExacto, fechaCorta, hora, hoyISO, sumarDias } from '@/lib/format'
 import { CANAL, ESTADO_ENCOMIENDA, ESTADO_SALIDA, METODO_PAGO, etiqueta } from '@/lib/labels'
 import { useTemaStore } from '@/stores/tema'
@@ -63,11 +65,10 @@ const ocupacionMedia = computed(() => {
 const porCobrar = computed(() => Number(encomiendas.data.value?.pendiente_de_cobro_bs ?? 0))
 
 // --- Gráficos ---
-const colores = computed(() => ({
-  texto: tema.oscuro ? '#A3B2CC' : '#586174',
-  linea: tema.oscuro ? '#213659' : '#EFEAE1',
-  serie: ['#B3122E', tema.oscuro ? '#7D8FB0' : '#1B3358', '#0F8A83', '#C98A0B', '#5B6B8C', '#8E2B4A'],
-}))
+const colores = computed(() => {
+  void tema.oscuro
+  return coloresGrafico()
+})
 const ejes = computed(() => ({
   axisLabel: { color: colores.value.texto },
   axisLine: { show: false },
@@ -110,7 +111,7 @@ function dona(datos: { name: string; value: number }[]): EChartsOption {
         type: 'pie',
         radius: ['52%', '78%'],
         center: ['50%', '42%'],
-        itemStyle: { borderColor: tema.oscuro ? '#0F213D' : '#fff', borderWidth: 2 },
+        itemStyle: { borderColor: colores.value.superficie, borderWidth: 2 },
         label: { show: false },
         data: datos,
       },
@@ -164,7 +165,7 @@ const columnasOcupacion = [
       <BaseButton variant="subtle" size="sm" class="h-10" :disabled="!v?.por_dia.length" @click="exportar"><Download class="size-4" aria-hidden="true" />Exportar CSV</BaseButton>
     </PageHeader>
 
-    <div class="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-4 md:flex-row md:items-end">
+    <div class="flex flex-col gap-3 rounded-card border border-line bg-surface p-4 md:flex-row md:items-end">
       <SegmentedControl
         v-model="periodo"
         label="Periodo"
@@ -187,7 +188,9 @@ const columnasOcupacion = [
     <ErrorState v-if="ventas.isError.value" :error="ventas.error.value" @retry="ventas.refetch()" />
     <template v-else>
       <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiCard label="Ingresos por pasajes" :value="bs(total)" :icon="Coins" :loading="ventas.isLoading.value" :hint="`${cantidad} ventas pagadas`" />
+        <StatHero label="Ingresos por pasajes" :amount="Number(total)" :format="(n) => bs(n)" :loading="ventas.isLoading.value" :hint="`${cantidad} ventas pagadas`">
+          <template #icon><Coins class="size-3.5" aria-hidden="true" /></template>
+        </StatHero>
         <KpiCard label="Ticket promedio" :value="cantidad ? bsExacto(total / cantidad) : '—'" :icon="Receipt" :loading="ventas.isLoading.value" hint="Por venta" />
         <KpiCard label="Ocupación del día" :value="`${ocupacionMedia} %`" :icon="Gauge" :loading="ocupacion.isLoading.value" :hint="fechaCorta(fechaOcupacion)" :tone="ocupacionMedia >= 70 ? 'exito' : 'neutro'" />
         <KpiCard label="Carga por cobrar" :value="bs(porCobrar)" :icon="Package" :loading="encomiendas.isLoading.value" hint="Pago en destino pendiente" :tone="porCobrar ? 'aviso' : 'neutro'" />
@@ -249,7 +252,7 @@ const columnasOcupacion = [
           <li v-for="e in estadosCarga" :key="e.estado" class="flex items-center gap-3">
             <StatusBadge size="sm" class="w-40 shrink-0" v-bind="etiqueta(ESTADO_ENCOMIENDA, e.estado)" />
             <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-2" aria-hidden="true">
-              <div class="h-full rounded-full bg-noche-700 dark:bg-sky-400" :style="{ width: `${totalCarga ? (e.n / totalCarga) * 100 : 0}%` }" />
+              <div class="h-full rounded-full bg-pill-active" :style="{ width: `${totalCarga ? (e.n / totalCarga) * 100 : 0}%` }" />
             </div>
             <span class="w-8 text-right text-sm font-semibold tabular">{{ e.n }}</span>
           </li>

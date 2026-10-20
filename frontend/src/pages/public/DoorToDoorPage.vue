@@ -107,17 +107,17 @@ function enviar(): void {
   <div class="contenedor grid items-start gap-8 py-10 lg:grid-cols-[1fr_380px]">
     <div class="flex flex-col gap-6">
       <div>
-        <h1 class="text-[28px] font-bold sm:text-[34px]">Puerta a puerta</h1>
+        <h1 class="text-[28px] font-medium tracking-tight sm:text-[34px]">Puerta a puerta</h1>
         <p class="mt-2 max-w-2xl text-muted">
           Recogemos tu encomienda o carga en la dirección que nos indiques y la entregamos en la puerta del destinatario. Desde
           1 kg, de lunes a viernes, en Sucre y Santa Cruz.
         </p>
       </div>
 
-      <div v-if="resultado" class="flex flex-col gap-4 rounded-2xl border border-exito-600/30 bg-exito-50 p-6 text-exito-800" role="status">
+      <div v-if="resultado" class="flex flex-col gap-4 rounded-card border border-success/30 bg-success-soft p-6 text-success-fg" role="status">
         <div class="flex items-center gap-3">
           <CircleCheck class="size-7" aria-hidden="true" />
-          <h2 class="font-sans text-xl font-bold">¡Solicitud registrada!</h2>
+          <h2 class="font-sans text-xl font-medium tracking-tight">¡Solicitud registrada!</h2>
         </div>
         <p class="text-[15px]">{{ resultado.mensaje }}</p>
         <p class="text-sm">
@@ -126,7 +126,7 @@ function enviar(): void {
         <BaseButton variant="outline" class="self-start" @click="resultado = null">Hacer otra solicitud</BaseButton>
       </div>
 
-      <form v-else class="flex flex-col gap-5 rounded-2xl border border-line bg-surface p-5 sm:p-6" novalidate @submit.prevent="enviar">
+      <form v-else class="flex flex-col gap-5 rounded-card border border-line bg-surface p-5 sm:p-6" novalidate @submit.prevent="enviar">
         <SegmentedControl
           v-model="form.tipo"
           label="¿Qué necesitas?"
@@ -167,23 +167,23 @@ function enviar(): void {
     </div>
 
     <aside class="flex flex-col gap-4">
-      <div class="flex flex-col gap-3 rounded-2xl bg-noche-900 p-6 text-white">
-        <h2 class="font-sans text-lg font-bold">Horarios</h2>
-        <p class="flex items-center gap-2 text-sm text-noche-200"><Clock3 class="size-4" aria-hidden="true" />Entregas: 08:00 a 12:00, lunes a viernes</p>
-        <p class="flex items-center gap-2 text-sm text-noche-200"><Clock3 class="size-4" aria-hidden="true" />Recojos: 14:00 a 17:00, lunes a viernes</p>
+      <div class="flex flex-col gap-3 rounded-card border border-line bg-surface shadow-suave p-6 text-fg">
+        <h2 class="font-sans text-lg font-medium tracking-tight">Horarios</h2>
+        <p class="flex items-center gap-2 text-sm text-muted"><Clock3 class="size-4" aria-hidden="true" />Entregas: 08:00 a 12:00, lunes a viernes</p>
+        <p class="flex items-center gap-2 text-sm text-muted"><Clock3 class="size-4" aria-hidden="true" />Recojos: 14:00 a 17:00, lunes a viernes</p>
       </div>
-      <div class="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-6">
-        <h2 class="font-sans text-lg font-bold">También por WhatsApp</h2>
+      <div class="flex flex-col gap-3 rounded-card border border-line bg-surface p-6">
+        <h2 class="font-sans text-lg font-medium tracking-tight">También por WhatsApp</h2>
         <a
           v-for="c in conServicio"
           :key="c.id"
           :href="whatsappUrl(c.whatsapp_puerta_a_puerta_e164, 'Hola, quiero solicitar el servicio puerta a puerta.')"
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center justify-between rounded-xl border border-line px-4 py-3 hover:border-exito-600"
+          class="flex items-center justify-between rounded-inner border border-line px-4 py-3 hover:border-success"
         >
           <span class="font-semibold">{{ c.nombre }}</span>
-          <span class="flex items-center gap-2 text-sm text-exito-600"><MessageCircle class="size-4" aria-hidden="true" />{{ telefono(c.whatsapp_puerta_a_puerta_e164) }}</span>
+          <span class="flex items-center gap-2 text-sm text-success-fg"><MessageCircle class="size-4" aria-hidden="true" />{{ telefono(c.whatsapp_puerta_a_puerta_e164) }}</span>
         </a>
       </div>
     </aside>

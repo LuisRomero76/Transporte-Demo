@@ -125,11 +125,11 @@ const guardarEquipaje = useMutation({
       <div class="flex flex-col gap-6">
         <SurfaceCard title="Escanear">
           <div class="flex flex-col gap-4">
-            <div v-if="camaraActiva" class="relative overflow-hidden rounded-2xl bg-black">
+            <div v-if="camaraActiva" class="relative overflow-hidden rounded-card bg-black">
               <video ref="video" class="aspect-video w-full object-cover" muted playsinline aria-label="Vista de la cámara" />
-              <div class="pointer-events-none absolute inset-0 m-auto size-48 rounded-2xl border-4 border-white/80" aria-hidden="true" />
+              <div class="pointer-events-none absolute inset-0 m-auto size-48 rounded-card border-4 border-on-accent/80" aria-hidden="true" />
             </div>
-            <p v-if="errorCamara" class="rounded-xl bg-peligro-50 px-4 py-3 text-sm text-peligro-800" role="alert">{{ errorCamara }}</p>
+            <p v-if="errorCamara" class="rounded-inner bg-danger-soft px-4 py-3 text-sm text-danger-fg" role="alert">{{ errorCamara }}</p>
             <div class="flex flex-wrap gap-2">
               <BaseButton v-if="soportaCamara && !camaraActiva" variant="secondary" @click="iniciarCamara"><Camera class="size-4" aria-hidden="true" />Usar cámara</BaseButton>
               <BaseButton v-if="camaraActiva" variant="subtle" @click="detenerCamara"><CameraOff class="size-4" aria-hidden="true" />Detener cámara</BaseButton>
@@ -160,7 +160,7 @@ const guardarEquipaje = useMutation({
                 <Luggage class="size-4" aria-hidden="true" />Registrar
               </BaseButton>
             </div>
-            <p v-if="registroEquipaje" class="rounded-xl px-4 py-3 text-sm" :class="registroEquipaje.exceso_kg > 0 ? 'bg-aviso-50 text-aviso-800' : 'bg-exito-50 text-exito-800'" role="status">
+            <p v-if="registroEquipaje" class="rounded-inner px-4 py-3 text-sm" :class="registroEquipaje.exceso_kg > 0 ? 'bg-warning-soft text-warning-fg' : 'bg-success-soft text-success-fg'" role="status">
               Etiqueta <span class="codigo">{{ registroEquipaje.etiqueta }}</span> ·
               <template v-if="registroEquipaje.exceso_kg > 0">exceso de {{ registroEquipaje.exceso_kg }} kg: cobrar {{ bsExacto(registroEquipaje.cargo_exceso_bs) }}</template>
               <template v-else>dentro de la franquicia</template>
@@ -175,8 +175,8 @@ const guardarEquipaje = useMutation({
           <li
             v-for="l in lecturas"
             :key="l.id"
-            class="flex gap-3 rounded-xl p-3"
-            :class="l.ok ? 'bg-exito-50 text-exito-800 dark:bg-exito-600/15 dark:text-emerald-200' : 'bg-peligro-50 text-peligro-800 dark:bg-peligro-600/15 dark:text-red-200'"
+            class="flex gap-3 rounded-inner p-3"
+            :class="l.ok ? 'bg-success-soft text-success-fg' : 'bg-danger-soft text-danger-fg'"
           >
             <component :is="l.ok ? CircleCheck : CircleX" class="mt-0.5 size-5 shrink-0" aria-hidden="true" />
             <div class="min-w-0 flex-1">

@@ -120,18 +120,18 @@ function imprimir(): void {
 <template>
   <div class="contenedor flex flex-col gap-6 py-8 sm:py-10">
     <div class="no-print flex flex-col gap-2">
-      <h1 class="text-[28px] font-bold sm:text-[32px]">Mi reserva</h1>
+      <h1 class="text-[28px] font-medium tracking-tight sm:text-[32px]">Mi reserva</h1>
       <p class="text-muted">Consulta tus boletos, termina un pago pendiente o pide un reembolso.</p>
     </div>
 
-    <form class="no-print grid gap-3 rounded-2xl border border-line bg-surface p-5 sm:grid-cols-[1fr_1fr_auto] sm:items-end" @submit.prevent="buscar">
+    <form class="no-print grid gap-3 rounded-card border border-line bg-surface p-5 shadow-suave sm:grid-cols-[1fr_1fr_auto] sm:items-end" @submit.prevent="buscar">
       <TextInput v-model="form.codigo" label="Código de reserva" placeholder="MX7K2P" mono maxlength="8" autocomplete="off" required />
       <TextInput v-model="form.documento" label="Documento del comprador o de un pasajero" autocomplete="off" required />
       <BaseButton type="submit" class="h-11" :loading="reserva.isFetching.value">Consultar</BaseButton>
-      <p v-if="errorForm" class="text-sm font-medium text-peligro-600 sm:col-span-3" role="alert">{{ errorForm }}</p>
+      <p v-if="errorForm" class="text-sm font-medium text-danger-fg sm:col-span-3" role="alert">{{ errorForm }}</p>
     </form>
 
-    <div v-if="reembolsoHecho" class="no-print flex gap-3 rounded-2xl bg-exito-50 p-5 text-exito-800" role="status">
+    <div v-if="reembolsoHecho" class="no-print flex gap-3 rounded-card bg-success-soft p-5 text-success-fg" role="status">
       <RotateCcw class="size-5 shrink-0" aria-hidden="true" />
       <p class="text-sm">
         Registramos tu solicitud de reembolso del boleto <strong>{{ reembolsoHecho.numero_boleto }}</strong> por
@@ -140,24 +140,24 @@ function imprimir(): void {
       </p>
     </div>
 
-    <SkeletonBlock v-if="reserva.isLoading.value && consulta" class="h-72 rounded-2xl" />
+    <SkeletonBlock v-if="reserva.isLoading.value && consulta" class="h-72 rounded-card" />
     <ErrorState v-else-if="reserva.isError.value" :error="reserva.error.value" title="No encontramos la reserva" @retry="reserva.refetch()" />
 
     <template v-else-if="r">
-      <section class="overflow-hidden rounded-2xl border border-line bg-surface">
-        <div class="flex flex-col gap-4 bg-noche-900 p-5 text-white sm:flex-row sm:items-center sm:justify-between sm:p-6">
+      <section class="overflow-hidden rounded-card border border-line bg-surface shadow-suave">
+        <div class="hero flex flex-col gap-4 rounded-none! p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div>
-            <p class="text-xs font-semibold tracking-[0.12em] text-carmin-200 uppercase">Reserva</p>
-            <p class="codigo text-2xl">{{ r.codigo_reserva }}</p>
-            <p class="mt-1 text-sm text-noche-200">
+            <p class="hero-chip w-fit">Reserva</p>
+            <p class="codigo mt-2 text-[34px] leading-none">{{ r.codigo_reserva }}</p>
+            <p class="mt-2 text-sm text-on-accent/85">
               {{ r.salida.origen }} → {{ r.salida.destino }} · {{ fechaLarga(r.salida.fecha_hora_salida) }} · {{ hora(r.salida.fecha_hora_salida) }}
             </p>
           </div>
-          <StatusBadge :tono="estado.tono" :label="estado.label" class="self-start" />
+          <StatusBadge :tono="estado.tono" :label="estado.label" class="self-start bg-on-accent! text-ink!" />
         </div>
         <div class="flex flex-col gap-4 p-5 sm:p-6">
           <p class="text-[15px]">{{ r.mensaje }}</p>
-          <div v-if="r.salida.estado === 'demorada'" class="flex gap-2 rounded-xl bg-aviso-50 px-4 py-3 text-sm font-medium text-aviso-800">
+          <div v-if="r.salida.estado === 'demorada'" class="flex gap-2 rounded-inner bg-warning-soft px-4 py-3 text-sm font-medium text-warning-fg">
             <CircleAlert class="size-5 shrink-0" aria-hidden="true" />La salida tiene una demora de {{ r.salida.minutos_demora }} minutos.
           </div>
           <div class="no-print flex flex-wrap gap-2">
@@ -177,7 +177,7 @@ function imprimir(): void {
           <TicketCard :boleto="b" :salida="r.salida" />
           <div v-if="b.estado === 'emitido'" class="no-print flex justify-end">
             <button
-              class="inline-flex items-center gap-1.5 text-sm font-semibold text-carmin-600 hover:underline disabled:cursor-not-allowed disabled:text-muted disabled:no-underline"
+              class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-fg hover:underline disabled:cursor-not-allowed disabled:text-muted disabled:no-underline"
               :disabled="salidaCercana"
               :title="salidaCercana ? 'Faltan menos de 2 horas para la salida' : undefined"
               @click="boletoReembolso = b"
@@ -212,9 +212,9 @@ function imprimir(): void {
       @update:open="(v) => !v && (boletoReembolso = null)"
     >
       <div class="flex flex-col gap-4">
-        <div class="grid grid-cols-2 gap-3 rounded-xl bg-canvas p-4 text-sm">
+        <div class="grid grid-cols-2 gap-3 rounded-inner bg-canvas p-4 text-sm">
           <span class="text-muted">Pagaste</span><strong class="text-right">{{ bsExacto(boletoReembolso?.total_bs) }}</strong>
-          <span class="text-muted">Te devolvemos ({{ porcentaje }} %)</span><strong class="text-right text-exito-600">{{ bsExacto(montoEstimado) }}</strong>
+          <span class="text-muted">Te devolvemos ({{ porcentaje }} %)</span><strong class="text-right text-success-fg">{{ bsExacto(montoEstimado) }}</strong>
         </div>
         <p class="text-sm text-muted">
           La empresa retiene el {{ 100 - porcentaje }} %, incluidos los costos de la factura. El asiento se libera en cuanto confirmes.

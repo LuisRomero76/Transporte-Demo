@@ -240,19 +240,19 @@ const salidaActual = computed(() => vendibles.value.find((s) => s.id === salidaI
     </PageHeader>
 
     <div class="flex gap-2 overflow-x-auto pb-1" role="group" aria-label="Salidas del día">
-      <SkeletonBlock v-if="salidasDelDia.isLoading.value" class="h-16 w-full rounded-xl" />
+      <SkeletonBlock v-if="salidasDelDia.isLoading.value" class="h-16 w-full rounded-full" />
       <p v-else-if="!vendibles.length" class="text-sm text-muted">No hay salidas a la venta en esta fecha.</p>
       <button
         v-for="s in vendibles"
         :key="s.id"
         type="button"
-        class="flex h-16 shrink-0 flex-col items-start justify-center rounded-xl border px-4 text-left transition-colors"
-        :class="salidaId === s.id ? 'border-2 border-carmin-600 bg-carmin-50 text-carmin-800 dark:bg-carmin-800/30 dark:text-carmin-100' : 'border-line bg-surface hover:border-noche-400'"
+        class="flex h-16 shrink-0 flex-col items-start justify-center rounded-full border px-4 text-left transition-colors"
+        :class="salidaId === s.id ? 'border-2 border-accent-line bg-accent-soft text-accent-fg' : 'border-line bg-surface hover:border-line-strong'"
         :aria-pressed="salidaId === s.id"
         @click="salidaId = s.id"
       >
         <strong class="text-sm">{{ hora(s.fecha_hora_salida) }} {{ s.origen }} → {{ s.destino }}</strong>
-        <span class="text-xs" :class="s.estado === 'demorada' ? 'font-semibold text-aviso-700' : 'opacity-80'">
+        <span class="text-xs" :class="s.estado === 'demorada' ? 'font-semibold text-warning-fg' : 'opacity-80'">
           {{ s.estado === 'demorada' ? `Demorada ${s.minutos_demora} min` : s.estado === 'abordando' ? 'Abordando' : 'Programada' }}
           · {{ (s.asientos_total ?? 0) - (s.asientos_ocupados ?? 0) }} libres
         </span>
@@ -261,9 +261,9 @@ const salidaActual = computed(() => vendibles.value.find((s) => s.id === salidaI
 
     <EmptyState v-if="!salidaId && !salidasDelDia.isLoading.value" title="Elige una salida" text="Cambia la fecha para ver otras salidas." />
     <div v-else class="grid items-start gap-5 xl:grid-cols-[minmax(300px,340px)_1fr_340px]">
-      <section class="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-4" aria-label="Mapa de asientos">
+      <section class="flex flex-col gap-3 rounded-card border border-line bg-surface p-4" aria-label="Mapa de asientos">
         <div class="flex rounded-control bg-surface-2 p-1">
-          <button v-for="p in (['alta', 'baja'] as const)" :key="p" type="button" class="h-9 flex-1 rounded-lg text-[13px] font-semibold" :class="planta === p ? 'bg-surface shadow-suave' : 'text-muted'" @click="planta = p">
+          <button v-for="p in (['alta', 'baja'] as const)" :key="p" type="button" class="h-9 flex-1 rounded-full text-[13px] font-semibold" :class="planta === p ? 'bg-surface shadow-suave' : 'text-muted'" @click="planta = p">
             {{ p === 'alta' ? 'Alta · Suite' : 'Baja · Leito' }} {{ bs(precios[p === 'alta' ? 'SUITE_CAMA' : 'LEITO_CAMA']?.precio_bs) }}
           </button>
         </div>
@@ -281,16 +281,16 @@ const salidaActual = computed(() => vendibles.value.find((s) => s.id === salidaI
 
       <section class="flex min-w-0 flex-col gap-4" aria-label="Pasajeros">
         <EmptyState v-if="!pasajeros.length" compact title="Selecciona los asientos" text="Toca los asientos en el mapa para agregar pasajeros." />
-        <fieldset v-for="(p, i) in pasajeros" :key="p.numero_asiento" class="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-5">
+        <fieldset v-for="(p, i) in pasajeros" :key="p.numero_asiento" class="flex flex-col gap-4 rounded-card border border-line bg-surface p-5">
           <legend class="float-left flex w-full items-center justify-between gap-2">
             <span class="flex items-center gap-3 font-bold">
-              <span class="flex size-8 items-center justify-center rounded-lg bg-carmin-600 text-sm text-white">{{ p.numero_asiento }}</span>
+              <span class="flex size-8 items-center justify-center rounded-full bg-accent text-sm text-on-accent">{{ p.numero_asiento }}</span>
               Pasajero {{ i + 1 }}<span v-if="i === 0" class="text-sm font-normal text-muted">· comprador</span>
             </span>
-            <span class="font-display font-bold tabular">{{ bs(estimado(p)) }}</span>
+            <span class="font-bold tabular">{{ bs(estimado(p)) }}</span>
           </legend>
           <SegmentedControl v-model="p.tipo_pasajero" label="Tarifa" :options="opcionesTarifa" />
-          <p v-if="politicaDe(p.tipo_pasajero)?.requisito && p.tipo_pasajero !== 'adulto'" class="rounded-xl bg-aviso-50 px-4 py-2.5 text-[13px] text-aviso-800 dark:bg-aviso-600/15 dark:text-amber-200">
+          <p v-if="politicaDe(p.tipo_pasajero)?.requisito && p.tipo_pasajero !== 'adulto'" class="rounded-inner bg-warning-soft px-4 py-2.5 text-[13px] text-warning-fg">
             Requisito: {{ politicaDe(p.tipo_pasajero)?.requisito }}.
           </p>
           <div class="grid gap-3 sm:grid-cols-3">
@@ -314,7 +314,7 @@ const salidaActual = computed(() => vendibles.value.find((s) => s.id === salidaI
           </div>
           <CheckboxInput v-model="p.viaja_con_perro_guia" label="Viaja con perro guía" />
         </fieldset>
-        <fieldset v-if="pasajeros.length" class="grid gap-3 rounded-2xl border border-line bg-surface p-5 sm:grid-cols-2">
+        <fieldset v-if="pasajeros.length" class="grid gap-3 rounded-card border border-line bg-surface p-5 sm:grid-cols-2">
           <legend class="float-left mb-1 w-full font-bold">Contacto y factura</legend>
           <TextInput v-model="comprador.telefono" label="Celular del comprador" type="tel" required />
           <TextInput v-model="comprador.email" label="Correo (opcional)" type="email" />
@@ -323,10 +323,10 @@ const salidaActual = computed(() => vendibles.value.find((s) => s.id === salidaI
         </fieldset>
       </section>
 
-      <aside class="flex flex-col overflow-hidden rounded-2xl border border-line bg-surface xl:sticky xl:top-20" aria-label="Cobro">
-        <div class="bg-noche-900 p-5 text-white">
+      <aside class="flex flex-col overflow-hidden rounded-card border border-line bg-surface shadow-suave xl:sticky xl:top-20" aria-label="Cobro">
+        <div class="hero flex flex-col gap-1 rounded-none! p-5">
           <strong class="block">{{ salidaActual ? `${salidaActual.origen} → ${salidaActual.destino} · ${hora(salidaActual.fecha_hora_salida)}` : '—' }}</strong>
-          <span class="text-sm text-noche-200">Bus {{ salidaActual?.bus ?? '—' }} · Andén {{ salidaActual?.anden ?? '—' }}</span>
+          <span class="text-sm text-on-accent/85">Bus {{ salidaActual?.bus ?? '—' }} · Andén {{ salidaActual?.anden ?? '—' }}</span>
         </div>
         <div class="flex flex-col gap-3 p-5">
           <div v-for="p in pasajeros" :key="p.numero_asiento" class="flex justify-between text-sm">
@@ -335,11 +335,11 @@ const salidaActual = computed(() => vendibles.value.find((s) => s.id === salidaI
           </div>
           <div class="flex items-baseline justify-between border-t border-line pt-3">
             <strong>{{ venta ? 'Total' : 'Total estimado' }}</strong>
-            <span class="font-display text-[26px] font-bold tabular">{{ bsExacto(venta?.total_bs ?? totalEstimado) }}</span>
+            <span class="text-[26px] font-semibold tracking-tight tabular">{{ bsExacto(venta?.total_bs ?? totalEstimado) }}</span>
           </div>
 
           <template v-if="venta">
-            <p class="rounded-xl bg-info-50 px-3 py-2 text-[13px] text-info-800 dark:bg-info-600/15 dark:text-blue-200">
+            <p class="rounded-inner bg-info-soft px-3 py-2 text-[13px] text-info-fg">
               Venta <span class="codigo">{{ venta.codigo_reserva }}</span> creada. Asientos bloqueados hasta cobrar.
             </p>
             <SegmentedControl
@@ -354,9 +354,9 @@ const salidaActual = computed(() => vendibles.value.find((s) => s.id === salidaI
             />
             <template v-if="cobro.metodo === 'efectivo'">
               <TextInput v-model="cobro.recibido" label="Recibido (Bs)" inputmode="decimal" size="lg" />
-              <div v-if="cambio !== null" class="flex items-baseline justify-between rounded-xl px-4 py-3" :class="cambio >= 0 ? 'bg-exito-50 text-exito-800' : 'bg-peligro-50 text-peligro-800'">
+              <div v-if="cambio !== null" class="flex items-baseline justify-between rounded-inner px-4 py-3" :class="cambio >= 0 ? 'bg-success-soft text-success-fg' : 'bg-danger-soft text-danger-fg'">
                 <span class="font-semibold">{{ cambio >= 0 ? 'Cambio' : 'Falta' }}</span>
-                <strong class="font-display text-xl tabular">{{ bsExacto(Math.abs(cambio)) }}</strong>
+                <strong class="text-xl tabular">{{ bsExacto(Math.abs(cambio)) }}</strong>
               </div>
             </template>
             <TextInput v-else-if="cobro.metodo === 'tarjeta_debito'" v-model="cobro.tarjeta" label="Número de tarjeta (POS)" inputmode="numeric" />
@@ -378,7 +378,7 @@ const salidaActual = computed(() => vendibles.value.find((s) => s.id === salidaI
 
     <AppDialog :open="!!finalizada" title="Venta cobrada" size="xl" @update:open="(v) => !v && nuevaVenta()">
       <div v-if="finalizada" class="flex flex-col gap-4">
-        <p class="no-print flex items-center gap-2 font-semibold text-exito-600">
+        <p class="no-print flex items-center gap-2 font-semibold text-success-fg">
           <CircleCheck class="size-5" aria-hidden="true" />Reserva {{ finalizada.codigo_reserva }} · {{ bsExacto(finalizada.total_bs) }}
           <template v-if="cobro.metodo === 'efectivo' && cambio !== null && cambio > 0"> · Cambio {{ bsExacto(cambio) }}</template>
         </p>

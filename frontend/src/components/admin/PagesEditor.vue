@@ -59,7 +59,7 @@ const guardar = useMutation({
 <template>
   <section class="flex flex-col gap-4">
     <div>
-      <h2 class="text-lg font-bold">Páginas del sitio</h2>
+      <h2 class="text-lg font-medium tracking-tight">Páginas del sitio</h2>
       <p class="mt-0.5 text-sm text-muted">Términos, privacidad y demás textos públicos. Se escriben en Markdown.</p>
     </div>
     <SkeletonBlock v-if="paginas.isLoading.value" class="h-96" />
@@ -70,25 +70,25 @@ const guardar = useMutation({
           v-for="p in paginas.data.value"
           :key="p.slug"
           type="button"
-          class="rounded-lg px-3 py-2 text-left text-sm font-medium whitespace-nowrap"
-          :class="p.slug === slug ? 'bg-noche-900 text-white dark:bg-noche-700' : 'hover:bg-surface-2'"
+          class="rounded-full px-3.5 py-2 text-left text-sm font-medium whitespace-nowrap transition-colors"
+          :class="p.slug === slug ? 'bg-pill-active text-pill-active-fg' : 'text-muted hover:bg-surface-2 hover:text-fg'"
           @click="slug = p.slug"
         >
           {{ p.titulo }}
         </button>
       </nav>
-      <div v-if="actual" class="flex min-w-0 flex-col gap-4 rounded-2xl border border-line bg-surface p-5">
+      <div v-if="actual" class="flex min-w-0 flex-col gap-4 rounded-card border border-line bg-surface p-5">
         <div class="grid gap-3 md:grid-cols-2">
           <TextInput v-model="form.titulo" label="Título" required />
           <TextInput v-model="form.meta" label="Descripción para buscadores" maxlength="300" />
         </div>
         <TabsBar v-model="vista" label="Modo" :tabs="[{ key: 'editar', label: 'Editar' }, { key: 'vista', label: 'Vista previa' }]" />
         <TextArea v-if="vista === 'editar'" v-model="form.contenido" label="Contenido (Markdown)" :rows="18" class="font-mono text-sm" />
-        <div v-else class="max-h-[560px] overflow-y-auto rounded-xl border border-line p-5">
+        <div v-else class="max-h-[560px] overflow-y-auto rounded-inner border border-line p-5">
           <MarkdownView :source="form.contenido" />
         </div>
         <div class="flex flex-wrap items-center justify-between gap-3">
-          <RouterLink :to="{ name: 'pagina', params: { slug: actual.slug } }" target="_blank" class="inline-flex items-center gap-1.5 text-sm font-semibold text-carmin-600 hover:underline dark:text-carmin-200">
+          <RouterLink :to="{ name: 'pagina', params: { slug: actual.slug } }" target="_blank" class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-fg hover:underline">
             Ver en el sitio <ExternalLink class="size-3.5" aria-hidden="true" />
           </RouterLink>
           <div class="flex gap-2">

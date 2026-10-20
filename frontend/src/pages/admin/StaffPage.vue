@@ -55,7 +55,7 @@ const PERMISOS: { rol: string; puede: string }[] = [
 <template>
   <div class="flex flex-col gap-6">
     <PageHeader title="Personal" :subtitle="esAdmin ? 'Cuentas del personal y sus permisos.' : 'Consulta del personal. Solo el administrador crea o modifica cuentas.'" />
-    <div class="grid items-start gap-6 xl:grid-cols-[1fr_320px]">
+    <div class="grid grid-cols-[minmax(0,1fr)] items-start gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
       <CrudSection
         titulo="Cuentas"
         ruta="/api/v1/admin/usuarios"

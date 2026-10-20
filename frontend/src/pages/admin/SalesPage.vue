@@ -126,14 +126,14 @@ function imprimir(): void {
 <template>
   <div class="flex flex-col gap-6">
     <PageHeader title="Ventas" subtitle="Reservas y pasajes vendidos por todos los canales." />
-    <div class="grid gap-3 rounded-2xl border border-line bg-surface p-4 sm:grid-cols-3">
+    <div class="grid gap-3 rounded-card border border-line bg-surface p-4 sm:grid-cols-3">
       <SelectInput v-model="filtros.estado" label="Estado" :options="[{ value: null, label: 'Todos' }, ...Object.entries(ESTADO_VENTA).map(([value, e]) => ({ value, label: e.label }))]" />
       <SelectInput v-model="filtros.canal" label="Canal" :options="[{ value: null, label: 'Todos' }, ...Object.entries(CANAL).map(([value, label]) => ({ value, label }))]" />
       <TextInput v-model="filtros.documento" label="Documento del comprador" autocomplete="off" />
     </div>
 
     <ErrorState v-if="ventas.isError.value" :error="ventas.error.value" @retry="ventas.refetch()" />
-    <div v-else class="overflow-hidden rounded-2xl border border-line bg-surface">
+    <div v-else class="overflow-hidden rounded-card border border-line bg-surface">
       <DataTable
         :columns="columnas"
         :rows="ventas.data.value?.items ?? []"
@@ -156,7 +156,7 @@ function imprimir(): void {
       <SkeletonBlock v-if="detalle.isLoading.value" class="h-72" />
       <ErrorState v-else-if="detalle.isError.value" :error="detalle.error.value" @retry="detalle.refetch()" />
       <div v-else-if="detalle.data.value" class="flex flex-col gap-4">
-        <dl class="grid grid-cols-2 gap-3 rounded-xl bg-canvas p-4 text-sm">
+        <dl class="grid grid-cols-2 gap-3 rounded-inner bg-canvas p-4 text-sm">
           <div><dt class="text-muted">Estado</dt><dd><StatusBadge size="sm" v-bind="etiqueta(ESTADO_VENTA, detalle.data.value.estado)" /></dd></div>
           <div><dt class="text-muted">Canal</dt><dd class="font-semibold">{{ CANAL[detalle.data.value.canal] }}</dd></div>
           <div><dt class="text-muted">Comprador</dt><dd class="font-semibold">{{ detalle.data.value.comprador }}</dd></div>
@@ -164,13 +164,13 @@ function imprimir(): void {
           <div v-if="detalle.data.value.pago"><dt class="text-muted">Pago</dt><dd class="font-semibold">{{ METODO_PAGO[detalle.data.value.pago.metodo] }}</dd></div>
           <div v-if="detalle.data.value.factura"><dt class="text-muted">Factura</dt><dd class="font-semibold">N.º {{ detalle.data.value.factura.numero_factura }}</dd></div>
         </dl>
-        <div v-if="detalle.data.value.estado === 'pendiente_pago'" class="flex flex-col gap-3 rounded-xl border border-line p-4">
+        <div v-if="detalle.data.value.estado === 'pendiente_pago'" class="flex flex-col gap-3 rounded-inner border border-line p-4">
           <SegmentedControl v-model="metodo" label="Cobrar en ventanilla" variant="switch" :options="[{ value: 'efectivo', label: 'Efectivo' }, { value: 'qr', label: 'QR' }]" />
           <BaseButton :loading="cobrar.isPending.value" @click="cobrar.mutate()">Cobrar {{ bsExacto(detalle.data.value.total_bs) }}</BaseButton>
         </div>
         <div v-for="b in detalle.data.value.boletos" :key="b.numero_boleto" class="flex flex-col gap-2">
           <TicketCard :boleto="b" :salida="detalle.data.value.salida" />
-          <button v-if="b.estado === 'emitido'" class="no-print inline-flex items-center gap-1.5 self-end text-sm font-semibold text-carmin-600 hover:underline dark:text-carmin-200" @click="boletoReembolso = b">
+          <button v-if="b.estado === 'emitido'" class="no-print inline-flex items-center gap-1.5 self-end text-sm font-semibold text-accent-fg hover:underline" @click="boletoReembolso = b">
             <RotateCcw class="size-4" aria-hidden="true" />Registrar reembolso
           </button>
         </div>

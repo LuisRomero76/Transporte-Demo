@@ -15,6 +15,7 @@
   --color-muted: var(--muted);
   --color-overlay: var(--overlay);
   --color-ink: var(--ink);
+  --color-on-accent: var(--on-accent);
 
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
@@ -47,47 +48,6 @@
   --font-sans: var(--font);
   --font-display: var(--font);
   --font-mono: var(--font);
-}
-
-/* TEMPORAL (fase 2-3): nombres de la paleta anterior apuntando a los tokens nuevos.
-   Se eliminan al migrar cada pantalla. */
-@theme inline {
-  --color-noche-950: var(--pill-active-bg);
-  --color-noche-900: var(--pill-active-bg);
-  --color-noche-800: var(--pill-active-bg);
-  --color-noche-700: var(--pill-active-bg);
-  --color-noche-600: var(--muted);
-  --color-noche-400: var(--muted);
-  --color-noche-300: var(--muted);
-  --color-noche-200: var(--line-strong);
-  --color-noche-100: var(--surface-2);
-  --color-carmin-800: var(--accent-fg);
-  --color-carmin-700: var(--accent-2);
-  --color-carmin-600: var(--accent);
-  --color-carmin-500: var(--accent);
-  --color-carmin-200: var(--accent-line);
-  --color-carmin-100: var(--accent-soft);
-  --color-carmin-50: var(--accent-soft);
-  --color-arena-50: var(--bg);
-  --color-arena-100: var(--surface-2);
-  --color-arena-200: var(--line);
-  --color-arena-300: var(--line-strong);
-  --color-exito-800: var(--success-fg);
-  --color-exito-600: var(--success);
-  --color-exito-50: var(--success-soft);
-  --color-aviso-800: var(--warning-fg);
-  --color-aviso-700: var(--warning-fg);
-  --color-aviso-600: var(--warning);
-  --color-aviso-50: var(--warning-soft);
-  --color-peligro-800: var(--danger-fg);
-  --color-peligro-600: var(--danger);
-  --color-peligro-50: var(--danger-soft);
-  --color-info-800: var(--info-fg);
-  --color-info-600: var(--info);
-  --color-info-50: var(--info-soft);
-  --color-turquesa-800: var(--info-fg);
-  --color-turquesa-600: var(--info);
-  --color-turquesa-50: var(--info-soft);
 }
 
 @theme {
@@ -189,9 +149,9 @@
     position: relative;
     overflow: hidden;
     border-radius: var(--r-card);
-    color: #fff;
+    color: var(--on-accent);
     background:
-      radial-gradient(60% 80% at 75% 20%, rgb(255 255 255 / 0.28), transparent 60%),
+      radial-gradient(60% 80% at 75% 20%, color-mix(in srgb, var(--on-accent) 28%, transparent), transparent 60%),
       linear-gradient(135deg, var(--accent), var(--accent-2));
   }
   .hero-chip {
@@ -201,19 +161,19 @@
     padding: 4px 10px;
     font-size: 12px;
     border-radius: var(--r-pill);
-    background: rgb(255 255 255 / 0.18);
-    color: #fff;
+    background: color-mix(in srgb, var(--on-accent) 18%, transparent);
+    color: var(--on-accent);
   }
   .hero-progress {
     height: 6px;
     border-radius: 99px;
-    background: repeating-linear-gradient(90deg, rgb(255 255 255 / 0.4) 0 2px, transparent 2px 5px);
+    background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--on-accent) 40%, transparent) 0 2px, transparent 2px 5px);
   }
   .hero-progress > i {
     display: block;
     height: 100%;
     border-radius: inherit;
-    background: #fff;
+    background: var(--on-accent);
     transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   .pill-group {

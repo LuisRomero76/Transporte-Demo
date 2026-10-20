@@ -103,7 +103,7 @@ const menu = computed(() => enlaces.map((e) => ({ key: e.nombre, label: e.label,
             :href="whatsappUrl(empresa.whatsapp_central_e164, 'Hola, quiero hacer una consulta.')"
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-auto flex h-12 items-center justify-center gap-2 rounded-full bg-accent font-medium text-white hover:bg-accent-2"
+            class="mt-auto flex h-12 items-center justify-center gap-2 rounded-full bg-accent font-medium text-on-accent hover:bg-accent-2"
           >
             <MessageCircle class="size-5" aria-hidden="true" />Escríbenos por WhatsApp
           </a>

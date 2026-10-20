@@ -85,21 +85,21 @@ const guardar = useMutation({
     <SkeletonBlock v-if="detalle.isLoading.value" class="h-72" />
     <div v-else class="flex flex-col gap-4">
       <SegmentedControl v-model="servicio" label="Servicio" variant="switch" :options="SERVICIOS" />
-      <ul class="flex flex-col divide-y divide-line rounded-xl border border-line">
+      <ul class="flex flex-col divide-y divide-line rounded-inner border border-line">
         <li v-for="(d, i) in semana[servicio]" :key="i" class="flex flex-wrap items-center gap-3 px-4 py-2.5">
           <label class="flex w-32 items-center gap-2.5 text-sm font-semibold">
-            <input v-model="d.abierto" type="checkbox" class="size-4.5 accent-carmin-600" />{{ DIAS[i] }}
+            <input v-model="d.abierto" type="checkbox" class="size-4.5 accent-(--accent)" />{{ DIAS[i] }}
           </label>
           <template v-if="d.abierto">
-            <input v-model="d.apertura" type="time" class="h-10 rounded-lg border border-line-strong bg-surface px-2 text-sm tabular" :aria-label="`Apertura ${DIAS[i]}`" />
+            <input v-model="d.apertura" type="time" class="h-10 rounded-full border border-line-strong bg-surface px-2 text-sm tabular" :aria-label="`Apertura ${DIAS[i]}`" />
             <span class="text-muted">a</span>
-            <input v-model="d.cierre" type="time" class="h-10 rounded-lg border border-line-strong bg-surface px-2 text-sm tabular" :aria-label="`Cierre ${DIAS[i]}`" />
-            <span v-if="d.cierre <= d.apertura" class="text-xs text-peligro-600">El cierre debe ser posterior</span>
+            <input v-model="d.cierre" type="time" class="h-10 rounded-full border border-line-strong bg-surface px-2 text-sm tabular" :aria-label="`Cierre ${DIAS[i]}`" />
+            <span v-if="d.cierre <= d.apertura" class="text-xs text-danger-fg">El cierre debe ser posterior</span>
           </template>
           <span v-else class="text-sm text-muted">Cerrado</span>
         </li>
       </ul>
-      <button type="button" class="self-start text-sm font-semibold text-carmin-600 hover:underline dark:text-carmin-200" @click="copiarLunes">Copiar el lunes a toda la semana laboral</button>
+      <button type="button" class="self-start text-sm font-semibold text-accent-fg hover:underline" @click="copiarLunes">Copiar el lunes a toda la semana laboral</button>
     </div>
     <template #footer>
       <BaseButton variant="subtle" @click="emit('cerrar')">Cancelar</BaseButton>

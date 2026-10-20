@@ -74,13 +74,13 @@ const columnas = [
         <PackagePlus class="size-4" aria-hidden="true" />Nueva encomienda
       </BaseButton>
     </PageHeader>
-    <div class="grid gap-3 rounded-2xl border border-line bg-surface p-4 sm:grid-cols-3">
+    <div class="grid gap-3 rounded-card border border-line bg-surface p-4 sm:grid-cols-3">
       <TextInput v-model="filtros.q" label="Buscar" placeholder="Guía, destinatario o CI del remitente" type="search" autocomplete="off" />
       <SelectInput v-model="filtros.estado" label="Estado" :options="[{ value: null, label: 'Todos' }, ...Object.entries(ESTADO_ENCOMIENDA).map(([value, e]) => ({ value, label: e.label }))]" />
       <SelectInput v-model="filtros.oficina" label="Bodega (origen o destino)" :options="opcionesOficina" />
     </div>
     <ErrorState v-if="lista.isError.value" :error="lista.error.value" @retry="lista.refetch()" />
-    <div v-else class="overflow-hidden rounded-2xl border border-line bg-surface">
+    <div v-else class="overflow-hidden rounded-card border border-line bg-surface">
       <DataTable
         :columns="columnas"
         :rows="lista.data.value?.items ?? []"
@@ -103,7 +103,7 @@ const columnas = [
         <template #cell-envio="{ row }">{{ TIPO_ENVIO[row.tipo_envio] }} · {{ row.peso_kg }} kg<span v-if="row.modalidad_entrega === 'puerta_a_puerta'" class="text-muted"> · a domicilio</span></template>
         <template #cell-precio="{ row }">
           <span class="font-semibold tabular">{{ bsExacto(row.precio_bs) }}</span>
-          <span class="block text-xs" :class="row.estado_pago === 'pendiente' ? 'font-semibold text-aviso-700' : 'text-muted'">
+          <span class="block text-xs" :class="row.estado_pago === 'pendiente' ? 'font-semibold text-warning-fg' : 'text-muted'">
             {{ etiqueta(ESTADO_PAGO, row.estado_pago).label }}{{ row.estado_pago === 'pendiente' ? ' en destino' : '' }}
           </span>
         </template>

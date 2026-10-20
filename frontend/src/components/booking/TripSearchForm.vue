@@ -52,9 +52,9 @@ function buscar(): void {
 }
 
 const campo =
-  'flex h-14 items-center gap-2.5 rounded-xl border-[1.5px] border-line-strong bg-surface px-3.5 focus-within:border-noche-900 focus-within:ring-4 focus-within:ring-(--ring)'
-const etiqueta = 'text-[11px] font-bold tracking-wider text-muted uppercase'
-const control = 'w-full min-w-0 appearance-none bg-transparent text-base font-semibold text-fg outline-none'
+  'flex h-14 items-center gap-2.5 rounded-full border border-line bg-surface-2 px-4 transition-colors focus-within:border-accent-line focus-within:ring-4 focus-within:ring-(--ring)'
+const etiqueta = 'pl-4 text-xs text-muted'
+const control = 'w-full min-w-0 appearance-none bg-transparent text-base font-medium text-fg outline-none'
 </script>
 
 <template>
@@ -76,7 +76,7 @@ const control = 'w-full min-w-0 appearance-none bg-transparent text-base font-se
       </div>
       <button
         type="button"
-        class="z-10 flex size-11 shrink-0 items-center justify-center self-center rounded-full border-[1.5px] border-line-strong bg-surface text-noche-900 transition hover:rotate-180 hover:border-noche-900 sm:mb-1.5 sm:self-end dark:text-fg"
+        class="z-10 flex size-11 shrink-0 items-center justify-center self-center rounded-full border border-line bg-surface text-fg shadow-suave transition hover:rotate-180 hover:border-accent-line sm:mb-1.5 sm:self-end"
         :class="layout === 'stacked' ? 'absolute top-[50px] right-3 sm:self-auto' : ''"
         aria-label="Intercambiar origen y destino"
         @click="intercambiar"
@@ -86,7 +86,7 @@ const control = 'w-full min-w-0 appearance-none bg-transparent text-base font-se
       <div class="flex w-full flex-1 flex-col gap-1.5">
         <label for="busca-destino" :class="etiqueta">Destino</label>
         <div :class="campo">
-          <MapPin class="size-[18px] shrink-0 text-carmin-600" aria-hidden="true" />
+          <MapPin class="size-[18px] shrink-0 text-accent-fg" aria-hidden="true" />
           <select id="busca-destino" v-model="form.destino" :class="control">
             <option v-for="c in destinos" :key="c" :value="c">{{ c }}</option>
           </select>

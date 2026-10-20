@@ -53,11 +53,11 @@ const vista = (v: unknown) => {
 <template>
   <section class="flex flex-col gap-4">
     <div>
-      <h2 class="text-lg font-bold">Parámetros de negocio</h2>
+      <h2 class="text-lg font-medium tracking-tight">Parámetros de negocio</h2>
       <p class="mt-0.5 text-sm text-muted">Reglas que usa el sistema (tiempos de reserva, retenciones, franquicias). Solo el administrador los modifica.</p>
     </div>
     <ErrorState v-if="lista.isError.value" :error="lista.error.value" @retry="lista.refetch()" />
-    <div v-else class="overflow-hidden rounded-2xl border border-line bg-surface">
+    <div v-else class="overflow-hidden rounded-card border border-line bg-surface">
       <DataTable
         :columns="[
           { key: 'clave', label: 'Clave' },

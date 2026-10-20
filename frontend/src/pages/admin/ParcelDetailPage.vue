@@ -232,18 +232,18 @@ function imprimir(): void {
           <div class="flex flex-col gap-5">
             <div class="flex flex-wrap items-center gap-3 text-lg font-bold">
               <span>{{ e.ciudad_origen ?? e.oficina_origen }}</span>
-              <ArrowRight class="size-5 text-carmin-600" aria-hidden="true" />
+              <ArrowRight class="size-5 text-accent-fg" aria-hidden="true" />
               <span>{{ e.ciudad_destino ?? e.oficina_destino }}</span>
               <span class="rounded-full bg-surface-2 px-2.5 py-1 text-xs font-semibold">{{ TIPO_ENVIO[e.tipo_envio] }}</span>
-              <span v-if="e.es_fragil" class="rounded-full bg-aviso-50 px-2.5 py-1 text-xs font-semibold text-aviso-800">Frágil</span>
-              <span v-if="e.es_mudanza" class="rounded-full bg-info-50 px-2.5 py-1 text-xs font-semibold text-info-800">Mudanza</span>
+              <span v-if="e.es_fragil" class="rounded-full bg-warning-soft px-2.5 py-1 text-xs font-semibold text-warning-fg">Frágil</span>
+              <span v-if="e.es_mudanza" class="rounded-full bg-info-soft px-2.5 py-1 text-xs font-semibold text-info-fg">Mudanza</span>
             </div>
             <dl class="grid gap-x-6 gap-y-4 text-sm sm:grid-cols-2 xl:grid-cols-3">
               <div><dt class="text-muted">Remitente</dt><dd class="font-semibold">{{ e.remitente }}</dd></div>
               <div>
                 <dt class="text-muted">Destinatario</dt>
                 <dd class="font-semibold">{{ e.destinatario_nombre }}</dd>
-                <dd><a :href="`tel:${e.destinatario_telefono_e164}`" class="text-carmin-600 hover:underline dark:text-carmin-200">{{ telefono(e.destinatario_telefono_e164) }}</a></dd>
+                <dd><a :href="`tel:${e.destinatario_telefono_e164}`" class="text-accent-fg hover:underline">{{ telefono(e.destinatario_telefono_e164) }}</a></dd>
               </div>
               <div><dt class="text-muted">Contenido</dt><dd>{{ e.descripcion_contenido }}</dd></div>
               <div><dt class="text-muted">Bodega de origen</dt><dd>{{ e.oficina_origen }}</dd></div>
@@ -267,7 +267,7 @@ function imprimir(): void {
 
         <SurfaceCard title="Transporte">
           <div v-if="e.salida_id" class="flex flex-wrap items-center gap-3 text-sm">
-            <Bus class="size-5 text-noche-500" aria-hidden="true" />
+            <Bus class="size-5 text-muted" aria-hidden="true" />
             <template v-if="salida.data.value">
               <RouterLink :to="{ name: 'admin-salida', params: { id: e.salida_id } }" class="font-semibold hover:underline">
                 {{ salida.data.value.codigo }} · {{ salida.data.value.origen }} → {{ salida.data.value.destino }}
@@ -278,7 +278,7 @@ function imprimir(): void {
             <SkeletonBlock v-else class="h-5 w-64" />
           </div>
           <div v-else-if="e.vehiculo_carga_id" class="flex items-center gap-3 text-sm">
-            <Truck class="size-5 text-noche-500" aria-hidden="true" />
+            <Truck class="size-5 text-muted" aria-hidden="true" />
             <span class="font-semibold">Furgón {{ vehiculoAsignado?.placa ?? `#${e.vehiculo_carga_id}` }}</span>
             <span class="text-muted">con GPS</span>
           </div>
@@ -305,12 +305,12 @@ function imprimir(): void {
               <Banknote class="size-4" aria-hidden="true" />Cobrar {{ bsExacto(e.precio_bs) }}
             </BaseButton>
             <template v-if="siguientes.length">
-              <p class="mt-2 text-xs font-semibold tracking-wide text-muted uppercase">Actualizar estado</p>
+              <p class="mt-2 text-xs font-semibold text-muted">Actualizar estado</p>
               <button
                 v-for="s in siguientes"
                 :key="s"
                 type="button"
-                class="flex min-h-11 items-center justify-between gap-2 rounded-control border border-line px-3.5 text-left text-sm font-medium transition-colors hover:border-noche-400 hover:bg-surface-2"
+                class="flex min-h-11 items-center justify-between gap-2 rounded-control border border-line px-3.5 text-left text-sm font-medium transition-colors hover:border-line-strong hover:bg-surface-2"
                 @click="abrirEvento(s)"
               >
                 <span class="flex items-center gap-2"><Route class="size-4 text-muted" aria-hidden="true" />{{ etiqueta(ESTADO_ENCOMIENDA, s).label }}</span>
@@ -321,7 +321,7 @@ function imprimir(): void {
           </div>
         </SurfaceCard>
         <SurfaceCard v-if="e.codigo_retiro && !cerrada" title="Código de retiro">
-          <p class="codigo text-3xl text-carmin-600">{{ e.codigo_retiro }}</p>
+          <p class="codigo text-3xl text-accent-fg">{{ e.codigo_retiro }}</p>
           <p class="mt-1 text-xs text-muted">Solo se comparte con el remitente. Pídeselo al destinatario al entregar.</p>
         </SurfaceCard>
       </aside>
@@ -385,7 +385,7 @@ function imprimir(): void {
           <TextInput v-model="entrega.nombre" label="Recibe" required :error="erroresEntrega.nombre" />
           <TextInput v-model="entrega.documento" label="Documento de quien recibe" required :error="erroresEntrega.documento" />
         </div>
-        <div v-if="e?.estado_pago === 'pendiente'" class="flex flex-col gap-3 rounded-xl bg-aviso-50 p-4 text-aviso-800 dark:bg-aviso-600/15 dark:text-amber-200">
+        <div v-if="e?.estado_pago === 'pendiente'" class="flex flex-col gap-3 rounded-inner bg-warning-soft p-4 text-warning-fg">
           <p class="text-sm font-semibold">Cobrar {{ bsExacto(e.precio_bs) }} antes de entregar</p>
           <SelectInput v-model="entrega.metodo" label="Método de pago" :options="METODOS" />
         </div>

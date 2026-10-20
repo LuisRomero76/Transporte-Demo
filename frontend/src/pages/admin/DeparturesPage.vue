@@ -90,14 +90,14 @@ const generacion = useMutation({
       </BaseButton>
     </PageHeader>
 
-    <div class="grid gap-3 rounded-2xl border border-line bg-surface p-4 sm:grid-cols-3">
+    <div class="grid gap-3 rounded-card border border-line bg-surface p-4 sm:grid-cols-3">
       <TextInput v-model="filtros.fecha" type="date" label="Fecha" />
       <SelectInput v-model="filtros.ruta" label="Ruta" :options="opcionesRuta" />
       <SelectInput v-model="filtros.estado" label="Estado" :options="opcionesEstado" />
     </div>
 
     <ErrorState v-if="salidas.isError.value" :error="salidas.error.value" @retry="salidas.refetch()" />
-    <div v-else class="overflow-hidden rounded-2xl border border-line bg-surface">
+    <div v-else class="overflow-hidden rounded-card border border-line bg-surface">
       <DataTable
         :columns="columnas"
         :rows="salidas.data.value?.items ?? []"

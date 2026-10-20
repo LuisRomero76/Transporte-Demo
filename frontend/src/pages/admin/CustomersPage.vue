@@ -67,14 +67,14 @@ const doc = (c: Cliente) => `${c.tipo_documento.toUpperCase()} ${c.numero_docume
 <template>
   <div class="flex flex-col gap-6">
     <PageHeader title="Clientes" subtitle="Pasajeros y remitentes registrados al comprar o enviar." />
-    <div class="rounded-2xl border border-line bg-surface p-4">
+    <div class="rounded-card border border-line bg-surface p-4">
       <TextInput v-model="texto" label="Buscar cliente" placeholder="Documento, celular o nombre" type="search" autocomplete="off" size="lg" autofocus>
         <template #icono><Search class="size-5" aria-hidden="true" /></template>
       </TextInput>
     </div>
 
     <ErrorState v-if="lista.isError.value" :error="lista.error.value" @retry="lista.refetch()" />
-    <div v-else class="overflow-hidden rounded-2xl border border-line bg-surface">
+    <div v-else class="overflow-hidden rounded-card border border-line bg-surface">
       <DataTable
         :columns="columnas"
         :rows="lista.data.value?.items ?? []"
@@ -87,7 +87,7 @@ const doc = (c: Cliente) => `${c.tipo_documento.toUpperCase()} ${c.numero_docume
       >
         <template #cell-nombre="{ row }">
           <span class="flex items-center gap-3">
-            <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-noche-100 text-xs font-bold text-noche-800 dark:bg-noche-700 dark:text-white" aria-hidden="true">{{ iniciales(`${row.nombres} ${row.apellidos}`) }}</span>
+            <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent-soft text-xs font-semibold text-accent-fg" aria-hidden="true">{{ iniciales(`${row.nombres} ${row.apellidos}`) }}</span>
             <span class="font-medium">{{ row.nombres }} {{ row.apellidos }}</span>
           </span>
         </template>
@@ -108,10 +108,10 @@ const doc = (c: Cliente) => `${c.tipo_documento.toUpperCase()} ${c.numero_docume
         <dl v-if="elegido.fecha_nacimiento" class="text-sm"><dt class="text-muted">Fecha de nacimiento</dt><dd>{{ fechaCorta(elegido.fecha_nacimiento) }}</dd></dl>
 
         <section v-if="verVentas" class="flex flex-col gap-3">
-          <h3 class="font-bold">Compras recientes</h3>
+          <h3 class="font-semibold">Compras recientes</h3>
           <SkeletonBlock v-if="ventas.isLoading.value" class="h-24" />
           <EmptyState v-else-if="!ventas.data.value?.items.length" compact title="Sin compras" />
-          <ul v-else class="flex flex-col divide-y divide-line rounded-xl border border-line">
+          <ul v-else class="flex flex-col divide-y divide-line rounded-inner border border-line">
             <li v-for="v in ventas.data.value.items" :key="v.codigo_reserva">
               <RouterLink :to="{ name: 'admin-ventas', query: { codigo: v.codigo_reserva } }" class="flex items-center justify-between gap-3 px-4 py-3 hover:bg-surface-2">
                 <span>
@@ -128,10 +128,10 @@ const doc = (c: Cliente) => `${c.tipo_documento.toUpperCase()} ${c.numero_docume
         </section>
 
         <section v-if="verCarga" class="flex flex-col gap-3">
-          <h3 class="font-bold">Envíos como remitente</h3>
+          <h3 class="font-semibold">Envíos como remitente</h3>
           <SkeletonBlock v-if="envios.isLoading.value" class="h-24" />
           <EmptyState v-else-if="!envios.data.value?.items.length" compact title="Sin envíos" />
-          <ul v-else class="flex flex-col divide-y divide-line rounded-xl border border-line">
+          <ul v-else class="flex flex-col divide-y divide-line rounded-inner border border-line">
             <li v-for="e in envios.data.value.items" :key="e.numero_guia">
               <RouterLink :to="{ name: 'admin-encomienda', params: { guia: e.numero_guia } }" class="flex items-center justify-between gap-3 px-4 py-3 hover:bg-surface-2">
                 <span>

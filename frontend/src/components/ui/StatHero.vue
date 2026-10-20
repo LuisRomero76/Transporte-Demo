@@ -63,21 +63,21 @@ const texto = (n: number) => (props.format ? props.format(n) : Math.round(n).toL
   <section class="hero flex flex-col gap-5 p-6">
     <div class="flex items-start justify-between gap-3">
       <span class="hero-chip"><slot name="icon" />{{ label }}</span>
-      <span v-if="aside" class="text-[13px] text-white/85">{{ aside }}</span>
+      <span v-if="aside" class="text-[13px] text-on-accent/85">{{ aside }}</span>
     </div>
     <div>
-      <SkeletonBlock v-if="loading" class="h-12 w-48 !bg-white/25" />
+      <SkeletonBlock v-if="loading" class="h-12 w-48 !bg-on-accent/25" />
       <p v-else class="flex items-baseline gap-2">
         <span class="text-[44px] leading-none font-semibold tracking-tight tabular md:text-[52px]">
           {{ typeof amount === 'number' ? texto(mostrado) : value }}
         </span>
-        <span v-if="unit" class="text-sm text-white/85">{{ unit }}</span>
+        <span v-if="unit" class="text-sm text-on-accent/85">{{ unit }}</span>
       </p>
     </div>
     <div v-if="progress != null" class="hero-progress" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100" :aria-label="label">
       <i :style="{ width: `${barra}%` }" />
     </div>
-    <div v-if="hint || $slots.default" class="flex flex-wrap items-center gap-3 text-[13px] text-white/85">
+    <div v-if="hint || $slots.default" class="flex flex-wrap items-center gap-3 text-[13px] text-on-accent/85">
       <slot />
       <span v-if="hint">{{ hint }}</span>
     </div>

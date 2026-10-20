@@ -182,7 +182,7 @@ const placa = (id: number | null | undefined) => vehiculos.data.value?.items.fin
       <BaseButton size="sm" class="h-10" @click="creando = true"><Plus class="size-4" aria-hidden="true" />Nueva solicitud</BaseButton>
     </PageHeader>
 
-    <div class="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-4 md:flex-row md:items-end md:justify-between">
+    <div class="flex flex-col gap-4 rounded-card border border-line bg-surface p-4 md:flex-row md:items-end md:justify-between">
       <div class="flex flex-wrap items-end gap-3">
         <SegmentedControl v-model="ciudad" label="Ciudad" variant="switch" :options="[{ value: 'Sucre', label: 'Sucre' }, { value: 'Santa Cruz', label: 'Santa Cruz' }]" />
         <div class="flex items-end gap-1">
@@ -195,7 +195,7 @@ const placa = (id: number | null | undefined) => vehiculos.data.value?.items.fin
       <dl class="flex gap-5 text-sm">
         <div><dt class="text-muted">Entregas</dt><dd class="text-xl font-bold tabular">{{ resumen.entregas }}</dd></div>
         <div><dt class="text-muted">Recojos</dt><dd class="text-xl font-bold tabular">{{ resumen.recojos }}</dd></div>
-        <div><dt class="text-muted">Sin repartidor</dt><dd class="text-xl font-bold tabular" :class="resumen.sinAsignar ? 'text-aviso-700' : ''">{{ resumen.sinAsignar }}</dd></div>
+        <div><dt class="text-muted">Sin repartidor</dt><dd class="text-xl font-bold tabular" :class="resumen.sinAsignar ? 'text-warning-fg' : ''">{{ resumen.sinAsignar }}</dd></div>
       </dl>
     </div>
 
@@ -208,21 +208,21 @@ const placa = (id: number | null | undefined) => vehiculos.data.value?.items.fin
         <section
           v-for="c in COLUMNAS"
           :key="c.key"
-          class="flex-col gap-3 rounded-2xl bg-surface-2/60 p-3"
+          class="flex-col gap-3 rounded-card bg-surface-2/60 p-3"
           :class="pestanaMovil === c.key ? 'flex' : 'hidden xl:flex'"
           :aria-label="c.label"
         >
           <header class="hidden items-center justify-between px-1 xl:flex">
-            <h2 class="text-sm font-bold">{{ c.label }}</h2>
+            <h2 class="text-sm font-medium tracking-tight">{{ c.label }}</h2>
             <span class="rounded-full bg-surface px-2 py-0.5 text-xs font-semibold tabular">{{ porColumna[c.key]?.length ?? 0 }}</span>
           </header>
           <SkeletonBlock v-if="lista.isLoading.value" class="h-40" />
-          <p v-else-if="!porColumna[c.key]?.length" class="rounded-xl border border-dashed border-line-strong p-6 text-center text-sm text-muted">Nada por aquí.</p>
-          <article v-for="s in porColumna[c.key]" :key="s.id" class="flex flex-col gap-3 rounded-xl border border-line bg-surface p-4 shadow-suave">
+          <p v-else-if="!porColumna[c.key]?.length" class="rounded-inner border border-dashed border-line-strong p-6 text-center text-sm text-muted">Nada por aquí.</p>
+          <article v-for="s in porColumna[c.key]" :key="s.id" class="flex flex-col gap-3 rounded-inner border border-line bg-surface p-4 shadow-suave">
             <div class="flex items-start justify-between gap-2">
               <div>
                 <p class="codigo text-sm">{{ s.codigo }}</p>
-                <p class="text-xs font-semibold tracking-wide uppercase" :class="s.tipo === 'entrega' ? 'text-turquesa-700 dark:text-turquesa-200' : 'text-carmin-600 dark:text-carmin-200'">
+                <p class="text-xs font-semibold" :class="s.tipo === 'entrega' ? 'text-info-fg' : 'text-accent-fg'">
                   {{ s.tipo === 'entrega' ? 'Entrega' : 'Recojo' }} · {{ s.franja_texto }}
                 </p>
               </div>
@@ -235,25 +235,25 @@ const placa = (id: number | null | undefined) => vehiculos.data.value?.items.fin
                 <Package class="mt-0.5 size-4 shrink-0 text-muted" aria-hidden="true" />
                 <span>{{ [s.peso_estimado_kg ? `${s.peso_estimado_kg} kg` : '', s.descripcion].filter(Boolean).join(' · ') }}</span>
               </p>
-              <RouterLink v-if="s.numero_guia" :to="{ name: 'admin-encomienda', params: { guia: s.numero_guia } }" class="codigo text-xs text-carmin-600 hover:underline dark:text-carmin-200">Guía {{ s.numero_guia }}</RouterLink>
+              <RouterLink v-if="s.numero_guia" :to="{ name: 'admin-encomienda', params: { guia: s.numero_guia } }" class="codigo text-xs text-accent-fg hover:underline">Guía {{ s.numero_guia }}</RouterLink>
               <p v-if="s.costo_bs" class="text-xs text-muted">Costo {{ bsExacto(s.costo_bs) }}</p>
             </div>
             <div class="flex items-center gap-2">
-              <a :href="`tel:${s.contacto_telefono_e164}`" class="inline-flex h-8 items-center gap-1.5 rounded-lg bg-surface-2 px-2.5 text-xs font-semibold hover:bg-line" :aria-label="`Llamar a ${s.cliente}`">
+              <a :href="`tel:${s.contacto_telefono_e164}`" class="inline-flex h-8 items-center gap-1.5 rounded-full bg-surface-2 px-2.5 text-xs font-semibold hover:bg-line" :aria-label="`Llamar a ${s.cliente}`">
                 <Phone class="size-3.5" aria-hidden="true" />{{ telefono(s.contacto_telefono_e164) }}
               </a>
-              <a :href="whatsappUrl(s.contacto_telefono_e164, s.mensaje)" target="_blank" rel="noopener noreferrer" class="inline-flex size-8 items-center justify-center rounded-lg bg-exito-50 text-exito-700 hover:bg-exito-100" aria-label="Escribir por WhatsApp">
+              <a :href="whatsappUrl(s.contacto_telefono_e164, s.mensaje)" target="_blank" rel="noopener noreferrer" class="inline-flex size-8 items-center justify-center rounded-full bg-success-soft text-success-fg hover:bg-success-soft" aria-label="Escribir por WhatsApp">
                 <MessageCircle class="size-4" aria-hidden="true" />
               </a>
             </div>
             <button
               type="button"
-              class="flex items-center gap-2 rounded-lg border border-dashed border-line-strong px-2.5 py-2 text-left text-xs hover:border-noche-400 disabled:cursor-default disabled:hover:border-line-strong"
+              class="flex items-center gap-2 rounded-lg border border-dashed border-line-strong px-2.5 py-2 text-left text-xs hover:border-line-strong disabled:cursor-default disabled:hover:border-line-strong"
               :disabled="['completada', 'cancelada'].includes(s.estado)"
               @click="abrirAsignar(s)"
             >
               <UserRound class="size-4 text-muted" aria-hidden="true" />
-              <span class="flex-1" :class="s.repartidor ? 'font-semibold' : 'text-aviso-700'">{{ s.repartidor ?? 'Asignar repartidor' }}</span>
+              <span class="flex-1" :class="s.repartidor ? 'font-semibold' : 'text-warning-fg'">{{ s.repartidor ?? 'Asignar repartidor' }}</span>
               <span v-if="s.vehiculo || placa(s.vehiculo_carga_id)" class="inline-flex items-center gap-1 text-muted"><Truck class="size-3.5" aria-hidden="true" />{{ s.vehiculo ?? placa(s.vehiculo_carga_id) }}</span>
             </button>
             <div v-if="TRANSICIONES_PUERTA[s.estado]?.length" class="flex flex-wrap gap-2">
@@ -262,7 +262,7 @@ const placa = (id: number | null | undefined) => vehiculos.data.value?.items.fin
                 :key="t"
                 size="sm"
                 :variant="t === 'cancelada' || t === 'fallida' ? 'ghost' : t === 'completada' ? 'success' : 'primary'"
-                :class="t === 'cancelada' || t === 'fallida' ? 'text-peligro-600' : 'flex-1'"
+                :class="t === 'cancelada' || t === 'fallida' ? 'text-danger-fg' : 'flex-1'"
                 :loading="actualizar.isPending.value && actualizar.variables.value?.codigo === s.codigo && actualizar.variables.value?.body.estado === t"
                 @click="actualizar.mutate({ codigo: s.codigo, body: { estado: t as Estado } })"
               >

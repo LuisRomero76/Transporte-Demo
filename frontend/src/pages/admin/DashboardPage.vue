@@ -14,7 +14,9 @@ import KpiCard from '@/components/ui/KpiCard.vue'
 import PageHeader from '@/components/ui/PageHeader.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
 import StatusBadge from '@/components/ui/StatusBadge.vue'
+import StatHero from '@/components/ui/StatHero.vue'
 import SurfaceCard from '@/components/ui/SurfaceCard.vue'
+import { coloresGrafico } from '@/lib/chartColors'
 import { bs, fechaCorta, fechaLarga, hora } from '@/lib/format'
 import { CANAL, ESTADO_ENCOMIENDA, ESTADO_SALIDA, etiqueta } from '@/lib/labels'
 import { ACCESO } from '@/lib/roles'
@@ -44,7 +46,9 @@ const canales = computed(() => {
 
 const grafico = computed<EChartsOption>(() => {
   const dias = r.value?.ventas_7_dias ?? []
-  const texto = tema.oscuro ? '#A3B2CC' : '#586174'
+  void tema.oscuro
+  const c = coloresGrafico()
+  const texto = c.texto
   return {
     grid: { left: 8, right: 8, top: 16, bottom: 4, containLabel: true },
     tooltip: { trigger: 'axis', valueFormatter: (v) => bs(Number(v)) },
@@ -55,14 +59,14 @@ const grafico = computed<EChartsOption>(() => {
       axisTick: { show: false },
       axisLabel: { color: texto },
     },
-    yAxis: { type: 'value', splitLine: { lineStyle: { color: tema.oscuro ? '#213659' : '#EFEAE1' } }, axisLabel: { color: texto } },
+    yAxis: { type: 'value', splitLine: { lineStyle: { color: c.linea } }, axisLabel: { color: texto } },
     series: [
       {
         type: 'bar',
         barWidth: '55%',
         data: dias.map((d, i) => ({
           value: Number(d.total_bs),
-          itemStyle: { color: i === dias.length - 1 ? '#B3122E' : tema.oscuro ? '#7D8FB0' : '#1B3358', borderRadius: [6, 6, 0, 0] },
+          itemStyle: { color: i === dias.length - 1 ? c.acento : c.neutro, borderRadius: [8, 8, 8, 8] },
         })),
       },
     ],
@@ -100,12 +104,20 @@ const acciones = computed(() =>
 
     <ErrorState v-if="resumen.isError.value" :error="resumen.error.value" @retry="resumen.refetch()" />
     <template v-else>
-      <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiCard label="Ventas de hoy" :icon="Coins" :loading="resumen.isLoading.value" :value="bs(r?.ventas_hoy_bs ?? 0)" :hint="`${r?.ventas_hoy ?? 0} ventas`" />
+      <div class="entrada grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StatHero
+          label="Ventas de hoy"
+          :loading="resumen.isLoading.value"
+          :amount="Number(r?.ventas_hoy_bs ?? 0)"
+          :format="(n) => bs(n)"
+          :hint="`${r?.ventas_hoy ?? 0} ventas`"
+        >
+          <template #icon><Coins class="size-3.5" aria-hidden="true" /></template>
+        </StatHero>
         <KpiCard label="Boletos emitidos hoy" :icon="TicketCheck" :loading="resumen.isLoading.value" :value="String(r?.boletos_hoy ?? 0)" :hint="canales" />
         <KpiCard label="Ocupación de hoy" :icon="Gauge" :loading="resumen.isLoading.value" :value="`${r?.ocupacion_hoy_pct ?? 0} %`">
           <div class="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-2">
-            <div class="h-full rounded-full bg-noche-700 dark:bg-sky-400" :style="{ width: `${r?.ocupacion_hoy_pct ?? 0}%` }" />
+            <div class="h-full rounded-full bg-pill-active" :style="{ width: `${r?.ocupacion_hoy_pct ?? 0}%` }" />
           </div>
         </KpiCard>
         <KpiCard
@@ -118,10 +130,10 @@ const acciones = computed(() =>
         />
       </div>
 
-      <div class="grid items-start gap-6 xl:grid-cols-[1fr_380px]">
+      <div class="grid grid-cols-[minmax(0,1fr)] items-start gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
         <SurfaceCard title="Salidas de hoy" :padded="false">
           <template #actions>
-            <RouterLink v-if="auth.puede(ACCESO.salidas)" :to="{ name: 'admin-salidas' }" class="text-sm font-semibold text-carmin-600 hover:underline dark:text-carmin-200">Ver todas</RouterLink>
+            <RouterLink v-if="auth.puede(ACCESO.salidas)" :to="{ name: 'admin-salidas' }" class="text-sm font-semibold text-accent-fg hover:underline">Ver todas</RouterLink>
           </template>
           <DataTable
             :columns="columnas"
@@ -153,7 +165,7 @@ const acciones = computed(() =>
               <li v-if="!r?.novedades.length && !r?.reembolsos_pendientes" class="text-sm text-muted">Todo en orden por ahora.</li>
               <li v-for="n in r?.novedades ?? []" :key="n.salida_id">
                 <RouterLink :to="{ name: 'admin-salida', params: { id: n.salida_id } }" class="flex gap-3 text-sm hover:underline">
-                  <span class="mt-1.5 size-2 shrink-0 rounded-full" :class="n.estado === 'cancelada' ? 'bg-peligro-600' : 'bg-aviso-600'" aria-hidden="true" />
+                  <span class="mt-1.5 size-2 shrink-0 rounded-full" :class="n.estado === 'cancelada' ? 'bg-danger' : 'bg-warning'" aria-hidden="true" />
                   <span>
                     <strong>{{ n.ruta }} · {{ fechaCorta(n.fecha_hora_salida) }} {{ hora(n.fecha_hora_salida) }}</strong>
                     {{ n.estado === 'cancelada' ? 'cancelada' : `demorada ${n.minutos_demora} min` }}<template v-if="n.motivo">: {{ n.motivo }}</template>
@@ -162,7 +174,7 @@ const acciones = computed(() =>
               </li>
               <li v-if="r?.reembolsos_pendientes">
                 <RouterLink :to="{ name: 'admin-reembolsos' }" class="flex gap-3 text-sm hover:underline">
-                  <CircleAlert class="mt-0.5 size-4 shrink-0 text-carmin-600" aria-hidden="true" />
+                  <CircleAlert class="mt-0.5 size-4 shrink-0 text-accent-fg" aria-hidden="true" />
                   <span><strong>{{ r.reembolsos_pendientes }} reembolsos por resolver</strong> · {{ bs(r.reembolsos_pendientes_bs) }}</span>
                 </RouterLink>
               </li>

@@ -19,13 +19,13 @@ const degradado = `logo-${useId()}`
         </linearGradient>
       </defs>
       <rect width="44" height="44" rx="22" :fill="`url(#${degradado})`" />
-      <path d="M11 30 C17 30 18 14 24 14 S31 24 33 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" />
+      <path d="M11 30 C17 30 18 14 24 14 S31 24 33 24" fill="none" stroke="var(--on-accent)" stroke-width="3" stroke-linecap="round" />
       <circle cx="11" cy="30" r="3.2" fill="var(--ink)" />
-      <circle cx="33" cy="24" r="3.2" fill="#fff" />
+      <circle cx="33" cy="24" r="3.2" fill="var(--on-accent)" />
     </svg>
     <span v-if="wordmark" class="flex flex-col leading-tight">
-      <span class="text-[16px] font-semibold tracking-tight" :class="tone === 'light' ? 'text-white' : 'text-fg'">TransDemo</span>
-      <span v-if="subtitle" class="text-xs" :class="tone === 'light' ? 'text-white/80' : 'text-muted'">{{ subtitle }}</span>
+      <span class="text-[16px] font-semibold tracking-tight" :class="tone === 'light' ? 'text-on-accent' : 'text-fg'">TransDemo</span>
+      <span v-if="subtitle" class="text-xs" :class="tone === 'light' ? 'text-on-accent/80' : 'text-muted'">{{ subtitle }}</span>
     </span>
   </span>
 </template>

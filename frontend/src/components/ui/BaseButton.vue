@@ -27,14 +27,14 @@ const clases = computed(() => {
     lg: props.iconOnly ? 'size-13' : 'h-13 px-6 text-base',
   }[props.size]
   const variante = {
-    primary: 'bg-accent text-white hover:bg-accent-2 disabled:bg-surface-2 disabled:text-muted',
+    primary: 'bg-accent text-on-accent hover:bg-accent-2 disabled:bg-surface-2 disabled:text-muted',
     secondary: 'bg-pill-active text-pill-active-fg hover:opacity-85 disabled:opacity-50',
     outline: 'border border-line-strong bg-surface text-fg hover:bg-surface-2 disabled:opacity-50',
     ghost: 'text-fg hover:bg-surface-2 disabled:opacity-50',
     subtle: 'border border-line bg-surface-2 text-fg hover:border-line-strong disabled:opacity-50',
-    danger: 'bg-danger text-white hover:opacity-90 disabled:opacity-50',
-    white: 'bg-white text-ink hover:opacity-90',
-    success: 'bg-success text-white hover:opacity-90 disabled:opacity-50',
+    danger: 'bg-danger text-on-accent hover:opacity-90 disabled:opacity-50',
+    white: 'bg-on-accent text-ink hover:opacity-90',
+    success: 'bg-success text-on-accent hover:opacity-90 disabled:opacity-50',
   }[props.variant]
   return [base, tam, variante, props.block ? 'w-full' : ''].join(' ')
 })

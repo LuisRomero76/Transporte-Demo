@@ -15,9 +15,9 @@ const pagina = useQuery({
 
 <template>
   <div class="contenedor max-w-3xl py-12">
-    <SkeletonBlock v-if="pagina.isLoading.value" class="h-80 rounded-2xl" />
+    <SkeletonBlock v-if="pagina.isLoading.value" class="h-80 rounded-card" />
     <ErrorState v-else-if="pagina.isError.value" :error="pagina.error.value" @retry="pagina.refetch()" />
-    <article v-else-if="pagina.data.value" class="rounded-2xl border border-line bg-surface p-6 sm:p-10">
+    <article v-else-if="pagina.data.value" class="rounded-card border border-line bg-surface p-6 sm:p-10">
       <MarkdownView :source="pagina.data.value.contenido_md" />
     </article>
   </div>

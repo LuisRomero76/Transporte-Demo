@@ -153,7 +153,7 @@ const textoBoton = computed(() => {
         <BaseButton :to="{ name: 'mi-reserva', query: { codigo } }">Ir a Mi reserva</BaseButton>
       </EmptyState>
       <div v-else-if="reserva.isLoading.value" class="grid gap-6 lg:grid-cols-[1fr_380px]">
-        <SkeletonBlock class="h-96 rounded-2xl" /><SkeletonBlock class="h-80 rounded-2xl" />
+        <SkeletonBlock class="h-96 rounded-card" /><SkeletonBlock class="h-80 rounded-card" />
       </div>
       <ErrorState v-else-if="reserva.isError.value" :error="reserva.error.value" @retry="reserva.refetch()" />
 
@@ -170,8 +170,8 @@ const textoBoton = computed(() => {
         <form v-else class="grid items-start gap-6 lg:grid-cols-[1fr_380px]" novalidate @submit.prevent="enviar">
           <div class="flex min-w-0 flex-col gap-5">
             <div
-              class="flex items-center justify-between gap-3 rounded-2xl px-5 py-3.5 text-sm font-semibold"
-              :class="urgente ? 'bg-peligro-50 text-peligro-800' : 'bg-aviso-50 text-aviso-800'"
+              class="flex items-center justify-between gap-3 rounded-card px-5 py-3.5 text-sm font-semibold"
+              :class="urgente ? 'bg-danger-soft text-danger-fg' : 'bg-warning-soft text-warning-fg'"
               role="timer"
               aria-live="off"
             >
@@ -179,14 +179,14 @@ const textoBoton = computed(() => {
               <span class="codigo text-lg tabular">{{ cuenta }}</span>
             </div>
 
-            <section class="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-5">
-              <h1 class="text-xl font-bold">¿Cómo quieres pagar?</h1>
+            <section class="flex flex-col gap-4 rounded-card border border-line bg-surface p-5">
+              <h1 class="text-xl font-medium tracking-tight">¿Cómo quieres pagar?</h1>
               <div role="radiogroup" aria-label="Método de pago" class="grid gap-3 sm:grid-cols-3">
                 <label
                   v-for="o in opciones"
                   :key="o.value"
-                  class="flex cursor-pointer items-center gap-3 rounded-xl border-[1.5px] p-4 transition-colors has-focus-visible:outline-2 has-focus-visible:outline-carmin-600"
-                  :class="(o.value === 'tarjeta_credito' ? esTarjeta : metodo === o.value) ? 'border-carmin-600 bg-carmin-50' : 'border-line-strong hover:border-noche-400'"
+                  class="flex cursor-pointer items-center gap-3 rounded-inner border p-4 transition-colors has-focus-visible:outline-2 has-focus-visible:outline-accent"
+                  :class="(o.value === 'tarjeta_credito' ? esTarjeta : metodo === o.value) ? 'border-accent-line bg-accent-soft' : 'border-line-strong hover:border-line-strong'"
                 >
                   <input
                     type="radio"
@@ -196,14 +196,14 @@ const textoBoton = computed(() => {
                     :checked="o.value === 'tarjeta_credito' ? esTarjeta : metodo === o.value"
                     @change="metodo = o.value"
                   />
-                  <component :is="o.icono" class="size-6 text-noche-900" aria-hidden="true" />
+                  <component :is="o.icono" class="size-6 text-fg" aria-hidden="true" />
                   <span class="flex flex-col">
                     <strong>{{ o.label }}</strong><span class="text-xs text-muted">{{ o.hint }}</span>
                   </span>
                 </label>
               </div>
 
-              <div v-if="metodo === 'qr'" class="flex flex-col items-center gap-5 rounded-xl bg-canvas p-5 sm:flex-row">
+              <div v-if="metodo === 'qr'" class="flex flex-col items-center gap-5 rounded-inner bg-canvas p-5 sm:flex-row">
                 <QrCode :value="`EM-QR|${codigo}|BOB|${reserva.data.value.total_bs}`" :size="168" label="Código QR para pagar la reserva" />
                 <ol class="flex list-decimal flex-col gap-2 pl-5 text-sm text-muted">
                   <li>Abre la app de tu banco y elige «Pagar con QR».</li>
@@ -214,8 +214,8 @@ const textoBoton = computed(() => {
 
               <div v-else-if="esTarjeta" class="flex flex-col gap-4">
                 <div class="flex w-fit rounded-control bg-surface-2 p-1 text-[13px] font-semibold">
-                  <button type="button" class="h-9 rounded-lg px-4" :class="tarjeta.credito ? 'bg-surface shadow-suave' : 'text-muted'" @click="tarjeta.credito = true">Crédito</button>
-                  <button type="button" class="h-9 rounded-lg px-4" :class="!tarjeta.credito ? 'bg-surface shadow-suave' : 'text-muted'" @click="tarjeta.credito = false">Débito</button>
+                  <button type="button" class="h-9 rounded-full px-4" :class="tarjeta.credito ? 'bg-surface shadow-suave' : 'text-muted'" @click="tarjeta.credito = true">Crédito</button>
+                  <button type="button" class="h-9 rounded-full px-4" :class="!tarjeta.credito ? 'bg-surface shadow-suave' : 'text-muted'" @click="tarjeta.credito = false">Débito</button>
                 </div>
                 <TextInput
                   v-model="tarjeta.numero"
@@ -226,7 +226,7 @@ const textoBoton = computed(() => {
                   :error="errores.numero"
                 >
                   <template #sufijo>
-                    <span v-if="marca(tarjeta.numero)" class="text-xs font-bold text-noche-700">{{ marca(tarjeta.numero) }}</span>
+                    <span v-if="marca(tarjeta.numero)" class="text-xs font-semibold text-muted">{{ marca(tarjeta.numero) }}</span>
                   </template>
                 </TextInput>
                 <div class="grid grid-cols-2 gap-4">
@@ -246,16 +246,16 @@ const textoBoton = computed(() => {
               </div>
             </section>
 
-            <section class="grid gap-4 rounded-2xl border border-line bg-surface p-5 sm:grid-cols-2">
-              <h2 class="font-sans text-base font-bold sm:col-span-2">Factura <span class="font-normal text-muted">· tu e-ticket es tu factura</span></h2>
+            <section class="grid gap-4 rounded-card border border-line bg-surface p-5 sm:grid-cols-2">
+              <h2 class="font-sans text-base font-medium tracking-tight sm:col-span-2">Factura <span class="font-normal text-muted">· tu e-ticket es tu factura</span></h2>
               <TextInput v-model="factura.nit" label="NIT o CI" hint="Si lo dejas vacío usamos tu documento" maxlength="20" />
               <TextInput v-model="factura.razon" label="Razón social" maxlength="150" />
             </section>
           </div>
 
-          <aside class="overflow-hidden rounded-2xl border border-line bg-surface lg:sticky lg:top-24">
+          <aside class="overflow-hidden rounded-card border border-line bg-surface lg:sticky lg:top-24">
             <TripSummary :salida="reserva.data.value.salida" etiqueta="Reserva">
-              <span class="codigo mt-1 text-xl text-white">{{ reserva.data.value.codigo_reserva }}</span>
+              <span class="codigo mt-1 text-xl text-on-accent">{{ reserva.data.value.codigo_reserva }}</span>
             </TripSummary>
             <div class="flex flex-col gap-3 p-5 text-[15px]">
               <div v-for="b in reserva.data.value.boletos" :key="b.numero_boleto" class="flex justify-between gap-3 text-sm">
@@ -263,9 +263,9 @@ const textoBoton = computed(() => {
               </div>
               <div class="flex items-baseline justify-between border-t border-line pt-3">
                 <strong>Total a pagar</strong>
-                <span class="font-display text-[28px] font-bold tabular">{{ bsExacto(reserva.data.value.total_bs) }}</span>
+                <span class="text-[28px] font-bold tabular">{{ bsExacto(reserva.data.value.total_bs) }}</span>
               </div>
-              <p v-if="errorPago" class="rounded-xl bg-peligro-50 px-4 py-3 text-sm font-medium text-peligro-800" role="alert">{{ errorPago }}</p>
+              <p v-if="errorPago" class="rounded-inner bg-danger-soft px-4 py-3 text-sm font-medium text-danger-fg" role="alert">{{ errorPago }}</p>
               <BaseButton type="submit" size="lg" block :loading="pagar.isPending.value">
                 <Lock class="size-4" aria-hidden="true" />{{ textoBoton }}
               </BaseButton>
@@ -273,7 +273,7 @@ const textoBoton = computed(() => {
                 Al pagar aceptas los términos y la política de reembolsos (85 % hasta 2 h antes de la salida).
                 Contacto: {{ telefono('59170000100') }}.
               </p>
-              <button type="button" class="self-start text-sm font-semibold text-carmin-600 hover:underline" @click="confirmarCancelacion = true">
+              <button type="button" class="self-start text-sm font-semibold text-accent-fg hover:underline" @click="confirmarCancelacion = true">
                 Cancelar la reserva
               </button>
             </div>
